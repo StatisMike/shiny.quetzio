@@ -9,12 +9,6 @@
 stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 <!-- badges: end -->
 
-<style>
-blockquote{
-   font-size: 12px
-    }
-</style>
-
 This package includes the way to create a survey using various Shiny
 widgets from a source file: either a local YAML file, or GoogleSheet
 over the net. Results of the surveys are send to GoogleSheet of your
@@ -134,6 +128,11 @@ For every input you can specify:
 
 > *Italic* parameters are interchangeable. You can specify either
 > *choices* or both *choiceValues* and *choiceNames* for single input.
+
+## Presentation
+
+You can check the running demo on
+<a href="https://statismik.shinyapps.io/shinysurvey_sneakpeek/" target="_blank">shinyapps.io</a>
 
 ## discoRd kudos
 

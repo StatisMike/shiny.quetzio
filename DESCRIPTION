@@ -1,13 +1,16 @@
 Package: shiny.survey
-Title: What the Package Does (One Line, Title Case)
+Title: Create a survey in ShinyApp
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "First",
-           family = "Last",
+    person(given = "Michal",
+           family = "Kosinski",
            role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+           email = "kosinski.mich@gmail.com",
+           comment = c(ORCID = "https://orcid.org/0000-0002-8426-3654"))
+Description: Functions to create a shiny.survey_module for you ShinyApp. 
+    Create a survey based on googlesheets or YAML file source, and save the 
+    results to the googlesheets file.
+Depends: R6, shiny, htmltools, googlesheets4, yaml, shinyjs, dplyr, stringr
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
