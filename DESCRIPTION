@@ -10,7 +10,8 @@ Authors@R:
 Description: Functions to create a shiny.survey_module for you ShinyApp. 
     Create a survey based on googlesheets or YAML file source, and save the 
     results to the googlesheets file.
-Depends: R6, shiny, htmltools, googlesheets4, yaml, shinyjs, dplyr, stringr
+Depends: shiny
+Imports: R6, htmltools, googlesheets4, yaml, shinyjs, dplyr, stringr
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

@@ -13,7 +13,8 @@
 
 \item{module_id}{character string declaring module id}
 
-\item{ns}{namespace object}
+\item{css}{Character string containing custom css rules for classes
+'mandatory_star' and 'invalid_input'}
 }
 \description{
 Generate all shinyInputs from yaml source file function

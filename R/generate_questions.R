@@ -7,7 +7,7 @@
 #' @import shiny
 
 .question_ui <- function(x, inputId, module_id) {
-  
+
   switch(x$type,
          textInput = {
            args <- list(
@@ -38,7 +38,7 @@
              multiple = .null_def(x$multiple, FALSE),
              width = .null_def(x$width, 500)
            )
-           if ((!is.null(x$choiceNames)&&!is.na(x$choiceNames)) && 
+           if ((!is.null(x$choiceNames)&&!is.na(x$choiceNames)) &&
                (!is.null(x$choiceValues)&&!is.na(x$choiceValues))) {
              args[["choices"]] <- setNames(object = x$choiceValues,
                                            nm = x$choiceNames)
@@ -58,7 +58,7 @@
              selected = .null_def(x$selected, character(0)),
              width = .null_def(x$width, 500)
            )
-           if ((!is.null(x$choiceNames)&&!is.na(x$choiceNames)) && 
+           if ((!is.null(x$choiceNames)&&!is.na(x$choiceNames)) &&
                (!is.null(x$choiceValues)&&!is.na(x$choiceValues))) {
              args[["choices"]] <- setNames(object = x$choiceValues,
                                            nm = x$choiceNames)
@@ -71,34 +71,35 @@
 }
 
 #' Generate all shinyInputs from yaml source file function
-#' 
+#'
 #' @param source_list list object with inputs parameters
 #' @param div_id Character string declaring id for the div
 #' @param module_id character string declaring module id
-#' @param ns namespace object
+#' @param css Character string containing custom css rules for classes
+#' 'mandatory_star' and 'invalid_input'
 #' @import shiny
 #' @import htmltools
 
 .generate_ui <- function(
-  source_list, 
-  div_id, 
+  source_list,
+  div_id,
   module_id,
   css) {
-  
+
   ns <- NS(module_id)
-  
+
   inputs_names <- names(source_list)
   inputs <- list()
   inputs_n <- 0
-  
+
   for (input in source_list) {
-    
+
     inputs_n <- inputs_n + 1
     name <- inputs_names[inputs_n]
     inputs[[inputs_n]] <- .question_ui(input, name, module_id)
-    
+
   }
-  
+
   return(
     eval(
       bquote(
@@ -116,6 +117,6 @@
         ), splice = TRUE)
     )
   )
-  
+
 }
 

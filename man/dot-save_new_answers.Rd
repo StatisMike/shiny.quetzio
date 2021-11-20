@@ -6,6 +6,13 @@
 \usage{
 .save_new_answers(user_answers, output_ss, output_sheet)
 }
+\arguments{
+\item{user_answers}{the object with inputs to extract}
+
+\item{output_ss}{character vector with output googlesheet ID}
+
+\item{output_sheet}{character vector with output spreadsheet name}
+}
 \description{
 Save the answer user input to Google Sheet
 }

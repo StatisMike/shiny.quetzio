@@ -7,7 +7,7 @@
 .get_mandatory(source_list)
 }
 \arguments{
-\item{source}{Source list of inputs}
+\item{source_list}{Source list of inputs}
 }
 \description{
 function to get indices of mandatory fields

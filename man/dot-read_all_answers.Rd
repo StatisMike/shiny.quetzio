@@ -6,6 +6,11 @@
 \usage{
 .read_all_answers(output_ss, output_sheet)
 }
+\arguments{
+\item{output_ss}{character vector with output googlesheet ID}
+
+\item{output_sheet}{character vector with output spreadsheet name}
+}
 \description{
 Read the Answer data from Google Sheets
 }
