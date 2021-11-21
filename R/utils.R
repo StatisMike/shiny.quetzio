@@ -1,3 +1,20 @@
+#' Helper function to check namespace
+#'
+#' @param package Character string declaring which package to check for
+#'
+
+.check_package <- function(package) {
+
+    if(length(find.package(package, quiet = T)) == 0){
+
+      stop(paste0("To use this method please install '",package,"' package: install.packages('",package,"')"),
+           call. = F)
+
+    }
+
+}
+
+
 #' function used to add red asterisk to mandatory fields
 #'
 #' @param label Character string with item label
