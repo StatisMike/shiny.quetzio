@@ -193,10 +193,9 @@
     ## I want to dynamically coerce variable types. Otherwise,
     ## `full_join()`'s strict type safety raises an error
     to_upload_answers <- merge(old_answers, user_answers, all = TRUE, sort = FALSE)
-    to_upload_answers <- dplyr::relocate(.data = to_upload_answers,
+    dplyr::relocate(.data = to_upload_answers,
                                          "timestamp",
                                          .after = dplyr::last_col())
-    return(to_upload_answers)
 
   }, error = function(cond){
 

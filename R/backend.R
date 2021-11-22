@@ -16,7 +16,7 @@
   source_list,
   mandatory_items,
   numeric_items,
-  output_gsheet = FALSE,
+  output_gsheet,
   output_ss,
   output_sheet
 ){
