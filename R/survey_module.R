@@ -128,9 +128,13 @@ survey_module <- R6::R6Class(
 
         source_df <- googlesheets4::read_sheet(
           ss = source_gsheet_id,
-          sheet = source_gsheet_sheetname
-          # , col_types = "cclccnnnnccclclc"
+          sheet = source_gsheet_sheetname,
+          col_types = "c"
+        # col_types = "cclccnnnnccclclc"
         )
+
+        # check df validity
+       .check_source_df(source_df)
 
         private$source_list <- .df_to_list(
           source_df = source_df
@@ -139,6 +143,9 @@ survey_module <- R6::R6Class(
       } else if (source_method == "yaml") {
         source_list <- .yaml_to_list(
           yaml_file = source_yaml)
+
+        # check list validity
+        .check_source_list(source_list)
 
         private$source_list <- source_list
 

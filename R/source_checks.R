@@ -5,20 +5,15 @@
 .check_source_df <- function(source_df){
 
   # check if all mandatory universal columns are present
-
   if (!all(c("inputId", "type", "label") %in% names(source_df))) {
     stop("source: The mandatory universal columns in source are missing: one of 'inputId',
          'type' or 'label'")
   }
-
   # check if all inputIds are unique
-
   if (length(unique(source_df$inputId)) != nrow(source_df)) {
     stop("source: The specified inputIds need to be unique.")
   }
-
   # check if there are all required columns for input type specified
-
   # checks for numeric
   invisible(
     tryCatch({
@@ -33,46 +28,39 @@
     })
   )
 
-  # check for selectize
+  # check for selectize and radio
 
   invisible(
     tryCatch({
-      check_df <- source_df[source_df$type == "selectizeInput",]
+      check_df <- source_df[source_df$type == "selectizeInput" || source_df$type == "radioButtons",]
       if (nrow(check_df) > 0){
-
         if (!"mult_choices" %in% names(check_df) || !all(c("mult_choiceValues", "mult_choiceNames") %in% names(check_df))) {
           stop(call. = F)
         }
-
-        check_df[, c("mult_selected", "select_multiple")]
       }
     },
     error = function(e){
-      stop("source: With at least one 'selectizeInput' type, the columns 'mult_selected', 'select_multiple' and 'mult_choices' or both 'mult_choiceValues' and 'mult_choiceNames' need to be specified.",
+      stop("source: With at least one 'selectizeInput' or 'radioButtons' type, the columns 'mult_choices' or both 'mult_choiceValues' and 'mult_choiceNames' need to be specified.",
            call. = F)
     })
   )
 
   # check for radio
 
-  invisible(
-    tryCatch({
-      check_df <- source_df[source_df$type == "radioButtons",]
-      if (nrow(check_df) > 0){
-
-        if (!"mult_choices" %in% names(check_df) || !all(c("mult_choiceValues", "mult_choiceNames") %in% names(check_df))) {
-          stop(call. = F)
-        }
-
-        check_df[, c("mult_selected", "radio_inline")]
-      }
-    },
-    error = function(e){
-      stop("source: With at least one 'selectizeInput' type, the columns 'mult_selected', 'select_multiple' and 'mult_choices' or both 'mult_choiceValues' and 'mult_choiceNames' need to be specified.",
-           call. = F)
-    })
-  )
-
+  # invisible(
+  #   tryCatch({
+  #     check_df <- source_df[source_df$type == "radioButtons",]
+  #     if (nrow(check_df) > 0){
+  #       if (!"mult_choices" %in% names(check_df) || !all(c("mult_choiceValues", "mult_choiceNames") %in% names(check_df))) {
+  #         stop(call. = F)
+  #       }
+  #     }
+  #   },
+  #   error = function(e){
+  #     stop("source: With at least one 'selectizeInput' type, the columns 'mult_choices' or both 'mult_choiceValues' and 'mult_choiceNames' need to be specified.",
+  #          call. = F)
+  #   })
+  # )
 }
 
 #' Check source list for correct columns
@@ -81,6 +69,41 @@
 
 .check_source_list <- function(source_list){
 
+  # check if all inputIds are unique
+  if (length(source_list) != length(unique(names(source_list)))) {
+    stop("source: The specified inputIds need to be unique.", call. = F)
+  }
 
+  # check if all items have the types and labels defined
+  tryCatch({
+    types_labels <- dplyr::bind_rows(lapply(
+      source_list, function(x){
+        data.frame(type = x$type,
+                   label = x$label)
+      }))
+    types_labels[, c("type", "label")]
+  }, error = function(e){
+    stop("source: The mandatory universal columns in source are missing: one of 'inputId',
+         'type' or 'label'", call. = F)
+  })
+
+  # check if there are all required columns for input type specified
+
+  checks <- lapply(
+    source_list, function(x){
+
+
+      if (x$type == "numericInput") {
+        if (is.null(x$value) || is.null(x$min) || is.null(x$max) || is.null(x$step)) {
+          stop("'value', 'min', 'max' and 'step' are mandatory for 'numericInput'")
+        }
+      } else if (x$type == "selectizeInput" || x$type == "radioButtons") {
+        if (is.null(x$choices) && all(is.null(x$choiceValues), is.null(x$choiceNames))) {
+          stop("'choices' or both 'choiceNames' and 'choiceValues' are mandatory for 'selectizeInput' or 'radioButtons'")
+        }
+      }
+
+    }
+  )
 
 }

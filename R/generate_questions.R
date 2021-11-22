@@ -36,7 +36,7 @@
              inputId = bquote(ns(.(inputId))),
              label = if(isTRUE(x$mandatory)){bquote(.label_mandatory(.(x$label)))} else {x$label},
              choices = x$choices,
-             multiple = .null_def(x$multiple, FALSE),
+             multiple = isTRUE(.null_def(as.logical(x$multiple), FALSE)),
              width = .null_def(x$width, 500)
            )
            if ((!is.null(x$choiceNames)&&!is.na(x$choiceNames)) &&
@@ -55,8 +55,8 @@
            args <- list(
              inputId = bquote(ns(.(inputId))),
              label = if(isTRUE(x$mandatory)){bquote(.label_mandatory(.(x$label)))} else {x$label},
-             inline = .null_def(x$inline, FALSE),
-             selected = .null_def(x$selected, character(0)),
+             inline = as.logical(.null_def(x$inline, FALSE)),
+             selected = .null_def(isTRUE(x$selected), character(0)),
              width = .null_def(x$width, 500)
            )
            if ((!is.null(x$choiceNames)&&!is.na(x$choiceNames)) &&
