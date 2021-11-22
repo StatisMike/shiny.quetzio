@@ -2,7 +2,7 @@
 #'
 #' @details Function to help initialize source data.frame for survey generation.
 #' It should contain specific columns, which are created here alongside one
-#' placeholder input to help populate next ones.
+#' placeholder input to help populating next ones.
 #'
 #' Name suffix helps to determing for which types of inputs these columns
 #' are used. Variables without suffix are used in creation of all types.
@@ -40,9 +40,9 @@ create_survey_source <- function(
 
   out = data.frame(
       inputId = "placeholder",
-      type = "typeInput",
+      type = "textInput",
       mandatory = TRUE,
-      label = "some label",
+      label = "Remove before production",
       width = "500px",
       chr_placeholder = "some text",
       num_value = 1,

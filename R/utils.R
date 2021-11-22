@@ -74,23 +74,13 @@
   return(fields_numeric)
 }
 
-#' Create source list from googlesheet
-#' @param ss_id googlesheet id
-#' @param ss_name spreadsheet name
+#' Create source list from 'data.frame'
+#' @param source_df source `data.frame` object
 #'
-#' @import googlesheets4
 #' @import stringr
 #'
 
-.gsheet_to_list <- function(ss_id,
-                            ss_name){
-
-  source_df <- googlesheets4::read_sheet(
-    ss = ss_id,
-    sheet = ss_name,
-    col_types = "cclccnnnnccclclc"
-  )
-
+.df_to_list <- function(source_df){
 
   source_list <- list()
 
@@ -202,14 +192,16 @@
     ## I'm using `merge()` here and not `full_join()` because
     ## I want to dynamically coerce variable types. Otherwise,
     ## `full_join()`'s strict type safety raises an error
-    merge(old_answers, user_answers,
-                               all = TRUE, sort = FALSE) %>%
-      dplyr::relocate(timestamp, .after = dplyr::last_col())
+    to_upload_answers <- merge(old_answers, user_answers, all = TRUE, sort = FALSE)
+    to_upload_answers <- dplyr::relocate(.data = to_upload_answers,
+                                         "timestamp",
+                                         .after = dplyr::last_col())
+    return(to_upload_answers)
 
   }, error = function(cond){
 
-    user_answers %>%
-      dplyr::relocate(timestamp, .after = dplyr::last_col())
+    dplyr::relocate(.data = user_answers,
+                    "timestamp", .after = dplyr::last_col())
 
   })
 

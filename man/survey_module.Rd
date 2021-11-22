@@ -25,11 +25,13 @@ Initializing the shiny.survey_module object
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{survey_module$new(
   source_method,
+  source_object,
   source_yaml,
   source_gsheet_id,
   source_gsheet_sheetname,
   module_id = NULL,
   div_id = "form",
+  output_gsheet = FALSE,
   output_gsheet_id = source_gsheet_id,
   output_gsheet_sheetname,
   custom_css = NULL

@@ -5,6 +5,7 @@
 #' @param module_id id of the module
 #'
 #' @import shiny
+#' @importFrom stats setNames
 
 .question_ui <- function(x, inputId, module_id) {
 
@@ -40,7 +41,7 @@
            )
            if ((!is.null(x$choiceNames)&&!is.na(x$choiceNames)) &&
                (!is.null(x$choiceValues)&&!is.na(x$choiceValues))) {
-             args[["choices"]] <- setNames(object = x$choiceValues,
+             args[["choices"]] <- stats::setNames(object = x$choiceValues,
                                            nm = x$choiceNames)
            } else if(!is.null(x$choices)&&!is.na(x$choices)){
              args[["choices"]] <- x$choices
@@ -60,7 +61,7 @@
            )
            if ((!is.null(x$choiceNames)&&!is.na(x$choiceNames)) &&
                (!is.null(x$choiceValues)&&!is.na(x$choiceValues))) {
-             args[["choices"]] <- setNames(object = x$choiceValues,
+             args[["choices"]] <- stats::setNames(object = x$choiceValues,
                                            nm = x$choiceNames)
            } else if(!is.null(x$choices)&&!is.na(x$choices)){
              args[["choices"]] <- x$choices
