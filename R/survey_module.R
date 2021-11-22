@@ -1,5 +1,7 @@
 #' Create R6-based Shiny modules for the app
 #'
+#' @name survey_module
+#'
 #' @import R6
 #' @import googlesheets4
 #' @import yaml
@@ -30,27 +32,45 @@ survey_module <- R6::R6Class(
 
     #' @description Initializing the shiny.survey_module object
     #'
-    #' @param source_method character string specifying where to get the source
-    #' config file. Can be either 'gsheet' or 'yaml'.
-    #' @param source_object object of class `list` (similiar in structure to
-    #' 'yaml' source) or `data.frame` (similiar in structure to 'googlesheet'
-    #' source) to be the source of questions. You can create a sample data.frame
-    #' with \code{create_survey_source()}
+    #' @param source_method character string specifying in what form the source
+    #' config file will be provided. Can be either 'gsheet', 'yaml' or 'raw'.
+    #' Necessity of other arguments is dependent on this choice. For more info
+    #' see 'details'
     #' @param source_yaml path to the source yaml file
     #' @param source_gsheet_id id of the source googlesheet file
     #' @param source_gsheet_sheetname name of the source spreadsheet
-    #' @param module_id character string with unique id for the module. If not
-    #' specified, it will be automatically generated
-    #' @param div_id character string with unique id for the created div. If not
-    #' specified, it will be set to 'form'
+    #' @param source_object object of class `list` (similiar in structure to
+    #' 'yaml' source) or `data.frame` (similiar in structure to 'googlesheet'
+    #' source) to be the source of questions. You can create a sample data.frame
+    #' with \code{create_survey_source()}. Needed when `source_method == 'raw'`
     #' @param output_gsheet logical: do you wish to save the answers automatically
     #' to the googlesheet. If TRUE, the 'output_gsheet_id' and 'output_gsheet_sheetname'
     #' arguments need to be specified. Defaults to FALSE
     #' @param output_gsheet_id id of the output googlesheet file. If not specified,
     #' the same googlesheet as for 'source' will be used
     #' @param output_gsheet_sheetname name of the output spreadsheet
+    #' @param module_id character string with unique id for the module. If not
+    #' specified, it will be automatically generated
+    #' @param div_id character string with unique id for the created div. If not
+    #' specified, it will be set to 'form'
     #' @param custom_css custom css for classes 'mandatory star' and 'invalid_input'.
     #' If not specified, default look will be used.
+    #'
+    #' @details
+    #'
+    #' Currently, there are multiple methods both for source, which will generate
+    #' the inputs, and for output. Mandatory arguments change depending of your
+    #' choices:
+    #'
+    #' - for source:
+    #'   - \code{source_method == 'yaml'}: 'source_yaml'
+    #'   - \code{source_method == 'gsheet'}: 'source_gsheet_id,' 'source_gsheet_sheetname'
+    #'   - \code{source_method == 'raw'}: 'source_object'
+    #' - for output:
+    #'   - \code{output_gsheet == TRUE}: 'output_gsheet_id' (if other than 'source_gsheet_id')
+    #'   and 'output_gsheet_sheetname'
+    #'
+    #'
     #' @return the 'shiny.survey_module' object
 
     initialize = function(
@@ -59,11 +79,11 @@ survey_module <- R6::R6Class(
       source_yaml,
       source_gsheet_id,
       source_gsheet_sheetname,
-      module_id = NULL,
-      div_id = "form",
       output_gsheet = FALSE,
       output_gsheet_id = source_gsheet_id,
       output_gsheet_sheetname,
+      module_id = NULL,
+      div_id = "form",
       custom_css = NULL
 
     ){
@@ -108,12 +128,12 @@ survey_module <- R6::R6Class(
 
         source_df <- googlesheets4::read_sheet(
           ss = source_gsheet_id,
-          sheet = source_gsheet_sheetname,
-          col_types = "cclccnnnnccclclc"
+          sheet = source_gsheet_sheetname
+          # , col_types = "cclccnnnnccclclc"
         )
 
         private$source_list <- .df_to_list(
-          ss_id = source_df
+          source_df = source_df
         )
 
       } else if (source_method == "yaml") {
@@ -126,9 +146,15 @@ survey_module <- R6::R6Class(
       } else if (source_method == "raw") {
 
         if (class(source_object) == "data.frame") {
+
+          # checks if df is valid
+          .check_source_df(source_object)
           private$source_list <- .df_to_list(source_object)
 
         } else if (class(source_object) == "list") {
+
+          # checks if list is valid
+          .check_source_list(source_object)
           private$source_list <- source_object
 
         } else {
@@ -147,6 +173,7 @@ survey_module <- R6::R6Class(
       # save other information in private
 
       private$div_id <- div_id
+      private$output_gsheet <- output_gsheet
       private$output_ss <- output_gsheet_id
       private$output_sheet <- output_gsheet_sheetname
       private$css <- .null_def(

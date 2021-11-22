@@ -16,7 +16,7 @@ if \code{method == 'gsheet'}}
 Depends on specified method:
 \itemize{
 \item{\code{df}: data.frame object}
-\item{\code{gsheet}: character with ID of created googlesheet}
+\item{\code{gsheet}: ID of the created googlesheet}
 }
 }
 \description{
@@ -38,5 +38,9 @@ are used. Variables without suffix are used in creation of all types.
 }
 
 To use 'gsheet' method, the 'googlesheets4' package needs
-to be installed
+to be installed.
+
+You can create the source 'data.frame' yourself, keeping only the columns that
+are universally mandatory and specific to used inputTypes, though it is
+recommended to keep all columns that are created during initialization.
 }
