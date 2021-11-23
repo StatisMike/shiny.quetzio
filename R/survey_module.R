@@ -214,13 +214,13 @@ survey_module <- R6::R6Class(
     server = function() {
 
       .survey_backend(
-        private$module_id,
-        private$source_list,
-        private$mandatory_items,
-        private$numeric_items,
-        private$output_gsheet,
-        private$output_ss,
-        private$output_sheet
+        id = private$module_id,
+        source_list = private$source_list,
+        mandatory_items = private$mandatory_items,
+        numeric_items = private$numeric_items,
+        output_gsheet = private$output_gsheet,
+        output_ss = private$output_ss,
+        output_sheet = private$output_sheet
       )
     }
   )
