@@ -3,8 +3,10 @@
 #' @param source_list The list used to create the UI
 #' @param mandatory_items Numeric vector with indices of items that are mandatory
 #' @param numeric_items Numeric vector with indices of items that are numeric
-#' @param output_ss Character vector with output googlesheet id
-#' @param output_sheet Character vector with output spreadsheet name
+#' @param output_gsheet Logical indicating if the survey results have to be automatically
+#' saved into googlesheet
+#' @param output_ss Character vector with output googlesheet id (if \code{output_gsheet = T})
+#' @param output_sheet Character vector with output spreadsheet name (if \code{output_gsheet = T})
 #'
 #' @import shiny
 #' @import shinyjs
@@ -14,6 +16,7 @@
   source_list,
   mandatory_items,
   numeric_items,
+  output_gsheet,
   output_ss,
   output_sheet
 ){
@@ -26,7 +29,8 @@
       # (their negations are invalid and mandatory not-filled questions)
       valid <- reactiveValues()
       status <- reactiveValues(is_done = FALSE,
-                               message = NULL)
+                               message = NULL,
+                               answers = NULL)
 
       # gather the form data into the right shape
       form_data <- reactive({
@@ -125,12 +129,18 @@
 
           # checks on the save
           tryCatch({
+
+            if(isTRUE(as.logical(output_gsheet))){
+
             .save_new_answers(form_data(),
                               output_ss,
                               output_sheet)
 
+            }
+
             status$is_done <- TRUE
             status$message <- NULL
+            status$answers <- as.list(form_data())
 
             updateActionButton(session,
                                inputId = "submit",

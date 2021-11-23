@@ -5,6 +5,7 @@
 #' @param module_id id of the module
 #'
 #' @import shiny
+#' @importFrom stats setNames
 
 .question_ui <- function(x, inputId, module_id) {
 
@@ -35,12 +36,12 @@
              inputId = bquote(ns(.(inputId))),
              label = if(isTRUE(x$mandatory)){bquote(.label_mandatory(.(x$label)))} else {x$label},
              choices = x$choices,
-             multiple = .null_def(x$multiple, FALSE),
+             multiple = isTRUE(.null_def(as.logical(x$multiple), FALSE)),
              width = .null_def(x$width, 500)
            )
            if ((!is.null(x$choiceNames)&&!is.na(x$choiceNames)) &&
                (!is.null(x$choiceValues)&&!is.na(x$choiceValues))) {
-             args[["choices"]] <- setNames(object = x$choiceValues,
+             args[["choices"]] <- stats::setNames(object = x$choiceValues,
                                            nm = x$choiceNames)
            } else if(!is.null(x$choices)&&!is.na(x$choices)){
              args[["choices"]] <- x$choices
@@ -54,13 +55,13 @@
            args <- list(
              inputId = bquote(ns(.(inputId))),
              label = if(isTRUE(x$mandatory)){bquote(.label_mandatory(.(x$label)))} else {x$label},
-             inline = .null_def(x$inline, FALSE),
-             selected = .null_def(x$selected, character(0)),
+             inline = as.logical(.null_def(x$inline, FALSE)),
+             selected = .null_def(isTRUE(x$selected), character(0)),
              width = .null_def(x$width, 500)
            )
            if ((!is.null(x$choiceNames)&&!is.na(x$choiceNames)) &&
                (!is.null(x$choiceValues)&&!is.na(x$choiceValues))) {
-             args[["choices"]] <- setNames(object = x$choiceValues,
+             args[["choices"]] <- stats::setNames(object = x$choiceValues,
                                            nm = x$choiceNames)
            } else if(!is.null(x$choices)&&!is.na(x$choices)){
              args[["choices"]] <- x$choices

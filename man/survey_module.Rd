@@ -25,13 +25,15 @@ Initializing the shiny.survey_module object
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{survey_module$new(
   source_method,
+  source_object,
   source_yaml,
   source_gsheet_id,
   source_gsheet_sheetname,
-  module_id = NULL,
-  div_id = "form",
+  output_gsheet = FALSE,
   output_gsheet_id = source_gsheet_id,
   output_gsheet_sheetname,
+  module_id = NULL,
+  div_id = "form",
   custom_css = NULL
 )}\if{html}{\out{</div>}}
 }
@@ -39,8 +41,15 @@ Initializing the shiny.survey_module object
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{source_method}}{character string specifying where to get the source
-config file. Can be either 'gsheet' or 'yaml'.}
+\item{\code{source_method}}{character string specifying in what form the source
+config file will be provided. Can be either 'gsheet', 'yaml' or 'raw'.
+Necessity of other arguments is dependent on this choice. For more info
+see 'details'}
+
+\item{\code{source_object}}{object of class \code{list} (similiar in structure to
+'yaml' source) or \code{data.frame} (similiar in structure to 'googlesheet'
+source) to be the source of questions. You can create a sample data.frame
+with \code{create_survey_source()}. Needed when \code{source_method == 'raw'}}
 
 \item{\code{source_yaml}}{path to the source yaml file}
 
@@ -48,22 +57,45 @@ config file. Can be either 'gsheet' or 'yaml'.}
 
 \item{\code{source_gsheet_sheetname}}{name of the source spreadsheet}
 
-\item{\code{module_id}}{character string with unique id for the module. If not
-specified, it will be automatically generated}
-
-\item{\code{div_id}}{character string with unique id for the created div. If not
-specified, it will be set to 'form'}
+\item{\code{output_gsheet}}{logical: do you wish to save the answers automatically
+to the googlesheet. If TRUE, the 'output_gsheet_id' and 'output_gsheet_sheetname'
+arguments need to be specified. Defaults to FALSE}
 
 \item{\code{output_gsheet_id}}{id of the output googlesheet file. If not specified,
 the same googlesheet as for 'source' will be used}
 
 \item{\code{output_gsheet_sheetname}}{name of the output spreadsheet}
 
+\item{\code{module_id}}{character string with unique id for the module. If not
+specified, it will be automatically generated}
+
+\item{\code{div_id}}{character string with unique id for the created div. If not
+specified, it will be set to 'form'}
+
 \item{\code{custom_css}}{custom css for classes 'mandatory star' and 'invalid_input'.
 If not specified, default look will be used.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Details}{
+Currently, there are multiple methods both for source, which will generate
+the inputs, and for output. Mandatory arguments change depending of your
+choices:
+\itemize{
+\item for source:
+\itemize{
+\item \code{source_method == 'yaml'}: 'source_yaml'
+\item \code{source_method == 'gsheet'}: 'source_gsheet_id,' 'source_gsheet_sheetname'
+\item \code{source_method == 'raw'}: 'source_object'
+}
+\item for output:
+\itemize{
+\item \code{output_gsheet == TRUE}: 'output_gsheet_id' (if other than 'source_gsheet_id')
+and 'output_gsheet_sheetname'
+}
+}
+}
+
 \subsection{Returns}{
 the 'shiny.survey_module' object
 }

@@ -34,17 +34,22 @@ At the current stage of development the `shiny.survey` package consists
 of one exported `R6` class: `shiny.survey_module`. It handles basic
 inputs:
 
--   textInput
--   numericInput
--   selectizeInput
--   radioButtons
+-   `textInput`
+-   `numericInput`
+-   `selectizeInput`
+-   `radioButtons`
 
 ### In-App usage
 
 It’s usage is very straigtforward:
 
 1.  At the beginning: create new `survey_module` in the `global.R` or
-    outside of the `ui` and `server` objects:
+    outside of the `ui` and `server` objects.
+
+For long surveys and frequently used ShinyApps I recommend generating
+the objects beforehand, saving them with `saveRDS()` or `save` in the
+app directory and then loading them with `readRDS()` or `load()` to cut
+the time for initializing the object during the loadtime.
 
 ``` r
 # using YAML source file

@@ -9,6 +9,7 @@
   source_list,
   mandatory_items,
   numeric_items,
+  output_gsheet,
   output_ss,
   output_sheet
 )
@@ -22,9 +23,12 @@
 
 \item{numeric_items}{Numeric vector with indices of items that are numeric}
 
-\item{output_ss}{Character vector with output googlesheet id}
+\item{output_gsheet}{Logical indicating if the survey results have to be automatically
+saved into googlesheet}
 
-\item{output_sheet}{Character vector with output spreadsheet name}
+\item{output_ss}{Character vector with output googlesheet id (if \code{output_gsheet = T})}
+
+\item{output_sheet}{Character vector with output spreadsheet name (if \code{output_gsheet = T})}
 }
 \description{
 Function that creates 'backend' for the generated survey
