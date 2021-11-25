@@ -19,11 +19,11 @@
     tryCatch({
       check_df <- source_df[source_df$type == "numericInput",]
       if (nrow(check_df) > 0){
-        check_df[, c("num_value", "num_min", "num_max", "num_step")]
+        check_df[, "num_value"]
       }
     },
     error = function(e){
-      stop("source: With at least one 'numericInput' type, the columns 'num_value', 'num_min', 'num_max' and 'num_step' need to be specified.",
+      stop("source: With at least one 'numericInput' type, the column 'num_value' need to be specified.",
            call. = F)
     })
   )
@@ -44,23 +44,6 @@
            call. = F)
     })
   )
-
-  # check for radio
-
-  # invisible(
-  #   tryCatch({
-  #     check_df <- source_df[source_df$type == "radioButtons",]
-  #     if (nrow(check_df) > 0){
-  #       if (!"mult_choices" %in% names(check_df) || !all(c("mult_choiceValues", "mult_choiceNames") %in% names(check_df))) {
-  #         stop(call. = F)
-  #       }
-  #     }
-  #   },
-  #   error = function(e){
-  #     stop("source: With at least one 'selectizeInput' type, the columns 'mult_choices' or both 'mult_choiceValues' and 'mult_choiceNames' need to be specified.",
-  #          call. = F)
-  #   })
-  # )
 }
 
 #' Check source list for correct columns
