@@ -9,9 +9,7 @@
 
       stop(paste0("To use this method please install '",package,"' package: install.packages('",package,"')"),
            call. = F)
-
     }
-
 }
 
 

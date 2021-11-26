@@ -19,7 +19,11 @@
 #'
 #' You can create the source 'data.frame' yourself, keeping only the columns that
 #' are universally mandatory and specific to used inputTypes, though it is
-#' recommended to keep all columns that are created during initialization.
+#' recommended to keep all columns that are created during initialization - the
+#' variable classes should be kept.
+#'
+#' When using 'googlesheet' as a source, all columns should be kept alongside
+#' their order to ensure correct import.
 #'
 #' @param method Which method to use. One of 'df' (default) and 'gsheet'.
 #' @param name optional name for your googlesheet. Used only
@@ -45,20 +49,20 @@ create_survey_source <- function(
   out = data.frame(
       inputId = "placeholder",
       type = "textInput",
-      mandatory = "true",
+      mandatory = TRUE,
       label = "Remove before production",
       width = "500px",
       chr_placeholder = "some text",
-      num_value = "1",
-      num_min = "0",
-      num_max = "2",
-      num_step = "0.5",
+      num_value = 1,
+      num_min = 0,
+      num_max = 2,
+      num_step = 0.5,
       mult_choices = "Something\nElse\nMore",
       mult_choiceValues = "1\n2\n3",
       mult_choiceNames = "One\nTwo\nThree",
       mult_selected = "NULL",
-      select_multiple = "TRUE",
-      radio_inline = "TRUE"
+      select_multiple = TRUE,
+      radio_inline = TRUE
   )
 
   if (method == "gsheet") {

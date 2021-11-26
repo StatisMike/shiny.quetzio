@@ -42,5 +42,9 @@ to be installed.
 
 You can create the source 'data.frame' yourself, keeping only the columns that
 are universally mandatory and specific to used inputTypes, though it is
-recommended to keep all columns that are created during initialization.
+recommended to keep all columns that are created during initialization - the
+variable classes should be kept.
+
+When using 'googlesheet' as a source, all columns should be kept alongside
+their order to ensure correct import.
 }

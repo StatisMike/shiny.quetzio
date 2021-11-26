@@ -36,7 +36,7 @@
              inputId = bquote(ns(.(inputId))),
              label = if(isTRUE(x$mandatory)){bquote(.label_mandatory(.(x$label)))} else {x$label},
              choices = x$choices,
-             multiple = isTRUE(.null_def(as.logical(x$multiple), FALSE)),
+             multiple = .null_def(x$multiple, FALSE),
              width = .null_def(x$width, 500)
            )
            if ((!is.null(x$choiceNames)&&!is.na(x$choiceNames)) &&
@@ -55,8 +55,8 @@
            args <- list(
              inputId = bquote(ns(.(inputId))),
              label = if(isTRUE(x$mandatory)){bquote(.label_mandatory(.(x$label)))} else {x$label},
-             inline = as.logical(.null_def(x$inline, FALSE)),
-             selected = .null_def(isTRUE(x$selected), character(0)),
+             inline = .null_def(x$inline, FALSE),
+             selected = .null_def(x$selected, character(0)),
              width = .null_def(x$width, 500)
            )
            if ((!is.null(x$choiceNames)&&!is.na(x$choiceNames)) &&
@@ -85,7 +85,8 @@
   source_list,
   div_id,
   module_id,
-  css) {
+  css,
+  button_label) {
 
   ns <- NS(module_id)
 
@@ -111,7 +112,7 @@
           ..(inputs),
           actionButton(
             inputId = ns("submit"),
-            label = "Submit",
+            label = button_label,
             class = "btn-primary",
             width = "350px"
           )
