@@ -4,7 +4,7 @@
 \alias{.generate_ui}
 \title{Generate all shinyInputs from yaml source file function}
 \usage{
-.generate_ui(source_list, div_id, module_id, css)
+.generate_ui(source_list, div_id, module_id, css, button_label)
 }
 \arguments{
 \item{source_list}{list object with inputs parameters}

@@ -16,11 +16,8 @@ survey_module <- R6::R6Class(
 
   private = list(
 
-    module_id = NULL,
-    source_list = NULL,
     mandatory_items = NULL,
     numeric_items = NULL,
-    div_id = NULL,
     output_gsheet = NULL,
     output_ss = NULL,
     output_sheet = NULL,
@@ -29,6 +26,19 @@ survey_module <- R6::R6Class(
   ),
 
   public = list(
+
+    #' @field source_list List containing the data for all the inputs
+    source_list = NULL,
+
+    #' @field div_id ID of the div containing the survey UI
+    div_id = NULL,
+
+    #' @field module_id ID of the shiny module
+    module_id = NULL,
+
+    #' @field button_labels character vector of length two with labels for submit
+    #' button in active and disabled state
+    button_labels = NULL,
 
     #' @description Initializing the shiny.survey_module object
     #'
@@ -54,7 +64,9 @@ survey_module <- R6::R6Class(
     #' @param div_id character string with unique id for the created div. If not
     #' specified, it will be set to 'form'
     #' @param custom_css custom css for classes 'mandatory star' and 'invalid_input'.
-    #' If not specified, default look will be used.
+    #' If not specified, default look will be used
+    #' @param button_labels character vector of length two with labels for submit
+    #' button in active and disabled state
     #'
     #' @details
     #'
@@ -75,17 +87,17 @@ survey_module <- R6::R6Class(
 
     initialize = function(
       source_method,
-      source_object,
-      source_yaml,
-      source_gsheet_id,
-      source_gsheet_sheetname,
+      source_object = NULL,
+      source_yaml = NULL,
+      source_gsheet_id = NULL,
+      source_gsheet_sheetname = NULL,
       output_gsheet = FALSE,
-      output_gsheet_id = source_gsheet_id,
-      output_gsheet_sheetname,
+      output_gsheet_id = NULL,
+      output_gsheet_sheetname = NULL,
       module_id = NULL,
       div_id = "form",
-      custom_css = NULL
-
+      custom_css = NULL,
+      button_labels = c("Submit", "Cannot submit")
     ){
       # initialize checks
 
@@ -112,15 +124,14 @@ survey_module <- R6::R6Class(
 
       # check if all needed arguments are provided for output methods
       if (isTRUE(as.logical(output_gsheet))) {
-        if (is.null(output_gsheet_id) || is.null(output_gsheet_sheetname)){
+        if ((is.null(source_gsheet_id) && is.null(output_gsheet_id)) || is.null(output_gsheet_sheetname)){
           stop("When 'output_gsheet' == TRUE, you need to specify 'output_gsheet_id' (if other from 'source_gsheet_id') and 'output_gsheet_sheetname'")
         }
-
       }
 
       # save the module id into environment
 
-      private$module_id <- .null_def(module_id, uuid::UUIDgenerate())
+      self$module_id <- .null_def(module_id, uuid::UUIDgenerate())
 
       # read the file and save resulting list in the environment
 
@@ -135,7 +146,7 @@ survey_module <- R6::R6Class(
         # check df validity
        .check_source_df(source_df)
 
-        private$source_list <- .df_to_list(
+        self$source_list <- .df_to_list(
           source_df = source_df
         )
 
@@ -146,7 +157,7 @@ survey_module <- R6::R6Class(
         # check list validity
         .check_source_list(source_list)
 
-        private$source_list <- source_list
+        self$source_list <- source_list
 
 
       } else if (source_method == "raw") {
@@ -155,13 +166,13 @@ survey_module <- R6::R6Class(
 
           # checks if df is valid
           .check_source_df(source_object)
-          private$source_list <- .df_to_list(source_object)
+          self$source_list <- .df_to_list(source_object)
 
         } else if (class(source_object) == "list") {
 
           # checks if list is valid
           .check_source_list(source_object)
-          private$source_list <- source_object
+          self$source_list <- source_object
 
         } else {
           stop("Source object needs to be of class 'data.frame' or 'list'")
@@ -171,17 +182,25 @@ survey_module <- R6::R6Class(
         stop("Error - problems with source")
       }
 
+      # check if the submit button labels are correct
+      if (class(button_labels) != "character" && length(button_labels) != 2) {
+        stop("'button_labels' should be specified as character vector of length 2")
+      }
+
       # check for mandatory and numeric inputs
 
-      private$mandatory_items <- .get_mandatory(private$source_list)
-      private$numeric_items <- .get_numeric(private$source_list)
+      private$mandatory_items <- .get_mandatory(self$source_list)
+      private$numeric_items <- .get_numeric(self$source_list)
 
       # save other information in private
 
-      private$div_id <- div_id
+      self$div_id <- div_id
+      self$button_labels <- button_labels
       private$output_gsheet <- output_gsheet
-      private$output_ss <- output_gsheet_id
+      if(output_gsheet) {
+      private$output_ss <- if (is.null(output_gsheet_id) || is.na(output_gsheet_id)) source_gsheet_id else output_gsheet_id
       private$output_sheet <- output_gsheet_sheetname
+      }
       private$css <- .null_def(
         custom_css,
         ".mandatory_star { color: red; } .invalid_input { outline: red; outline-style: dashed; outline-offset: 10px; }"
@@ -195,10 +214,11 @@ survey_module <- R6::R6Class(
     ui = function() {
 
       .generate_ui(
-        source_list = private$source_list,
-        div_id = private$div_id,
-        module_id = private$module_id,
-        css = private$css
+        source_list = self$source_list,
+        div_id = self$div_id,
+        module_id = self$module_id,
+        css = private$css,
+        button_label = self$button_labels[1]
       )
 
     },
@@ -213,13 +233,14 @@ survey_module <- R6::R6Class(
     server = function() {
 
       .survey_backend(
-        id = private$module_id,
-        source_list = private$source_list,
+        id = self$module_id,
+        source_list = self$source_list,
         mandatory_items = private$mandatory_items,
         numeric_items = private$numeric_items,
         output_gsheet = private$output_gsheet,
         output_ss = private$output_ss,
-        output_sheet = private$output_sheet
+        output_sheet = private$output_sheet,
+        button_labels = self$button_labels,
       )
     }
   )

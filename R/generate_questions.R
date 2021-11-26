@@ -85,7 +85,8 @@
   source_list,
   div_id,
   module_id,
-  css) {
+  css,
+  button_label) {
 
   ns <- NS(module_id)
 
@@ -111,7 +112,7 @@
           ..(inputs),
           actionButton(
             inputId = ns("submit"),
-            label = "Submit",
+            label = button_label,
             class = "btn-primary",
             width = "350px"
           )

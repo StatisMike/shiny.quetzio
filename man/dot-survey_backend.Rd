@@ -11,7 +11,8 @@
   numeric_items,
   output_gsheet,
   output_ss,
-  output_sheet
+  output_sheet,
+  button_labels
 )
 }
 \arguments{

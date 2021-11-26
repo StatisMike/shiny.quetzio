@@ -18,7 +18,8 @@
   numeric_items,
   output_gsheet,
   output_ss,
-  output_sheet
+  output_sheet,
+  button_labels
 ){
   moduleServer(
     id = id,
@@ -91,12 +92,12 @@
         if (!all(valid$items_validity) && !isTRUE(status$is_done)) {
 
           updateActionButton(session, inputId = "submit",
-                             label = "Cannot submit")
+                             label = button_labels[2])
 
         } else if (!isTRUE(status$is_done)){
 
           updateActionButton(session, inputId = "submit",
-                             label = "Submit")
+                             label = button_labels[1])
 
         }
 

@@ -8,6 +8,20 @@ Create R6-based Shiny modules for the app
 
 Create R6-based Shiny modules for the app
 }
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{source_list}}{List containing the data for all the inputs}
+
+\item{\code{div_id}}{ID of the div containing the survey UI}
+
+\item{\code{module_id}}{ID of the shiny module}
+
+\item{\code{button_labels}}{character vector of length two with labels for submit
+button in active and disabled state}
+}
+\if{html}{\out{</div>}}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
@@ -25,16 +39,17 @@ Initializing the shiny.survey_module object
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{survey_module$new(
   source_method,
-  source_object,
-  source_yaml,
-  source_gsheet_id,
-  source_gsheet_sheetname,
+  source_object = NULL,
+  source_yaml = NULL,
+  source_gsheet_id = NULL,
+  source_gsheet_sheetname = NULL,
   output_gsheet = FALSE,
-  output_gsheet_id = source_gsheet_id,
-  output_gsheet_sheetname,
+  output_gsheet_id = NULL,
+  output_gsheet_sheetname = NULL,
   module_id = NULL,
   div_id = "form",
-  custom_css = NULL
+  custom_css = NULL,
+  button_labels = c("Submit", "Cannot submit")
 )}\if{html}{\out{</div>}}
 }
 
@@ -73,7 +88,10 @@ specified, it will be automatically generated}
 specified, it will be set to 'form'}
 
 \item{\code{custom_css}}{custom css for classes 'mandatory star' and 'invalid_input'.
-If not specified, default look will be used.}
+If not specified, default look will be used}
+
+\item{\code{button_labels}}{character vector of length two with labels for submit
+button in active and disabled state}
 }
 \if{html}{\out{</div>}}
 }
