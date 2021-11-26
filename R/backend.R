@@ -146,7 +146,7 @@
             updateActionButton(session,
                                inputId = "submit",
                                label = "Submitted!",
-                               icon = icon("thumbs-up"))
+                               icon = icon("fa-thumbs-up"))
           },
           error = function(err){
 
@@ -156,7 +156,7 @@
             updateActionButton(session,
                                inputId = "submit",
                                label = "Error occured",
-                               icon = icon("frown-open"))
+                               icon = icon("fa-frown-open"))
 
           }
           )

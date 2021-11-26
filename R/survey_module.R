@@ -228,6 +228,7 @@ survey_module <- R6::R6Class(
     #' /itemize{
     #'   /item{is_done logical vector indicating if the survey has been sent. NA indicates error}
     #'   /item{message if catches error during survey sending, character string with error message. Otherwise NULL }
+    #'   /item{answers when the survey is done, it contains list item values. Otherwise NULL}
     #' }
 
     server = function() {
@@ -240,7 +241,7 @@ survey_module <- R6::R6Class(
         output_gsheet = private$output_gsheet,
         output_ss = private$output_ss,
         output_sheet = private$output_sheet,
-        button_labels = self$button_labels,
+        button_labels = self$button_labels
       )
     }
   )
