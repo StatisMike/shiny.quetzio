@@ -19,11 +19,25 @@
   output_gsheet,
   output_ss,
   output_sheet,
-  button_labels
+  div_id,
+  css,
+  button_labels,
+  render_ui
 ){
   moduleServer(
     id = id,
     function(input, output, session) {
+
+      output$quetzio_UI <- renderUI({
+
+        req(render_ui())
+
+        .generate_ui(source_list = source_list,
+                     div_id = div_id,
+                     css = css,
+                     button_label = button_labels[1],
+                     module_id = id)}
+      )
 
       # reactiveValues for storing valid and mandatory inputs status
       # as valid$mandatory_filled and valid$minmax_matched
@@ -41,6 +55,7 @@
 
       observe({
 
+        req(!is.null(input$submit))
         valid$mandatory_ids <- names(source_list)[mandatory_items]
         valid$numeric_ids <- names(source_list)[numeric_items]
 
@@ -146,7 +161,7 @@
             updateActionButton(session,
                                inputId = "submit",
                                label = "Submitted!",
-                               icon = icon("fa-thumbs-up"))
+                               icon = icon("thumbs-up"))
           },
           error = function(err){
 
@@ -156,7 +171,7 @@
             updateActionButton(session,
                                inputId = "submit",
                                label = "Error occured",
-                               icon = icon("fa-frown-open"))
+                               icon = icon("frown-open"))
 
           }
           )

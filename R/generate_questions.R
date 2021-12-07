@@ -2,12 +2,13 @@
 #'
 #' @param x List to get the params for UI generation
 #' @param inputId Character string with inputId if not in the x
-#' @param module_id id of the module
 #'
 #' @import shiny
 #' @importFrom stats setNames
 
 .question_ui <- function(x, inputId, module_id) {
+
+  ns <- NS(module_id)
 
   switch(x$type,
          textInput = {
@@ -84,9 +85,9 @@
 .generate_ui <- function(
   source_list,
   div_id,
-  module_id,
   css,
-  button_label) {
+  button_label,
+  module_id) {
 
   ns <- NS(module_id)
 

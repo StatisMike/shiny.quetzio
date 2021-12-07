@@ -12,7 +12,10 @@
   output_gsheet,
   output_ss,
   output_sheet,
-  button_labels
+  div_id,
+  css,
+  button_labels,
+  render_ui
 )
 }
 \arguments{

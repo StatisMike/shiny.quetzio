@@ -10,8 +10,6 @@
 \item{x}{List to get the params for UI generation}
 
 \item{inputId}{Character string with inputId if not in the x}
-
-\item{module_id}{id of the module}
 }
 \description{
 Generate shinyInput code for question
