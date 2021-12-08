@@ -24,7 +24,7 @@ from a source file: either a local YAML file, or GoogleSheet over the net.
 Results of the surveys are send to GoogleSheet of your choice.
 
 It is all completely handled by `R6` shiny modules, so it is easy to include 
-even multiple `shiny.survey`s in your ShinyApp and have your code clean!
+even multiple independend questionnaires in your ShinyApp and keep your code clean!
 
 ## Installation
 
@@ -36,13 +36,19 @@ devtools::install_github("StatisMike/shiny.survey")
 ```
 ## Current features
 
-At the current stage of development the `shiny.survey` package consists of one
-exported `R6` class: `shiny.survey_module`. It handles basic inputs:
-
+At the current stage of development the `shiny.survey` package consists of two
+exported `R6` classes used in server and corresponding functions to bind the
+UI in your shinyApp:
+* `quetzio_server` to create single questionnaire and `quetzio_UI` to input the
+UI of the questionnaire. Questionnaires at the moment handles these type of inputs:
 - `textInput`
 - `numericInput`
 - `selectizeInput`
 - `radioButtons`
+
+* `quetzio_link_server` to link multiple semi-independent questionnaires and
+`quetzio_link_UI` to bind the connected UI
+
 
 ### In-App usage
 
