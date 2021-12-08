@@ -22,7 +22,8 @@
   div_id,
   css,
   button_labels,
-  render_ui
+  render_ui,
+  module_ui_id
 ){
   moduleServer(
     id = id,
@@ -36,7 +37,7 @@
                      div_id = div_id,
                      css = css,
                      button_label = button_labels[1],
-                     module_id = id)}
+                     module_ui_id = module_ui_id)}
       )
 
       # reactiveValues for storing valid and mandatory inputs status
@@ -44,7 +45,7 @@
       # (their negations are invalid and mandatory not-filled questions)
       valid <- reactiveValues()
       status <- reactiveValues(is_done = FALSE,
-                               message = NULL,
+                               message = "",
                                answers = NULL)
 
       # gather the form data into the right shape
@@ -155,7 +156,7 @@
             }
 
             status$is_done <- TRUE
-            status$message <- NULL
+            status$message <- ""
             status$answers <- as.list(form_data())
 
             updateActionButton(session,

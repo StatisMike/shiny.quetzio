@@ -4,7 +4,7 @@
 \alias{.generate_ui}
 \title{Generate all shinyInputs from yaml source file function}
 \usage{
-.generate_ui(source_list, div_id, css, button_label, module_id)
+.generate_ui(source_list, div_id, css, button_label, module_ui_id)
 }
 \arguments{
 \item{source_list}{list object with inputs parameters}
@@ -14,7 +14,7 @@
 \item{css}{Character string containing custom css rules for classes
 'mandatory_star' and 'invalid_input'}
 
-\item{module_id}{character string declaring module id}
+\item{module_ui_id}{character string declaring module id}
 }
 \description{
 Generate all shinyInputs from yaml source file function

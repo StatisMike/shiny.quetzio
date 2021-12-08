@@ -2,6 +2,8 @@
 
 export(create_survey_source)
 export(quetzio_UI)
+export(quetzio_link_UI)
+export(quetzio_link_server)
 export(quetzio_server)
 import(R6)
 import(dplyr)

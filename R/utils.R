@@ -25,6 +25,32 @@
   )
 }
 
+
+#' function to handle css for quetzio UI for custom classes: '.invalid_input' and '.mandatory_star'
+#'
+#' @param css list containing two character objects, named 'invalid_input' and 'mandatory_star'. By default it
+#' will provide these styles:
+#' \itemize{
+#' \item{invalid_input = "outline: red; outline-style: dashed; outline-offset: 10px;"}
+#' \item{mandatory_star = "color: red;"}
+#' }
+#'
+.custom_css_handler <- function(css = list(invalid_input = "outline: red; outline-style: dashed; outline-offset: 10px;",
+                                           mandatory_star = "color: red;"),
+                                div_id = "form") {
+
+  if (!all(c("invalid_input", "mandatory_star") %in% names(css)) | class(css) != "list") {
+    stop("Object provided to 'css' argument should be a 'list' with at least two character objects named 'invalid_input' and 'mandatory_star'",
+         call. = F)
+  }
+
+  paste(
+    sapply(seq_along(css), \(i) {
+      paste0("#", div_id, " .", names(css)[i], " { ", css[[i]], " }")
+    }), collapse = " ")
+
+}
+
 #' function for default values if null or NA
 #'
 #' @param x the value to check

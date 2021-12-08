@@ -15,7 +15,8 @@
   div_id,
   css,
   button_labels,
-  render_ui
+  render_ui,
+  module_ui_id
 )
 }
 \arguments{

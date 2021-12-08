@@ -4,7 +4,7 @@
 \alias{.question_ui}
 \title{Generate shinyInput code for question}
 \usage{
-.question_ui(x, inputId, module_id)
+.question_ui(x, inputId, module_ui_id)
 }
 \arguments{
 \item{x}{List to get the params for UI generation}

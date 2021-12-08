@@ -28,6 +28,9 @@ button in active and disabled state}
 \item{\code{message}}{reactiveVal catching any warning messages}
 
 \item{\code{answers}}{reactiveValues object containing answers to questions}
+
+\item{\code{module_ui_id}}{character string used to generate UI. It needs to
+be modified when linking the questionnaires}
 }
 \if{html}{\out{</div>}}
 }
@@ -61,7 +64,7 @@ then the UI will be rendered.}
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
-Initializing the shiny.survey_module object
+Initializing the 'quetzio_server' object
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{quetzio_server$new(
   source_method,
@@ -76,7 +79,8 @@ Initializing the shiny.survey_module object
   div_id = "form",
   custom_css = NULL,
   button_labels = c("Submit", "Cannot submit"),
-  render_ui = TRUE
+  render_ui = TRUE,
+  link_id = NULL
 )}\if{html}{\out{</div>}}
 }
 
@@ -115,13 +119,20 @@ specified, it will be automatically generated}
 specified, it will be set to 'form'}
 
 \item{\code{custom_css}}{custom css for classes 'mandatory star' and 'invalid_input'.
-If not specified, default look will be used}
+If not specified, default look will be used:
+\itemize{
+\item{invalid_input = "outline: red; outline-style: dashed; outline-offset: 10px;"}
+\item{mandatory_star = "color: red;"}
+}}
 
 \item{\code{button_labels}}{character vector of length two with labels for submit
-button in active and disabled state}
+button in active and disabled state. Defaults to: \code{c('Submit', 'Cannot submit')}}
 
 \item{\code{render_ui}}{logical indicating if the UI for questionnaire should be
 rendered}
+
+\item{\code{link_id}}{character specifying the 'link_id' of the 'quetzio_link_server'
+object, if this survey will be a part of one. Specify it only then!}
 }
 \if{html}{\out{</div>}}
 }

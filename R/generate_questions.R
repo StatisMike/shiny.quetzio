@@ -6,9 +6,9 @@
 #' @import shiny
 #' @importFrom stats setNames
 
-.question_ui <- function(x, inputId, module_id) {
+.question_ui <- function(x, inputId, module_ui_id) {
 
-  ns <- NS(module_id)
+  ns <- NS(module_ui_id)
 
   switch(x$type,
          textInput = {
@@ -76,7 +76,7 @@
 #'
 #' @param source_list list object with inputs parameters
 #' @param div_id Character string declaring id for the div
-#' @param module_id character string declaring module id
+#' @param module_ui_id character string declaring module id
 #' @param css Character string containing custom css rules for classes
 #' 'mandatory_star' and 'invalid_input'
 #' @import shiny
@@ -87,9 +87,9 @@
   div_id,
   css,
   button_label,
-  module_id) {
+  module_ui_id) {
 
-  ns <- NS(module_id)
+  ns <- NS(module_ui_id)
 
   inputs_names <- names(source_list)
   inputs <- list()
@@ -99,7 +99,7 @@
 
     inputs_n <- inputs_n + 1
     name <- inputs_names[inputs_n]
-    inputs[[inputs_n]] <- .question_ui(input, name, module_id)
+    inputs[[inputs_n]] <- .question_ui(input, name, module_ui_id)
 
   }
 

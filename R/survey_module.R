@@ -15,8 +15,6 @@ quetzio_UI <- function(module_id) {
 #' questionnaire
 #'
 #' @import R6
-#' @import googlesheets4
-#' @import yaml
 #' @import shiny
 #' @import shinyjs
 #' @import dplyr
@@ -48,8 +46,11 @@ quetzio_server <- R6::R6Class(
         button_labels = self$button_labels,
         div_id = self$div_id,
         css = private$css,
-        render_ui = private$render_ui
+        render_ui = private$render_ui,
+        module_ui_id = self$module_ui_id
       )
+
+      # moves the objects to reactiveVals
 
       observe({
         req(output)
@@ -97,7 +98,12 @@ quetzio_server <- R6::R6Class(
 
     },
 
-    #' @description Initializing the shiny.survey_module object
+    #' @field module_ui_id character string used to generate UI. It needs to
+    #' be modified when linking the questionnaires
+
+    module_ui_id = NULL,
+
+    #' @description Initializing the 'quetzio_server' object
     #'
     #' @param source_method character string specifying in what form the source
     #' config file will be provided. Can be either 'gsheet', 'yaml' or 'raw'.
@@ -121,11 +127,17 @@ quetzio_server <- R6::R6Class(
     #' @param div_id character string with unique id for the created div. If not
     #' specified, it will be set to 'form'
     #' @param custom_css custom css for classes 'mandatory star' and 'invalid_input'.
-    #' If not specified, default look will be used
+    #' If not specified, default look will be used:
+    #' \itemize{
+    #' \item{invalid_input = "outline: red; outline-style: dashed; outline-offset: 10px;"}
+    #' \item{mandatory_star = "color: red;"}
+    #' }
     #' @param button_labels character vector of length two with labels for submit
-    #' button in active and disabled state
+    #' button in active and disabled state. Defaults to: \code{c('Submit', 'Cannot submit')}
     #' @param render_ui logical indicating if the UI for questionnaire should be
     #' rendered
+    #' @param link_id character specifying the 'link_id' of the 'quetzio_link_server'
+    #' object, if this survey will be a part of one. Specify it only then!
     #'
     #' @details
     #'
@@ -157,7 +169,8 @@ quetzio_server <- R6::R6Class(
       div_id = "form",
       custom_css = NULL,
       button_labels = c("Submit", "Cannot submit"),
-      render_ui = TRUE
+      render_ui = TRUE,
+      link_id = NULL
     ){
 
       # initialize checks
@@ -185,6 +198,7 @@ quetzio_server <- R6::R6Class(
 
       # check if all needed arguments are provided for output methods
       if (isTRUE(as.logical(output_gsheet))) {
+        .check_package("googlesheets4")
         if ((is.null(source_gsheet_id) && is.null(output_gsheet_id)) || is.null(output_gsheet_sheetname)){
           stop("When 'output_gsheet' == TRUE, you need to specify 'output_gsheet_id' (if other from 'source_gsheet_id') and 'output_gsheet_sheetname'")
         }
@@ -193,7 +207,11 @@ quetzio_server <- R6::R6Class(
       # save the module id into environment
 
       self$module_id <- .null_def(module_id, uuid::UUIDgenerate())
-
+      if (is.null(link_id))  {
+        self$module_ui_id <- self$module_id
+      } else {
+        self$module_ui_id <- paste(link_id, self$module_id, sep = ns.sep)
+      }
       # read the file and save resulting list in the environment
 
       if (source_method == "gsheet"){
@@ -262,16 +280,24 @@ quetzio_server <- R6::R6Class(
         private$output_ss <- if (is.null(output_gsheet_id) || is.na(output_gsheet_id)) source_gsheet_id else output_gsheet_id
         private$output_sheet <- output_gsheet_sheetname
       }
-      private$css <- .null_def(
-        custom_css,
-        ".mandatory_star { color: red; } .invalid_input { outline: red; outline-style: dashed; outline-offset: 10px; }"
-      )
 
+      # parsing css from the lists to the correct css
+      if (is.null(custom_css)) {
+        private$css <- .custom_css_handler(div_id = self$div_id)
+      } else {
+        private$css <- .custom_css_handler(div_id = self$div_id,
+                                           css = custom_css)
+      }
+
+      # initialize the status reactiveVal objects
       self$is_done <- reactiveVal(FALSE)
       self$message <- reactiveVal()
       self$answers <- reactiveVal()
+
+      # value showing if the UI output should be rendered
       private$render_ui <- reactiveVal(render_ui)
 
+      # calling the whole server logic
       private$server()
 
     }
