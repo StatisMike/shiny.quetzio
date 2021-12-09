@@ -210,10 +210,10 @@ quetzio_server <- R6::R6Class(
 
       self$module_id <- module_id
 
-      if (is.null(add_args$link_id))  {
+      if (is.null(link_id))  {
         self$module_ui_id <- self$module_id
       } else {
-        self$module_ui_id <- paste(add_args$link_id, self$module_id, sep = ns.sep)
+        self$module_ui_id <- paste(link_id, self$module_id, sep = ns.sep)
       }
       # read the file and save resulting list in the environment
 
