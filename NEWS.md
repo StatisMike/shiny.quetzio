@@ -15,3 +15,6 @@
 UI function `quetzio_link_UI`
 * Logic behing parsing css for '.invalid_input' and '.mandatory_star' has been also redone. It is now
 easier to implement and allows for independent looks (based on the `div_id` of the given questionnaire)
+* Removed `googlesheets4` and `yaml` dependency:
+  - `googlesheets4` needed only when taking source from gsheet or putting output into gsheet
+  - `yaml` needed only when taking source from YAML file

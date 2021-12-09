@@ -52,12 +52,12 @@ Initialization of the 'quetzio_link_server' object
 \describe{
 \item{\code{link_id}}{character specifying the module ID of created object. Needs
 to be identical to the one specified inside every 'quetzio_server' objects
-provided to the object.
-Moreover, they need to be in initialized state: \code{quetzio_server$new(...)}}
+provided to the object.}
 
 \item{\code{...}}{'quetzio_server' objects that are going to be connected by the
 link. They are all needed to be named - with the names providing the path
-to the answers of their questions.}
+to the answers of their questions.
+Moreover, they need to be in initialized state: \code{quetzio_server$new(...)}}
 
 \item{\code{output_gsheet}}{logical: do you wish to save the answers automatically
 to the googlesheet. If TRUE, the 'output_gsheet_id' and 'output_gsheet_sheetname'

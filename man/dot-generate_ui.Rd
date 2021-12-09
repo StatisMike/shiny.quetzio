@@ -14,6 +14,9 @@
 \item{css}{Character string containing custom css rules for classes
 'mandatory_star' and 'invalid_input'}
 
+\item{button_label}{character string with active lavel for the submission
+button}
+
 \item{module_ui_id}{character string declaring module id}
 }
 \description{

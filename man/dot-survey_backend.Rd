@@ -34,6 +34,17 @@ saved into googlesheet}
 \item{output_ss}{Character vector with output googlesheet id (if \code{output_gsheet = T})}
 
 \item{output_sheet}{Character vector with output spreadsheet name (if \code{output_gsheet = T})}
+
+\item{div_id}{Character vector with div id}
+
+\item{css}{parsed css line to include for the survey}
+
+\item{button_labels}{Character vector with labels for both active and inactive buttons}
+
+\item{render_ui}{reactiveVal holding the logical indicating if the UI should be
+rendered or not}
+
+\item{module_ui_id}{Character vector with id for UI elements that will be generated}
 }
 \description{
 Function that creates 'backend' for the generated survey

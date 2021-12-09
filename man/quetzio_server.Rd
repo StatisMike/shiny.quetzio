@@ -133,6 +133,8 @@ rendered}
 
 \item{\code{link_id}}{character specifying the 'link_id' of the 'quetzio_link_server'
 object, if this survey will be a part of one. Specify it only then!}
+
+\item{\code{...}}{additional arguments for internal use}
 }
 \if{html}{\out{</div>}}
 }

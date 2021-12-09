@@ -6,6 +6,10 @@
 \usage{
 quetzio_UI(module_id)
 }
+\arguments{
+\item{module_id}{Character string holding ID for the module. Needs to be the
+same as one provided for 'quetzio_server'}
+}
 \description{
 Create UI of your questionnaire
 }

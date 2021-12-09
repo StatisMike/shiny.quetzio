@@ -6,6 +6,10 @@
 \usage{
 quetzio_link_UI(link_id)
 }
+\arguments{
+\item{link_id}{Character string holding ID for the link module. Needs to be the
+same as one provided in 'quetzio_link_server'}
+}
 \description{
 Create UI for linked questionnaires
 }

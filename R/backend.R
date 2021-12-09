@@ -7,6 +7,12 @@
 #' saved into googlesheet
 #' @param output_ss Character vector with output googlesheet id (if \code{output_gsheet = T})
 #' @param output_sheet Character vector with output spreadsheet name (if \code{output_gsheet = T})
+#' @param div_id Character vector with div id
+#' @param css parsed css line to include for the survey
+#' @param button_labels Character vector with labels for both active and inactive buttons
+#' @param render_ui reactiveVal holding the logical indicating if the UI should be
+#' rendered or not
+#' @param module_ui_id Character vector with id for UI elements that will be generated
 #'
 #' @import shiny
 #' @import shinyjs
@@ -45,7 +51,7 @@
       # (their negations are invalid and mandatory not-filled questions)
       valid <- reactiveValues()
       status <- reactiveValues(is_done = FALSE,
-                               message = "",
+                               message = NULL,
                                answers = NULL)
 
       # gather the form data into the right shape
@@ -156,7 +162,7 @@
             }
 
             status$is_done <- TRUE
-            status$message <- ""
+            status$message <- NULL
             status$answers <- as.list(form_data())
 
             updateActionButton(session,
@@ -166,7 +172,7 @@
           },
           error = function(err){
 
-            status$is_done <- as.logical(NA)
+            status$is_done <- FALSE
             status$message <- err
 
             updateActionButton(session,

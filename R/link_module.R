@@ -1,5 +1,8 @@
 #' Create UI for linked questionnaires
 #'
+#' @param link_id Character string holding ID for the link module. Needs to be the
+#' same as one provided in 'quetzio_link_server'
+#'
 #' @import shiny
 #' @export
 #'
@@ -48,13 +51,13 @@ quetzio_link_server <- R6::R6Class(
 
     #' @description Initialization of the 'quetzio_link_server' object
     #'
-    #' @param link_id character specifying the module ID of created object. Needs
-    #' to be identical to the one specified inside every 'quetzio_server' objects
-    #' provided to the object.
-    #' Moreover, they need to be in initialized state: \code{quetzio_server$new(...)}
     #' @param ... 'quetzio_server' objects that are going to be connected by the
     #' link. They are all needed to be named - with the names providing the path
     #' to the answers of their questions.
+    #' Moreover, they need to be in initialized state: \code{quetzio_server$new(...)}
+    #' @param link_id character specifying the module ID of created object. Needs
+    #' to be identical to the one specified inside every 'quetzio_server' objects
+    #' provided to the object.
     #' @param output_gsheet logical: do you wish to save the answers automatically
     #' to the googlesheet. If TRUE, the 'output_gsheet_id' and 'output_gsheet_sheetname'
     #' arguments need to be specified. Defaults to FALSE
@@ -82,8 +85,6 @@ quetzio_link_server <- R6::R6Class(
           stop("When 'output_gsheet' == TRUE, you need to specify 'output_gsheet_id' and 'output_gsheet_sheetname'")
         }
       }
-
-      # private$quetzio_list <- reactiveValues(...)
 
       # call to the moduleServer handling all the logic
       moduleServer(

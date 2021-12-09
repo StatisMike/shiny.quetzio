@@ -8,7 +8,7 @@
   css = list(invalid_input =
     "outline: red; outline-style: dashed; outline-offset: 10px;", mandatory_star =
     "color: red;"),
-  div_id = "form"
+  div_id
 )
 }
 \arguments{
@@ -18,6 +18,8 @@ will provide these styles:
 \item{invalid_input = "outline: red; outline-style: dashed; outline-offset: 10px;"}
 \item{mandatory_star = "color: red;"}
 }}
+
+\item{div_id}{character string indicating the div id to use this stylesheet}
 }
 \description{
 function to handle css for quetzio UI for custom classes: '.invalid_input' and '.mandatory_star'
