@@ -1,18 +1,30 @@
-#' Create R6-based Shiny modules for the app
+#' Create UI of your questionnaire
 #'
-#' @name survey_module
+#' @param module_id Character string holding ID for the module. Needs to be the
+#' same as one provided for 'quetzio_server'
+#' @import shiny
+#' @export
+#'
+
+quetzio_UI <- function(module_id) {
+  ns <- NS(module_id)
+
+  uiOutput(ns("quetzio_UI"))
+
+}
+
+#' Create R6-based server module to generate and hold the state of your
+#' questionnaire
 #'
 #' @import R6
-#' @import googlesheets4
-#' @import yaml
 #' @import shiny
 #' @import shinyjs
 #' @import dplyr
 #' @export
 #'
 
-survey_module <- R6::R6Class(
-  "shiny.survey_module",
+quetzio_server <- R6::R6Class(
+  "quetzio_server",
 
   private = list(
 
@@ -21,7 +33,36 @@ survey_module <- R6::R6Class(
     output_gsheet = NULL,
     output_ss = NULL,
     output_sheet = NULL,
-    css = NULL
+    css = NULL,
+    render_ui = NULL,
+    server = function() {
+
+      output <- .survey_backend(
+        id = self$module_id,
+        source_list = self$source_list,
+        mandatory_items = private$mandatory_items,
+        numeric_items = private$numeric_items,
+        output_gsheet = private$output_gsheet,
+        output_ss = private$output_ss,
+        output_sheet = private$output_sheet,
+        button_labels = self$button_labels,
+        div_id = self$div_id,
+        css = private$css,
+        render_ui = private$render_ui,
+        module_ui_id = self$module_ui_id
+      )
+
+      # moves the objects to reactiveVals
+
+      observe({
+        req(output)
+
+        self$is_done(reactiveValuesToList(output)$is_done)
+        self$message(reactiveValuesToList(output)$message)
+        self$answers(reactiveValuesToList(output)$answers)
+
+      })
+    }
 
   ),
 
@@ -40,7 +81,31 @@ survey_module <- R6::R6Class(
     #' button in active and disabled state
     button_labels = NULL,
 
-    #' @description Initializing the shiny.survey_module object
+    #' @field is_done logical reactiveVal indicating if the survey has been completed
+    is_done = NULL,
+
+    #' @field message reactiveVal catching any warning messages
+    message = NULL,
+
+    #' @field answers reactiveValues object containing answers to questions
+    answers = NULL,
+
+    #' @description method to change the state of the UI
+    #'
+    #' @param x logical indicating what should be the state of the UI. If TRUE,
+    #' then the UI will be rendered.
+    toggle_ui = function(x) {
+
+      private$render_ui(isTRUE(x))
+
+    },
+
+    #' @field module_ui_id character string used to generate UI. It needs to
+    #' be modified when linking the questionnaires
+
+    module_ui_id = NULL,
+
+    #' @description Initializing the 'quetzio_server' object
     #'
     #' @param source_method character string specifying in what form the source
     #' config file will be provided. Can be either 'gsheet', 'yaml' or 'raw'.
@@ -64,9 +129,17 @@ survey_module <- R6::R6Class(
     #' @param div_id character string with unique id for the created div. If not
     #' specified, it will be set to 'form'
     #' @param custom_css custom css for classes 'mandatory star' and 'invalid_input'.
-    #' If not specified, default look will be used
+    #' If not specified, default look will be used:
+    #' \itemize{
+    #' \item{invalid_input = "outline: red; outline-style: dashed; outline-offset: 10px;"}
+    #' \item{mandatory_star = "color: red;"}
+    #' }
     #' @param button_labels character vector of length two with labels for submit
-    #' button in active and disabled state
+    #' button in active and disabled state. Defaults to: \code{c('Submit', 'Cannot submit')}
+    #' @param render_ui logical indicating if the UI for questionnaire should be
+    #' rendered
+    #' @param link_id character specifying the 'link_id' of the 'quetzio_link_server'
+    #' object, if this survey will be a part of one. Specify it only then!
     #'
     #' @details
     #'
@@ -83,7 +156,7 @@ survey_module <- R6::R6Class(
     #'   and 'output_gsheet_sheetname'
     #'
     #'
-    #' @return the 'shiny.survey_module' object
+    #' @return the 'survey_module_server' object
 
     initialize = function(
       source_method,
@@ -97,8 +170,11 @@ survey_module <- R6::R6Class(
       module_id = NULL,
       div_id = "form",
       custom_css = NULL,
-      button_labels = c("Submit", "Cannot submit")
+      button_labels = c("Submit", "Cannot submit"),
+      render_ui = TRUE,
+      link_id = NULL
     ){
+
       # initialize checks
 
       # check if all needed arguments are provided for source methods
@@ -124,6 +200,7 @@ survey_module <- R6::R6Class(
 
       # check if all needed arguments are provided for output methods
       if (isTRUE(as.logical(output_gsheet))) {
+        .check_package("googlesheets4")
         if ((is.null(source_gsheet_id) && is.null(output_gsheet_id)) || is.null(output_gsheet_sheetname)){
           stop("When 'output_gsheet' == TRUE, you need to specify 'output_gsheet_id' (if other from 'source_gsheet_id') and 'output_gsheet_sheetname'")
         }
@@ -131,8 +208,13 @@ survey_module <- R6::R6Class(
 
       # save the module id into environment
 
-      self$module_id <- .null_def(module_id, uuid::UUIDgenerate())
+      self$module_id <- module_id
 
+      if (is.null(add_args$link_id))  {
+        self$module_ui_id <- self$module_id
+      } else {
+        self$module_ui_id <- paste(add_args$link_id, self$module_id, sep = ns.sep)
+      }
       # read the file and save resulting list in the environment
 
       if (source_method == "gsheet"){
@@ -144,7 +226,7 @@ survey_module <- R6::R6Class(
         )
 
         # check df validity
-       .check_source_df(source_df)
+        .check_source_df(source_df)
 
         self$source_list <- .df_to_list(
           source_df = source_df
@@ -198,51 +280,29 @@ survey_module <- R6::R6Class(
       self$button_labels <- button_labels
       private$output_gsheet <- output_gsheet
       if(output_gsheet) {
-      private$output_ss <- if (is.null(output_gsheet_id) || is.na(output_gsheet_id)) source_gsheet_id else output_gsheet_id
-      private$output_sheet <- output_gsheet_sheetname
+        private$output_ss <- if (is.null(output_gsheet_id) || is.na(output_gsheet_id)) source_gsheet_id else output_gsheet_id
+        private$output_sheet <- output_gsheet_sheetname
       }
-      private$css <- .null_def(
-        custom_css,
-        ".mandatory_star { color: red; } .invalid_input { outline: red; outline-style: dashed; outline-offset: 10px; }"
-                               )
 
-      },
+      # parsing css from the lists to the correct css
+      if (is.null(custom_css)) {
+        private$css <- .custom_css_handler(div_id = self$div_id)
+      } else {
+        private$css <- .custom_css_handler(div_id = self$div_id,
+                                           css = custom_css)
+      }
 
-    #' @description Method to input the UI of your survey into the shinyApp UI
-    #' @return The whole UI of your survey
+      # initialize the status reactiveVal objects
+      self$is_done <- reactiveVal(FALSE)
+      self$message <- reactiveVal()
+      self$answers <- reactiveVal()
 
-    ui = function() {
+      # value showing if the UI output should be rendered
+      private$render_ui <- reactiveVal(render_ui)
 
-      .generate_ui(
-        source_list = self$source_list,
-        div_id = self$div_id,
-        module_id = self$module_id,
-        css = private$css,
-        button_label = self$button_labels[1]
-      )
+      # calling the whole server logic
+      private$server()
 
-    },
-
-    #' @description Method to input the UI of your survey into the shinyApp UI
-    #' @return The reactiveValues holding
-    #' /itemize{
-    #'   /item{is_done logical vector indicating if the survey has been sent. NA indicates error}
-    #'   /item{message if catches error during survey sending, character string with error message. Otherwise NULL }
-    #'   /item{answers when the survey is done, it contains list item values. Otherwise NULL}
-    #' }
-
-    server = function() {
-
-      .survey_backend(
-        id = self$module_id,
-        source_list = self$source_list,
-        mandatory_items = private$mandatory_items,
-        numeric_items = private$numeric_items,
-        output_gsheet = private$output_gsheet,
-        output_ss = private$output_ss,
-        output_sheet = private$output_sheet,
-        button_labels = self$button_labels
-      )
     }
   )
 )

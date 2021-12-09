@@ -25,6 +25,33 @@
   )
 }
 
+
+#' function to handle css for quetzio UI for custom classes: '.invalid_input' and '.mandatory_star'
+#'
+#' @param css list containing two character objects, named 'invalid_input' and 'mandatory_star'. By default it
+#' will provide these styles:
+#' \itemize{
+#' \item{invalid_input = "outline: red; outline-style: dashed; outline-offset: 10px;"}
+#' \item{mandatory_star = "color: red;"}
+#' }
+#' @param div_id character string indicating the div id to use this stylesheet
+#'
+.custom_css_handler <- function(css = list(invalid_input = "outline: red; outline-style: dashed; outline-offset: 10px;",
+                                           mandatory_star = "color: red;"),
+                                div_id) {
+
+  if (!all(c("invalid_input", "mandatory_star") %in% names(css)) | class(css) != "list") {
+    stop("Object provided to 'css' argument should be a 'list' with at least two character objects named 'invalid_input' and 'mandatory_star'",
+         call. = F)
+  }
+
+  paste(
+    sapply(seq_along(css), \(i) {
+      paste0("#", div_id, " .", names(css)[i], " { ", css[[i]], " }")
+    }), collapse = " ")
+
+}
+
 #' function for default values if null or NA
 #'
 #' @param x the value to check
@@ -141,7 +168,7 @@
 #' Generate source list from yaml
 #'
 #' @param yaml_file path to the source yaml file
-#' @import yaml
+
 
 .yaml_to_list <- function(yaml_file){
   yaml::read_yaml(file = yaml_file)
@@ -150,7 +177,7 @@
 #' Read the Answer data from Google Sheets
 #' @param output_ss character vector with output googlesheet ID
 #' @param output_sheet character vector with output spreadsheet name
-#' @import googlesheets4
+
 
 .read_all_answers <- function(
   output_ss,
@@ -168,7 +195,7 @@
 #' @param output_sheet character vector with output spreadsheet name
 #'
 #' @import dplyr
-#' @import googlesheets4
+
 .save_new_answers <- function(
   user_answers,
   output_ss,

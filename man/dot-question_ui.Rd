@@ -4,14 +4,14 @@
 \alias{.question_ui}
 \title{Generate shinyInput code for question}
 \usage{
-.question_ui(x, inputId, module_id)
+.question_ui(x, inputId, module_ui_id)
 }
 \arguments{
 \item{x}{List to get the params for UI generation}
 
 \item{inputId}{Character string with inputId if not in the x}
 
-\item{module_id}{id of the module}
+\item{module_ui_id}{Character string getting the id for module UI}
 }
 \description{
 Generate shinyInput code for question

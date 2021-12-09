@@ -2,12 +2,14 @@
 #'
 #' @param x List to get the params for UI generation
 #' @param inputId Character string with inputId if not in the x
-#' @param module_id id of the module
+#' @param module_ui_id Character string getting the id for module UI
 #'
 #' @import shiny
 #' @importFrom stats setNames
 
-.question_ui <- function(x, inputId, module_id) {
+.question_ui <- function(x, inputId, module_ui_id) {
+
+  ns <- NS(module_ui_id)
 
   switch(x$type,
          textInput = {
@@ -75,20 +77,22 @@
 #'
 #' @param source_list list object with inputs parameters
 #' @param div_id Character string declaring id for the div
-#' @param module_id character string declaring module id
 #' @param css Character string containing custom css rules for classes
 #' 'mandatory_star' and 'invalid_input'
+#' @param button_label character string with active lavel for the submission
+#' button
+#' @param module_ui_id character string declaring module id
 #' @import shiny
 #' @import htmltools
 
 .generate_ui <- function(
   source_list,
   div_id,
-  module_id,
   css,
-  button_label) {
+  button_label,
+  module_ui_id) {
 
-  ns <- NS(module_id)
+  ns <- NS(module_ui_id)
 
   inputs_names <- names(source_list)
   inputs <- list()
@@ -98,7 +102,7 @@
 
     inputs_n <- inputs_n + 1
     name <- inputs_names[inputs_n]
-    inputs[[inputs_n]] <- .question_ui(input, name, module_id)
+    inputs[[inputs_n]] <- .question_ui(input, name, module_ui_id)
 
   }
 
