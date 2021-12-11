@@ -18,3 +18,8 @@ easier to implement and allows for independent looks (based on the `div_id` of t
 * Removed `googlesheets4` and `yaml` dependency:
   - `googlesheets4` needed only when taking source from gsheet or putting output into gsheet
   - `yaml` needed only when taking source from YAML file
+
+# shiny.survey 0.0.6
+
+* Made the `link_id` and `render_ui` arguments of linked `quetzio_server` modules set automatically:
+no need to specify it automatically any more!

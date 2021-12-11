@@ -76,6 +76,9 @@ quetzio_link_server <- R6::R6Class(
       args <- match.call(expand.dots = FALSE)
       private$quetzio_names <- names(args$...)
 
+      # modify the arguments to the quetzio_survey calls without evaluation
+      uneval <- .modify_quetzio_arg(..., link_id = link_id)
+
       # initializing checks
 
       # for output_gsheet method
@@ -92,7 +95,7 @@ quetzio_link_server <- R6::R6Class(
         function(input, output, session) {
 
           # assign the provided 'quetzio_server' objects inside a reactiveValues
-          private$quetzio_list <- reactiveValues(...)
+          private$quetzio_list <- eval(uneval)
 
           # toggle the state of UIs - hide the UI of the completed questionnaire
           # and show the next one (minus the last, which will be retained)
