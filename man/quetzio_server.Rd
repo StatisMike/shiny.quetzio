@@ -132,7 +132,8 @@ button in active and disabled state. Defaults to: \code{c('Submit', 'Cannot subm
 rendered}
 
 \item{\code{link_id}}{character specifying the 'link_id' of the 'quetzio_link_server'
-object, if this survey will be a part of one. Specify it only then!}
+object, modifying its namespace. Only used internally, if the questionnaire
+is part of linked server. Don't set it manually.}
 }
 \if{html}{\out{</div>}}
 }

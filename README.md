@@ -60,7 +60,7 @@ server <- function(input, output, session) {
 yaml_quetzio <- quetzio_server$new(
   source_method = "yaml",
   source_yaml = "some_yaml",
-  output_gsheet_id = "googleSheet_id",
+  output_gsheet_id = "googlesheet_id",
   output_gsheet_sheetname = "sheet_name_with_questions",
   module_id = "yaml_module"
 )
@@ -70,11 +70,11 @@ yaml_quetzio <- quetzio_server$new(
 
 gsheet_quetzio <- quetzio_server$new(
   source_method = "gsheet",
-  source_gsheet_id = "googleSheet_id",
+  source_gsheet_id = "googlesheet_id",
   source_gsheet_sheetname = "sheet_name_with_questions",
-  # you don't need to specify another googleSheet file to save answers
+  # you don't need to specify another googlesheet file to save answers
   # If you don't specify it, the class assumes it is the same as source one
-  output_gsheet_id = "another_googleSheet_id",
+  output_gsheet_id = "another_googlesheet_id",
   output_gsheet_sheetname = "sheet_name_with_answers",
   module_id = "gsheet_module"
 )
@@ -112,33 +112,30 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
 
-# YAML generated survey with output automatically saved to googlesheets
+# Linked questionnaires - one generated from yaml, second from googlesheets. 
+# Their output won't be automatically saved to googlesheets in this example
+# (though it is possible to set - their internal reactivity is independent
+# to the quetzio_link in that regard)
 
   quetzio_link <- quetzio_link_server$new(
     yaml_quetzio = quetzio_server$new(
       source_method = "yaml",
       source_yaml = "some_yaml",
-      module_id = "yaml_module",
-      # first questionnaire will be rendered at the beginning
-      render_ui = TRUE,
-      link_id = "modules_link"
+      module_id = "yaml_module"
     ),
     gsheet_quetzio = quetzio_server$new(
       source_method = "gsheet",
-      source_gsheet_id = "googleSheet_id",
+      source_gsheet_id = "googlesheet_id",
       source_gsheet_sheetname = "sheet_name_with_questions",
-      module_id = "gsheet_module",
-      # second questionnaire will be hidden - it will be rendered only when the 
-      # first has been completed
-      render_ui = FALSE,
-      link_id = "modules_link"
+      module_id = "gsheet_module"
     ),
     link_id = "modules_link"
   )
 
   # and you can also trigger things based on the completion rate
   
-  # trigger some action after the questionnaire is completed
+  # trigger some action after the link is 50% completed and after completion
+  # of both questionnaires
   observe({
     if (quetzio_link$completion() == 0.5) {
       showModal(

@@ -235,3 +235,52 @@
     sheet = output_sheet
   )
 }
+
+#' function to modify the chosen call argument before evaluation
+#' @param call the function call to modify
+#' @param arg_name argument name
+#' @param arg_value argument value to set
+
+.modify_arg <- function(call, arg_name, arg_value) {
+
+  # get the call - fed to the function as unevaluated one
+  call <- as.list(call)
+
+  # then modify the 'arg_name' argument with 'arg_value' value
+  call[[1]][[as.character(arg_name)]] <- arg_value
+
+  # and return as call
+  return(as.call(call))
+
+}
+
+#' function to modify the 'quetzio_server' arguments
+#' @param ... dotdotdot passed from parent function
+#' @param link_id character string indicating what the value of the argument should be
+
+.modify_quetzio_arg <- function(..., link_id) {
+
+  #firstly, it is needed to catch the call to ...
+  raw_call <- substitute(list(...))
+
+  # then modify all elements other than 1st
+  for (i in 2:length(raw_call)) {
+
+    # all will have added link_id argument
+    raw_call[i] <- .modify_arg(raw_call[i], "link_id", link_id)
+
+    if (i == 2) {
+      # only first value will have the render ui set to TRUE
+      raw_call[i] <- .modify_arg(raw_call[i], "render_ui", TRUE)
+    } else {
+      # every next will have it set to FALSE
+      raw_call[i] <- .modify_arg(raw_call[i], "render_ui", FALSE)
+    }
+  }
+
+  # finally, we need to substitute 'list()' with 'reactiveValues()' in the call
+  raw_call[1] <- substitute(reactiveValues())
+
+  return(substitute(raw_call))
+
+}
