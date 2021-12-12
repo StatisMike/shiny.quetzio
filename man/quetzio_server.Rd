@@ -39,6 +39,7 @@ be modified when linking the questionnaires}
 \itemize{
 \item \href{#method-toggle_ui}{\code{quetzio_server$toggle_ui()}}
 \item \href{#method-new}{\code{quetzio_server$new()}}
+\item \href{#method-get_answers_df}{\code{quetzio_server$get_answers_df()}}
 \item \href{#method-clone}{\code{quetzio_server$clone()}}
 }
 }
@@ -158,7 +159,21 @@ and 'output_gsheet_sheetname'
 }
 
 \subsection{Returns}{
-the 'survey_module_server' object
+the 'quetzio_server' serverModule
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-get_answers_df"></a>}}
+\if{latex}{\out{\hypertarget{method-get_answers_df}{}}}
+\subsection{Method \code{get_answers_df()}}{
+method to get preprocessed answers in the form of dataframe
+(only if all of the questionnaires are done)
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{quetzio_server$get_answers_df()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+data.frame
 }
 }
 \if{html}{\out{<hr>}}

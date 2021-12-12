@@ -108,6 +108,20 @@ quetzio_link_server <- R6::R6Class(
 
       .link_backend(self, private, uneval)
 
+    },
+
+    #' @description method to get preprocessed answers in the form of dataframe
+    #' (only if the questionnaire is done)
+    #' @return data.frame
+
+    get_answers_df = function() {
+
+      if (isTRUE(self$completion() == 1)) {
+        .merge_linked_answers_to_df(self$answers(), private$quetzio_names)
+      } else {
+        stop("All linked questionnaires needs to be done to get the answers in the form of data.frame")
+      }
+
     }
   )
 )

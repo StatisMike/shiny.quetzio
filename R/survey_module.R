@@ -131,7 +131,7 @@ quetzio_server <- R6::R6Class(
     #'   and 'output_gsheet_sheetname'
     #'
     #'
-    #' @return the 'survey_module_server' object
+    #' @return the 'quetzio_server' serverModule
 
     initialize = function(
       source_method,
@@ -278,7 +278,22 @@ quetzio_server <- R6::R6Class(
       # calling the whole server backend logic
       .survey_backend(self, private)
 
+    },
+
+    #' @description method to get preprocessed answers in the form of dataframe
+    #' (only if all of the questionnaires are done)
+    #' @return data.frame
+
+    get_answers_df = function() {
+
+      if (isTRUE(self$is_done())) {
+        .sanitize_answers(self$answers())
+      } else {
+        stop("Questionnaire needs to be done to get the answers in the form of data.frame")
+      }
+
     }
+
   )
 )
 
