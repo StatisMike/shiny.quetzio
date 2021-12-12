@@ -39,6 +39,7 @@ be modified when linking the questionnaires}
 \itemize{
 \item \href{#method-toggle_ui}{\code{quetzio_server$toggle_ui()}}
 \item \href{#method-new}{\code{quetzio_server$new()}}
+\item \href{#method-get_answers_df}{\code{quetzio_server$get_answers_df()}}
 \item \href{#method-clone}{\code{quetzio_server$clone()}}
 }
 }
@@ -78,7 +79,7 @@ Initializing the 'quetzio_server' object
   module_id = NULL,
   div_id = "form",
   custom_css = NULL,
-  button_labels = c("Submit", "Cannot submit"),
+  button_labels = c("Submit", "Cannot submit", "Submitted!", "Error occured!"),
   render_ui = TRUE,
   link_id = NULL
 )}\if{html}{\out{</div>}}
@@ -125,8 +126,9 @@ If not specified, default look will be used:
 \item{mandatory_star = "color: red;"}
 }}
 
-\item{\code{button_labels}}{character vector of length two with labels for submit
-button in active and disabled state. Defaults to: \code{c('Submit', 'Cannot submit')}}
+\item{\code{button_labels}}{character vector of length four with labels for submit
+button i all states. Defaults to:
+\code{c('Submit', 'Cannot submit', 'Submitted!', 'Error occured!')}}
 
 \item{\code{render_ui}}{logical indicating if the UI for questionnaire should be
 rendered}
@@ -157,7 +159,21 @@ and 'output_gsheet_sheetname'
 }
 
 \subsection{Returns}{
-the 'survey_module_server' object
+the 'quetzio_server' serverModule
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-get_answers_df"></a>}}
+\if{latex}{\out{\hypertarget{method-get_answers_df}{}}}
+\subsection{Method \code{get_answers_df()}}{
+method to get preprocessed answers in the form of dataframe
+(only if all of the questionnaires are done)
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{quetzio_server$get_answers_df()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+data.frame
 }
 }
 \if{html}{\out{<hr>}}

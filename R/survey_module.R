@@ -35,35 +35,7 @@ quetzio_server <- R6::R6Class(
     output_ss = NULL,
     output_sheet = NULL,
     css = NULL,
-    render_ui = NULL,
-    server = function() {
-
-      output <- .survey_backend(
-        id = self$module_id,
-        source_list = self$source_list,
-        mandatory_items = private$mandatory_items,
-        numeric_items = private$numeric_items,
-        output_gsheet = private$output_gsheet,
-        output_ss = private$output_ss,
-        output_sheet = private$output_sheet,
-        button_labels = self$button_labels,
-        div_id = self$div_id,
-        css = private$css,
-        render_ui = private$render_ui,
-        module_ui_id = self$module_ui_id
-      )
-
-      # moves the objects to reactiveVals
-
-      observe({
-        req(output)
-
-        self$is_done(reactiveValuesToList(output)$is_done)
-        self$message(reactiveValuesToList(output)$message)
-        self$answers(reactiveValuesToList(output)$answers)
-
-      })
-    }
+    render_ui = NULL
 
   ),
 
@@ -135,8 +107,9 @@ quetzio_server <- R6::R6Class(
     #' \item{invalid_input = "outline: red; outline-style: dashed; outline-offset: 10px;"}
     #' \item{mandatory_star = "color: red;"}
     #' }
-    #' @param button_labels character vector of length two with labels for submit
-    #' button in active and disabled state. Defaults to: \code{c('Submit', 'Cannot submit')}
+    #' @param button_labels character vector of length four with labels for submit
+    #' button i all states. Defaults to:
+    #' \code{c('Submit', 'Cannot submit', 'Submitted!', 'Error occured!')}
     #' @param render_ui logical indicating if the UI for questionnaire should be
     #' rendered
     #' @param link_id character specifying the 'link_id' of the 'quetzio_link_server'
@@ -158,7 +131,7 @@ quetzio_server <- R6::R6Class(
     #'   and 'output_gsheet_sheetname'
     #'
     #'
-    #' @return the 'survey_module_server' object
+    #' @return the 'quetzio_server' serverModule
 
     initialize = function(
       source_method,
@@ -172,7 +145,7 @@ quetzio_server <- R6::R6Class(
       module_id = NULL,
       div_id = "form",
       custom_css = NULL,
-      button_labels = c("Submit", "Cannot submit"),
+      button_labels = c("Submit", "Cannot submit", "Submitted!", "Error occured!"),
       render_ui = TRUE,
       link_id = NULL
     ){
@@ -302,10 +275,25 @@ quetzio_server <- R6::R6Class(
       # value showing if the UI output should be rendered
       private$render_ui <- reactiveVal(render_ui)
 
-      # calling the whole server logic
-      private$server()
+      # calling the whole server backend logic
+      .survey_backend(self, private)
+
+    },
+
+    #' @description method to get preprocessed answers in the form of dataframe
+    #' (only if all of the questionnaires are done)
+    #' @return data.frame
+
+    get_answers_df = function() {
+
+      if (isTRUE(self$is_done())) {
+        .sanitize_answers(self$answers())
+      } else {
+        stop("Questionnaire needs to be done to get the answers in the form of data.frame")
+      }
 
     }
+
   )
 )
 

@@ -31,10 +31,17 @@ quetzio_link_server <- R6::R6Class(
     # names of the linked survey questionnaires
     quetzio_names = NULL,
     # reactiveValues holding the linked survey objects
-    quetzio_list = NULL
+    quetzio_list = NULL,
+    # googlesheets specification
+    output_gsheet = FALSE,
+    output_gsheet_id = NULL,
+    output_gsheet_sheetname = NULL
 
   ),
   public = list(
+
+    #' @field link_id character with id of the quetzio_link_module
+    link_id = NULL,
 
     #' @field completion reactiveVal object holding the rate of linked
     #' questionnaires completion
@@ -72,70 +79,49 @@ quetzio_link_server <- R6::R6Class(
       output_gsheet_sheetname = NULL
     ) {
 
+      self$link_id <- link_id
+
       # catching the names of the provided quetzio_server objects
       args <- match.call(expand.dots = FALSE)
       private$quetzio_names <- names(args$...)
 
       # modify the arguments to the quetzio_survey calls without evaluation
-      uneval <- .modify_quetzio_arg(..., link_id = link_id)
+      uneval <- .modify_quetzio_arg(..., link_id = self$link_id)
 
       # initializing checks
 
       # for output_gsheet method
       if (isTRUE(as.logical(output_gsheet))) {
+        # check for package
         .check_package("googlesheets4")
-        if ((is.null(source_gsheet_id) && is.null(output_gsheet_id)) || is.null(output_gsheet_sheetname)){
+        # check for output gsheet specification
+        if (is.null(output_gsheet_id) || is.null(output_gsheet_sheetname)){
           stop("When 'output_gsheet' == TRUE, you need to specify 'output_gsheet_id' and 'output_gsheet_sheetname'")
         }
+        # assign them to the private
+        private$output_gsheet <- TRUE
+        private$output_gsheet_id <- output_gsheet_id
+        private$output_gsheet_sheetname <- output_gsheet_sheetname
       }
 
       # call to the moduleServer handling all the logic
-      moduleServer(
-        id = link_id,
-        function(input, output, session) {
 
-          # assign the provided 'quetzio_server' objects inside a reactiveValues
-          private$quetzio_list <- eval(uneval)
+      .link_backend(self, private, uneval)
 
-          # toggle the state of UIs - hide the UI of the completed questionnaire
-          # and show the next one (minus the last, which will be retained)
-          observe({
-            for (i in 1:(length(private$quetzio_names) - 1)) {
+    },
 
-              # check if the questionnaire is done
-              req(private$quetzio_list[[private$quetzio_names[i]]]$is_done())
+    #' @description method to get preprocessed answers in the form of dataframe
+    #' (only if the questionnaire is done)
+    #' @return data.frame
 
-              # and toggle!
-              private$quetzio_list[[private$quetzio_names[i]]]$toggle_ui(FALSE)
-              private$quetzio_list[[private$quetzio_names[i+1]]]$toggle_ui(TRUE)
+    get_answers_df = function() {
 
-            }
-          })
+      if (isTRUE(self$completion() == 1)) {
+        .merge_linked_answers_to_df(self$answers(), private$quetzio_names)
+      } else {
+        stop("All linked questionnaires needs to be done to get the answers in the form of data.frame")
+      }
 
-          # create the UI holding the UIs of all linked questionnaires
-
-          output$quetzio_link_UI <- renderUI(
-            tagList(
-              lapply(seq_along(private$quetzio_names),
-                     function(i) quetzio_UI(session$ns(
-                       private$quetzio_list[[private$quetzio_names[i]]]$module_id)
-                       )
-               ) ) )
-
-          # initialize the reactiveVals holding the objects
-            self$completion <- reactiveVal()
-            self$message <- reactiveVal()
-            self$answers <- reactiveVal()
-
-
-            # assign the value at every change to the correspoding reactiveVal
-          observe({
-
-            self$completion(sum(sapply(reactiveValuesToList(private$quetzio_list), \(x) x$is_done()))/length(private$quetzio_names))
-            self$message(lapply(reactiveValuesToList(private$quetzio_list), \(x) x$message()))
-            self$answers(lapply(reactiveValuesToList(private$quetzio_list), \(x) x$answers()))
-          })
-      })
     }
   )
 )

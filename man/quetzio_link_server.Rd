@@ -14,6 +14,8 @@ linked questionnaires
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
+\item{\code{link_id}}{character with id of the quetzio_link_module}
+
 \item{\code{completion}}{reactiveVal object holding the rate of linked
 questionnaires completion}
 
@@ -29,6 +31,7 @@ linked questionnaires}
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{quetzio_link_server$new()}}
+\item \href{#method-get_answers_df}{\code{quetzio_link_server$get_answers_df()}}
 \item \href{#method-clone}{\code{quetzio_link_server$clone()}}
 }
 }
@@ -68,6 +71,20 @@ arguments need to be specified. Defaults to FALSE}
 \item{\code{output_gsheet_sheetname}}{name of the output spreadsheet}
 }
 \if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-get_answers_df"></a>}}
+\if{latex}{\out{\hypertarget{method-get_answers_df}{}}}
+\subsection{Method \code{get_answers_df()}}{
+method to get preprocessed answers in the form of dataframe
+(only if the questionnaire is done)
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{quetzio_link_server$get_answers_df()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+data.frame
 }
 }
 \if{html}{\out{<hr>}}
