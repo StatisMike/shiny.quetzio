@@ -196,3 +196,61 @@
     }
   )
 }
+
+#' Function that creates backend for the linked surveys
+#'
+#' @param self the 'self' component of R6 object
+#' @param private the 'private' component of R6 object
+#' @param uneval the unevaluated expression to create reactiveValues with
+#' list of questionnaires
+#'
+#' @import shiny
+
+.link_backend <- function(self, private, uneval){
+  moduleServer(
+    id = self$link_id,
+    function(input, output, session) {
+
+      # assign the provided 'quetzio_server' objects inside a reactiveValues
+      private$quetzio_list <- eval(uneval)
+
+      # toggle the state of UIs - hide the UI of the completed questionnaire
+      # and show the next one (minus the last, which will be retained)
+      observe({
+        for (i in 1:(length(private$quetzio_names) - 1)) {
+
+          # check if the questionnaire is done
+          req(private$quetzio_list[[private$quetzio_names[i]]]$is_done())
+
+          # and toggle!
+          private$quetzio_list[[private$quetzio_names[i]]]$toggle_ui(FALSE)
+          private$quetzio_list[[private$quetzio_names[i+1]]]$toggle_ui(TRUE)
+
+        }
+      })
+
+      # create the UI holding the UIs of all linked questionnaires
+
+      output$quetzio_link_UI <- renderUI(
+        tagList(
+          lapply(seq_along(private$quetzio_names),
+                 function(i) quetzio_UI(session$ns(
+                   private$quetzio_list[[private$quetzio_names[i]]]$module_id)
+                 )
+          ) ) )
+
+      # initialize the reactiveVals holding the objects
+      self$completion <- reactiveVal()
+      self$message <- reactiveVal()
+      self$answers <- reactiveVal()
+
+
+      # assign the value at every change to the correspoding reactiveVal
+      observe({
+
+        self$completion(sum(sapply(reactiveValuesToList(private$quetzio_list), \(x) x$is_done()))/length(private$quetzio_names))
+        self$message(lapply(reactiveValuesToList(private$quetzio_list), \(x) x$message()))
+        self$answers(lapply(reactiveValuesToList(private$quetzio_list), \(x) x$answers()))
+      })
+    })
+}

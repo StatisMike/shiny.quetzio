@@ -36,6 +36,9 @@ quetzio_link_server <- R6::R6Class(
   ),
   public = list(
 
+    #' @field link_id character with id of the quetzio_link_module
+    link_id = NULL,
+
     #' @field completion reactiveVal object holding the rate of linked
     #' questionnaires completion
     completion = NULL,
@@ -72,12 +75,14 @@ quetzio_link_server <- R6::R6Class(
       output_gsheet_sheetname = NULL
     ) {
 
+      self$link_id <- link_id
+
       # catching the names of the provided quetzio_server objects
       args <- match.call(expand.dots = FALSE)
       private$quetzio_names <- names(args$...)
 
       # modify the arguments to the quetzio_survey calls without evaluation
-      uneval <- .modify_quetzio_arg(..., link_id = link_id)
+      uneval <- .modify_quetzio_arg(..., link_id = self$link_id)
 
       # initializing checks
 
@@ -90,52 +95,9 @@ quetzio_link_server <- R6::R6Class(
       }
 
       # call to the moduleServer handling all the logic
-      moduleServer(
-        id = link_id,
-        function(input, output, session) {
 
-          # assign the provided 'quetzio_server' objects inside a reactiveValues
-          private$quetzio_list <- eval(uneval)
+      .link_backend(self, private, uneval)
 
-          # toggle the state of UIs - hide the UI of the completed questionnaire
-          # and show the next one (minus the last, which will be retained)
-          observe({
-            for (i in 1:(length(private$quetzio_names) - 1)) {
-
-              # check if the questionnaire is done
-              req(private$quetzio_list[[private$quetzio_names[i]]]$is_done())
-
-              # and toggle!
-              private$quetzio_list[[private$quetzio_names[i]]]$toggle_ui(FALSE)
-              private$quetzio_list[[private$quetzio_names[i+1]]]$toggle_ui(TRUE)
-
-            }
-          })
-
-          # create the UI holding the UIs of all linked questionnaires
-
-          output$quetzio_link_UI <- renderUI(
-            tagList(
-              lapply(seq_along(private$quetzio_names),
-                     function(i) quetzio_UI(session$ns(
-                       private$quetzio_list[[private$quetzio_names[i]]]$module_id)
-                       )
-               ) ) )
-
-          # initialize the reactiveVals holding the objects
-            self$completion <- reactiveVal()
-            self$message <- reactiveVal()
-            self$answers <- reactiveVal()
-
-
-            # assign the value at every change to the correspoding reactiveVal
-          observe({
-
-            self$completion(sum(sapply(reactiveValuesToList(private$quetzio_list), \(x) x$is_done()))/length(private$quetzio_names))
-            self$message(lapply(reactiveValuesToList(private$quetzio_list), \(x) x$message()))
-            self$answers(lapply(reactiveValuesToList(private$quetzio_list), \(x) x$answers()))
-          })
-      })
     }
   )
 )
