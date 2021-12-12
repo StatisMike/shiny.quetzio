@@ -5,8 +5,7 @@
 \title{function to handle css for quetzio UI for custom classes: '.invalid_input' and '.mandatory_star'}
 \usage{
 .custom_css_handler(
-  css = list(invalid_input =
-    "outline: red; outline-style: dashed; outline-offset: 10px;", mandatory_star =
+  css = list(invalid_input = "color: red; font-style: italic;", mandatory_star =
     "color: red;"),
   div_id
 )

@@ -38,8 +38,11 @@
              inputId = bquote(ns(.(inputId))),
              label = if(isTRUE(x$mandatory)){bquote(.label_mandatory(.(x$label)))} else {x$label},
              choices = x$choices,
-             multiple = .null_def(x$multiple, FALSE),
-             width = .null_def(x$width, 500)
+             multiple = TRUE,
+             width = .null_def(x$width, 500),
+             options = list(
+               maxItems = x$maxItems
+             )
            )
            if ((!is.null(x$choiceNames)&&!is.na(x$choiceNames)) &&
                (!is.null(x$choiceValues)&&!is.na(x$choiceValues))) {

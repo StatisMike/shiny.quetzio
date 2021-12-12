@@ -30,6 +30,7 @@ quetzio_server <- R6::R6Class(
 
     mandatory_items = NULL,
     numeric_items = NULL,
+    selectize_items = NULL,
     output_gsheet = NULL,
     output_ss = NULL,
     output_sheet = NULL,
@@ -273,7 +274,7 @@ quetzio_server <- R6::R6Class(
       # check for mandatory and numeric inputs
 
       private$mandatory_items <- .get_mandatory(self$source_list)
-      private$numeric_items <- .get_numeric(self$source_list)
+      private$numeric_items <- .get_type(self$source_list, "numericInput")
 
       # save other information in private
 

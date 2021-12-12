@@ -23,3 +23,13 @@ easier to implement and allows for independent looks (based on the `div_id` of t
 
 * Made the `link_id` and `render_ui` arguments of linked `quetzio_server` modules set automatically:
 no need to specify it automatically any more!
+
+# shiny.survey 0.0.7
+
+* `selectizeInputs` works better: by default they are using selectize.js and `multiple = TRUE`,
+which allows for empty initial value. Instead of specifying `multiple`, user can now
+specify `maxItems`, which indicates how many items can be specified. If left `NULL`,
+it allows for selecting all of the options.
+* *invalid_input* class is now added to the *labels*, not whole *div*. It remedies
+problem with selectizeInputs, which main div isn't showing in the rendered state.
+  + the default *invalid_input* css style is changed to `color: red; font-style: italic;`

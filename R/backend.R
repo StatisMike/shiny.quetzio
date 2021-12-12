@@ -97,15 +97,20 @@
         if(input$submit > 0){
           for (input in 1:length(valid$items_validity)) {
 
+            item_id <- names(valid$items_validity[input])
+
             if (isTRUE(valid$items_validity[input])) {
 
-              shinyjs::removeCssClass(id = names(valid$items_validity[input]),
-                                      class = "invalid_input")
+              shinyjs::removeCssClass(id = paste(paste(module_ui_id, item_id, sep = ns.sep), "label", sep = "-"),
+                                      class = "invalid_input",
+                                      asis = TRUE)
 
             } else {
 
-              shinyjs::addCssClass(id = names(valid$items_validity[input]),
-                                   class = "invalid_input")
+              shinyjs::addCssClass(id = paste(paste(module_ui_id, item_id, sep = ns.sep), "label", sep = "-"),
+                                     class = "invalid_input",
+                                   asis = TRUE)
+
             }
           }
         }

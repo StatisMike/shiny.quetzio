@@ -36,7 +36,7 @@
 #' }
 #' @param div_id character string indicating the div id to use this stylesheet
 #'
-.custom_css_handler <- function(css = list(invalid_input = "outline: red; outline-style: dashed; outline-offset: 10px;",
+.custom_css_handler <- function(css = list(invalid_input = "color: red; font-style: italic;",
                                            mandatory_star = "color: red;"),
                                 div_id) {
 
@@ -85,18 +85,18 @@
 #' @param source_list Source list of inputs
 #'
 
-.get_numeric <- function(source_list){
+.get_type <- function(source_list, type){
 
-  fields_numeric <- c()
+  fields_of_type <- c()
   input_n <- 0
   for(input in source_list){
     input_n <- input_n + 1
-    if(input$type == "numericInput"){
-      fields_numeric <- c(fields_numeric, input_n)
+    if(input$type == type){
+      fields_of_type <- c(fields_of_type, input_n)
     }
   }
 
-  return(fields_numeric)
+  return(fields_of_type)
 }
 
 #' Create source list from 'data.frame'

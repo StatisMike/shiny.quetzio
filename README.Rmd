@@ -197,7 +197,7 @@ to 500px
 |*choices*       |            |            |       x      |      x     |    
 |*choiceValues*  |            |            |       x      |      x     |    
 |*choiceNames*   |            |            |       x      |      x     |    
-|multiple        |            |            |       x      |            |    
+|maxItems        |            |            |       x      |            |    
 |selected        |            |            |       x      |      x     |    
 |inline          |            |            |              |      x     |    
 
