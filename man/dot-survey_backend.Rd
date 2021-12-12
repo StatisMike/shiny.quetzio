@@ -4,47 +4,12 @@
 \alias{.survey_backend}
 \title{Function that creates 'backend' for the generated survey}
 \usage{
-.survey_backend(
-  id,
-  source_list,
-  mandatory_items,
-  numeric_items,
-  output_gsheet,
-  output_ss,
-  output_sheet,
-  div_id,
-  css,
-  button_labels,
-  render_ui,
-  module_ui_id
-)
+.survey_backend(self, private)
 }
 \arguments{
-\item{id}{The module id}
+\item{self}{R6 'self' object}
 
-\item{source_list}{The list used to create the UI}
-
-\item{mandatory_items}{Numeric vector with indices of items that are mandatory}
-
-\item{numeric_items}{Numeric vector with indices of items that are numeric}
-
-\item{output_gsheet}{Logical indicating if the survey results have to be automatically
-saved into googlesheet}
-
-\item{output_ss}{Character vector with output googlesheet id (if \code{output_gsheet = T})}
-
-\item{output_sheet}{Character vector with output spreadsheet name (if \code{output_gsheet = T})}
-
-\item{div_id}{Character vector with div id}
-
-\item{css}{parsed css line to include for the survey}
-
-\item{button_labels}{Character vector with labels for both active and inactive buttons}
-
-\item{render_ui}{reactiveVal holding the logical indicating if the UI should be
-rendered or not}
-
-\item{module_ui_id}{Character vector with id for UI elements that will be generated}
+\item{private}{R6 'private' object}
 }
 \description{
 Function that creates 'backend' for the generated survey

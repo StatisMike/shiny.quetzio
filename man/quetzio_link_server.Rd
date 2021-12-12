@@ -14,6 +14,8 @@ linked questionnaires
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
+\item{\code{link_id}}{character with id of the quetzio_link_module}
+
 \item{\code{completion}}{reactiveVal object holding the rate of linked
 questionnaires completion}
 

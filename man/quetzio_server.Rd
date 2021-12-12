@@ -78,7 +78,7 @@ Initializing the 'quetzio_server' object
   module_id = NULL,
   div_id = "form",
   custom_css = NULL,
-  button_labels = c("Submit", "Cannot submit"),
+  button_labels = c("Submit", "Cannot submit", "Submitted!", "Error occured!"),
   render_ui = TRUE,
   link_id = NULL
 )}\if{html}{\out{</div>}}
@@ -125,8 +125,9 @@ If not specified, default look will be used:
 \item{mandatory_star = "color: red;"}
 }}
 
-\item{\code{button_labels}}{character vector of length two with labels for submit
-button in active and disabled state. Defaults to: \code{c('Submit', 'Cannot submit')}}
+\item{\code{button_labels}}{character vector of length four with labels for submit
+button i all states. Defaults to:
+\code{c('Submit', 'Cannot submit', 'Submitted!', 'Error occured!')}}
 
 \item{\code{render_ui}}{logical indicating if the UI for questionnaire should be
 rendered}

@@ -202,11 +202,10 @@
   output_sheet
   ) {
 
-  ## drop invalid answers
-  user_answers <- user_answers[!sapply(user_answers, is.null)]
-  ## for multiple answers possible, seperate them with semicolon
-  user_answers <- lapply(user_answers, function(x) {if(length(x)>1) {paste(x, collapse = ";")} else {x} })
-  user_answers <- as.data.frame(user_answers)
+  # sanitize answers
+  user_answers <- .sanitize_answers(
+    answers = user_answers
+  )
 
   to_upload_answers <- tryCatch({
 
@@ -219,13 +218,13 @@
     ## `full_join()`'s strict type safety raises an error
     to_upload_answers <- merge(old_answers, user_answers, all = TRUE, sort = FALSE)
     dplyr::relocate(.data = to_upload_answers,
-                                         "timestamp",
+                                         dplyr::ends_with("timestamp"),
                                          .after = dplyr::last_col())
 
   }, error = function(cond){
 
     dplyr::relocate(.data = user_answers,
-                    "timestamp", .after = dplyr::last_col())
+                    dplyr::ends_with("timestamp"), .after = dplyr::last_col())
 
   })
 
@@ -282,5 +281,47 @@
   raw_call[1] <- substitute(reactiveValues())
 
   return(substitute(raw_call))
+
+}
+
+#' Merge answers from linked questionnaires into data.frame
+#'
+#' @param answers_object the 'self$answers()' object from 'quetzio_link_server'
+#' @param quetzio_names the names of the surveys in correct order from the
+#' 'self$quetzio_names' object from 'quetzio_link_server'
+
+.merge_linked_answers_to_df <- function(answers_object, quetzio_names) {
+
+  # create empty data.frame with one row
+  answers_df <- data.frame(. = "")
+
+  # loop over the data.frame merging answers of all questionnaires
+  for(name in quetzio_names) {
+    answers_df <- cbind(answers_df,
+                        .sanitize_answers(answers = answers_object[[name]],
+                                          name = name))
+  }
+  return(answers_df[, -1])
+}
+
+#' sanitize answers from questionnaire
+#'
+#' @param answers list of answers from one questionnaire
+#' @param name name of the questionnaire
+
+.sanitize_answers <- function(answers, name = NULL) {
+
+  # get the answers
+  user_answers <- answers[!sapply(answers, is.null)]
+  ## for multiple answers possible, separate them with semicolon
+  user_answers <- lapply(user_answers, function(x) {if(length(x)>1) {paste(x, collapse = ";")} else {x} })
+  user_answers <- as.data.frame(user_answers)
+
+  # modify the names to make the answers from different questionnaires distinct
+  if (!is.null(name)) {
+    names(user_answers) <- paste(name, names(user_answers), sep = "_")
+  }
+
+  return(user_answers)
 
 }

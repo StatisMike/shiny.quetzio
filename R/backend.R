@@ -217,12 +217,23 @@
       self$answers <- reactiveVal()
 
 
-      # assign the value at every change to the correspoding reactiveVal
       observe({
-
+        # assign the value at every change to the correspoding reactiveVal
         self$completion(sum(sapply(reactiveValuesToList(private$quetzio_list), \(x) x$is_done()))/length(private$quetzio_names))
         self$message(lapply(reactiveValuesToList(private$quetzio_list), \(x) x$message()))
         self$answers(lapply(reactiveValuesToList(private$quetzio_list), \(x) x$answers()))
+
+        # save the answers into googlesheet if specified
+        if(isTRUE(as.logical(private$output_gsheet)) && self$completion() == 1){
+
+          .save_new_answers(
+            .merge_linked_answers_to_df(
+              answers_object = self$answers(),
+              quetzio_names = private$quetzio_names
+            ),
+            private$output_gsheet_id, private$output_gsheet_sheetname)
+
+        }
       })
     })
 }

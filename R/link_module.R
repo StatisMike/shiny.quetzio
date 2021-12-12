@@ -31,7 +31,11 @@ quetzio_link_server <- R6::R6Class(
     # names of the linked survey questionnaires
     quetzio_names = NULL,
     # reactiveValues holding the linked survey objects
-    quetzio_list = NULL
+    quetzio_list = NULL,
+    # googlesheets specification
+    output_gsheet = FALSE,
+    output_gsheet_id = NULL,
+    output_gsheet_sheetname = NULL
 
   ),
   public = list(
@@ -88,10 +92,16 @@ quetzio_link_server <- R6::R6Class(
 
       # for output_gsheet method
       if (isTRUE(as.logical(output_gsheet))) {
+        # check for package
         .check_package("googlesheets4")
-        if ((is.null(source_gsheet_id) && is.null(output_gsheet_id)) || is.null(output_gsheet_sheetname)){
+        # check for output gsheet specification
+        if (is.null(output_gsheet_id) || is.null(output_gsheet_sheetname)){
           stop("When 'output_gsheet' == TRUE, you need to specify 'output_gsheet_id' and 'output_gsheet_sheetname'")
         }
+        # assign them to the private
+        private$output_gsheet <- TRUE
+        private$output_gsheet_id <- output_gsheet_id
+        private$output_gsheet_sheetname <- output_gsheet_sheetname
       }
 
       # call to the moduleServer handling all the logic
