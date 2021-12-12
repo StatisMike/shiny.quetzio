@@ -4,7 +4,7 @@
 #' It should contain specific columns, which are created here alongside one
 #' placeholder input to help populating next ones.
 #'
-#' Name suffix helps to determing for which types of inputs these columns
+#' Name suffix helps to determine for which types of inputs these columns
 #' are used. Variables without suffix are used in creation of all types.
 #' \itemize{
 #' \item{\code{chr_}: textInput}
@@ -61,7 +61,7 @@ create_survey_source <- function(
       mult_choiceValues = "1\n2\n3",
       mult_choiceNames = "One\nTwo\nThree",
       mult_selected = "NULL",
-      select_multiple = TRUE,
+      select_maxItems = 1,
       radio_inline = TRUE
   )
 
