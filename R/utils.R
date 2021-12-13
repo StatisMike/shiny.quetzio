@@ -325,3 +325,22 @@
   return(user_answers)
 
 }
+
+#### list to df funtion ####
+
+.list_to_df <- function(list) {
+
+  output <- data.frame(id = names(list))
+  output$type <- sapply(list, \(x) x$type)
+
+  option_names <- unique(as.character(sapply(list, \(x) names(x))))[-1]
+
+  for (option in option_names) {
+
+    output[, option] <- sapply(list, \(x) x[[option]])
+
+  }
+
+  return(output)
+
+}

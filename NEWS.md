@@ -33,3 +33,14 @@ it allows for selecting all of the options.
 * *invalid_input* class is now added to the *labels*, not whole *div*. It remedies
 problem with selectizeInputs, which main div isn't showing in the rendered state.
   + the default *invalid_input* css style is changed to `color: red; font-style: italic;`
+  
+# shiny.survey 0.0.8
+
+* moved `quetzio_list` of `quetzio_link_server` from private to public. It is now
+easier to access separate questionnaires from there
+* added `update_labels` method to the `quetzio_survey`. You can now update labels
+of questionnaire items based on some external `reactive()`.
+  + works also with questionnaires linked by `quetzio_link_server`, though the call
+  need to be made on the `quetzio_server` itself directly within observer:
+  `observe(quetzio_link_object$quetzio_list[['quetzio_name']]$update_labels(...))`
+  + the wrapper function for this functionality is considered

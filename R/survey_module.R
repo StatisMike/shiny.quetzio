@@ -292,6 +292,37 @@ quetzio_server <- R6::R6Class(
         stop("Questionnaire needs to be done to get the answers in the form of data.frame")
       }
 
+    },
+
+    #' @description method to update survey answers based on some reactive value
+    #'
+    #' @param trigger reactive triggering updates
+    #' @param source_method character string specifying in what form the source
+    #' config file will be provided. Can be either 'gsheet', 'yaml' or 'raw'.
+    #' Necessity of other arguments is dependent on this choice.
+    #' @param source_yaml yaml file providing the character string with values
+    #' to update the label
+    #' @param source_gsheet_id id of the googlesheet to get the update values
+    #' @param source_gsheet_name name of the spreadsheet to get the update values
+    #' from
+
+
+    update_labels = function(
+      trigger,
+      source_method,
+      source_yaml = NULL,
+      source_gsheet_id = NULL,
+      source_gsheet_name = NULL
+    ) {
+
+      .quetzio_label_update(
+        self,
+        trigger,
+        source_method,
+        source_yaml,
+        source_gsheet_id,
+        source_gsheet_name
+      )
     }
 
   )

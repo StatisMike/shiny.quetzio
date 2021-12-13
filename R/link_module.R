@@ -30,8 +30,6 @@ quetzio_link_server <- R6::R6Class(
 
     # names of the linked survey questionnaires
     quetzio_names = NULL,
-    # reactiveValues holding the linked survey objects
-    quetzio_list = NULL,
     # googlesheets specification
     output_gsheet = FALSE,
     output_gsheet_id = NULL,
@@ -54,6 +52,9 @@ quetzio_link_server <- R6::R6Class(
     #' @field answers reactiveVal object holding the list of answers to the
     #' linked questionnaires
     answers = NULL,
+
+    #' @field quetzio_link reactiveValues holding the linked 'quetzio_server's
+    quetzio_list = NULL,
 
 
     #' @description Initialization of the 'quetzio_link_server' object
