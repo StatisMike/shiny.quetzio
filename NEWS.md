@@ -44,3 +44,11 @@ of questionnaire items based on some external `reactive()`.
   need to be made on the `quetzio_server` itself directly within observer:
   `observe(quetzio_link_object$quetzio_list[['quetzio_name']]$update_labels(...))`
   + the wrapper function for this functionality is considered
+  
+# shiny.survey 0.0.9
+
+* added `update_labels` method to `quetzio_link_server` class
+* polished the documentation and code for the `update_labels` methods
+* fixed the bug with 'mandatory star' disappearing on mandatory items
+when their label gets updated
+

@@ -238,7 +238,23 @@
     })
 }
 
-#### label update module ####
+#' Server module handling label updates
+#'
+#' @param self the public element of 'quetzio_server' or 'quetzio_link_server'
+#' @param tigger reactive triggering the update
+#' @param source_method character string specifying in what form the source
+#' config file will be provided. Can be either 'gsheet', 'yaml' or 'raw'.
+#' Necessity of other arguments is dependent on this choice
+#' @param source_yaml path to the source yaml file
+#' @param source_gsheet_id id of the source googlesheet file
+#' @param source_gsheet_sheetname name of the source spreadsheet
+#' @param source_object object of class `list` (similiar in structure to
+#' 'yaml' source) or `data.frame` (similiar in structure to 'googlesheet'
+#' source) to be the source of questions. You can create a sample data.frame
+#' with \code{create_survey_source()}. Needed when `source_method == 'raw'`
+#'
+#' @import shiny
+#'
 
 .quetzio_label_update <- function(
   self,
@@ -246,7 +262,8 @@
   source_method,
   source_yaml,
   source_gsheet_id,
-  source_gsheet_name
+  source_gsheet_sheetname,
+  source_object
 ) {
 
   # initialize checks
@@ -307,61 +324,39 @@
     id = self$module_ui_id,
     function(input, output, session) {
 
+      # observe the change in the trigger reactive
       observeEvent(trigger(), {
 
         for (row in 1:nrow(source)) {
 
-          if (trigger() %in% names(source)[-(1:2)]) {
+          # deterime if the item is mandatory - the label needs to be updated
+          # with 'mandatory_star' if that is the case
+          is_mandatory <- isTRUE(self$source_list[[source[row, ]$id]]$mandatory)
 
-            switch(
-              source[row, ]$type,
+          # all columns beside id are holding the labels to change with reactive
+          # value
+          if (trigger() %in% names(source)[names(source) != "id"]) {
 
-              "textInput" = {
-                updateTextInput(session,
-                                inputId = source[row, ]$id,
-                                label = as.character(source[row, trigger()]))
-              },
-              "numericInput" = {
-                updateNumericInput(session,
-                                   inputId = source[row, ]$id,
-                                   label = as.character(source[row, trigger()]))
-              },
-              "selectizeInput" = {
-                updateSelectizeInput(session,
-                                     inputId = source[row, ]$id,
-                                     label = as.character(source[row, trigger()]))
-              },
-              "radioButtons" = {
-                updateRadioButtons(session,
-                                   inputId = source[row, ]$id,
-                                   label = as.character(source[row, trigger()]))
-              })
+            new_label <- as.character(source[row, trigger()])
+
+            # update the label accordingly
+            .update_label(self,
+                          inputId = source[row, ]$id,
+                          label = new_label,
+                          is_mandatory = is_mandatory)
+
+
           } else {
 
-            switch(
-              source[row, ]$type,
+            # if the trigger() value is not specified in config, return to the
+            # default label
+            default_label <- as.character(self$source_list[[source[row, ]$id]]$label)
 
-              "textInput" = {
-                updateTextInput(session,
-                                inputId = source[row, ]$id,
-                                label = as.character(self$source_list[[source[row, ]$id]]$label))
-              },
-              "numericInput" = {
-                updateNumericInput(session,
-                                   inputId = source[row, ]$id,
-                                   label = as.character(self$source_list[[source[row, ]$id]]$label))
-              },
-              "selectizeInput" = {
-                updateSelectizeInput(session,
-                                     inputId = source[row, ]$id,
-                                     label = as.character(self$source_list[[source[row, ]$id]]$label))
-              },
-              "radioButtons" = {
-                updateRadioButtons(session,
-                                   inputId = source[row, ]$id,
-                                   label = as.character(self$source_list[[source[row, ]$id]]$label))
-              }
-            )
+            # update the label accordingly
+            .update_label(self,
+                          inputId = source[row, ]$id,
+                          label = default_label,
+                          is_mandatory = is_mandatory)
 
           }
         }

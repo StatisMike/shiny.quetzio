@@ -14,8 +14,11 @@ quetzio_link_UI <- function(link_id) {
 }
 
 
-#' Create R6-based server module to generate and hold the state of your
-#' linked questionnaires
+#' @title Quetzio Link Server class
+#' @docType class
+#'
+#' @description Create R6-based server module to generate and hold the state of
+#' multiple linked 'quetzio_server' objects
 #'
 #' @import R6
 #' @import shiny
@@ -53,7 +56,7 @@ quetzio_link_server <- R6::R6Class(
     #' linked questionnaires
     answers = NULL,
 
-    #' @field quetzio_link reactiveValues holding the linked 'quetzio_server's
+    #' @field quetzio_list reactiveValues holding the linked 'quetzio_server's
     quetzio_list = NULL,
 
 
@@ -122,7 +125,48 @@ quetzio_link_server <- R6::R6Class(
       } else {
         stop("All linked questionnaires needs to be done to get the answers in the form of data.frame")
       }
+    },
 
+    #' @description Method to update labels on the change in reactive
+    #'
+    #' @param quetzio_name character vector indicating in which questionnaire
+    #' the questions to update are located
+    #' @param trigger reactive which will trigger the update. It needs to take
+    #' values linked to the changes in the source
+    #' @param source_method character string specifying in what form the source
+    #' config file will be provided. Can be either 'gsheet', 'yaml' or 'raw'.
+    #' Necessity of other arguments is dependent on this choice. For more info
+    #' see 'details'
+    #' @param source_yaml path to the source yaml file
+    #' @param source_gsheet_id id of the source googlesheet file
+    #' @param source_gsheet_sheetname name of the source spreadsheet
+    #' @param source_object object of class `list` (similiar in structure to
+    #' 'yaml' source) or `data.frame` (similiar in structure to 'googlesheet'
+    #' source) to be the source of questions. You can create a sample data.frame
+    #' with \code{create_survey_source()}. Needed when `source_method == 'raw'`
+    #'
+    #'
+
+    update_labels = function(
+      quetzio_name,
+      trigger,
+      source_method,
+      source_yaml = NULL,
+      source_gsheet_id = NULL,
+      source_gsheet_sheetname = NULL,
+      source_object = NULL
+    ) {
+
+      observe(
+        self$quetzio_list[[quetzio_name]]$update_labels(
+          trigger,
+          source_method,
+          source_yaml = source_yaml,
+          source_gsheet_id = source_gsheet_id,
+          source_gsheet_sheetname = source_gsheet_sheetname,
+          source_object = source_object
+        )
+      )
     }
   )
 )
