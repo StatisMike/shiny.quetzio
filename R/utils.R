@@ -325,3 +325,59 @@
   return(user_answers)
 
 }
+
+#' Create correct data.frame from list
+#'
+#' @param list source to be converted into data.frame
+
+.list_to_df <- function(list) {
+
+  output <- data.frame(id = names(list))
+  output$type <- sapply(list, \(x) x$type)
+
+  option_names <- unique(as.character(sapply(list, \(x) names(x))))
+  option_names <- option_names[option_names != "type"]
+
+  for (option in option_names) {
+
+    output[, option] <- sapply(list, \(x) if (length(x[[option]]) > 1) paste(x[[option]], collapse = ";") else x[[option]])
+
+  }
+
+  return(output)
+
+}
+
+#' Update label of the shinyInput
+#'
+#' @param self the public component of the 'quetzio_server' object
+#' @param inputId id of the input to be updated
+#' @param label character string with updated label value
+#' @param is_mandatory logical indicating if the item is mandatory
+#'
+#' @details
+#' New function is used to handle input label update for two reasons. Firstly,
+#' specific `update*Input` functions need to be called for specific input types,
+#' which would create a need for more verbose code with multiple strategies.
+#' Secondly - and most important - `update*Input` functions don't allow
+#' supplementing labels with 'HTML' tags, as everything passed through them as
+#' label is coerced to character. `shinyjs::html()` remedies this problem.
+#'
+
+.update_label <- function (self, inputId, label,
+                           is_mandatory)
+{
+
+  if (is_mandatory) {
+    html_label <- paste(label, '<span class="mandatory_star">*</span>')
+  } else {
+    html_label <- label
+  }
+
+  shinyjs::html(
+    id = paste(self$module_ui_id, inputId, "label", sep = ns.sep),
+    html = html_label,
+    asis = T
+  )
+
+}

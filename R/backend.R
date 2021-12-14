@@ -184,7 +184,7 @@
     function(input, output, session) {
 
       # assign the provided 'quetzio_server' objects inside a reactiveValues
-      private$quetzio_list <- eval(uneval)
+      self$quetzio_list <- eval(uneval)
 
       # toggle the state of UIs - hide the UI of the completed questionnaire
       # and show the next one (minus the last, which will be retained)
@@ -192,11 +192,11 @@
         for (i in 1:(length(private$quetzio_names) - 1)) {
 
           # check if the questionnaire is done
-          req(private$quetzio_list[[private$quetzio_names[i]]]$is_done())
+          req(self$quetzio_list[[private$quetzio_names[i]]]$is_done())
 
           # and toggle!
-          private$quetzio_list[[private$quetzio_names[i]]]$toggle_ui(FALSE)
-          private$quetzio_list[[private$quetzio_names[i+1]]]$toggle_ui(TRUE)
+          self$quetzio_list[[private$quetzio_names[i]]]$toggle_ui(FALSE)
+          self$quetzio_list[[private$quetzio_names[i+1]]]$toggle_ui(TRUE)
 
         }
       })
@@ -207,7 +207,7 @@
         tagList(
           lapply(seq_along(private$quetzio_names),
                  function(i) quetzio_UI(session$ns(
-                   private$quetzio_list[[private$quetzio_names[i]]]$module_id)
+                   self$quetzio_list[[private$quetzio_names[i]]]$module_id)
                  )
           ) ) )
 
@@ -219,9 +219,9 @@
 
       observe({
         # assign the value at every change to the correspoding reactiveVal
-        self$completion(sum(sapply(reactiveValuesToList(private$quetzio_list), \(x) x$is_done()))/length(private$quetzio_names))
-        self$message(lapply(reactiveValuesToList(private$quetzio_list), \(x) x$message()))
-        self$answers(lapply(reactiveValuesToList(private$quetzio_list), \(x) x$answers()))
+        self$completion(sum(sapply(reactiveValuesToList(self$quetzio_list), \(x) x$is_done()))/length(private$quetzio_names))
+        self$message(lapply(reactiveValuesToList(self$quetzio_list), \(x) x$message()))
+        self$answers(lapply(reactiveValuesToList(self$quetzio_list), \(x) x$answers()))
 
         # save the answers into googlesheet if specified
         if(isTRUE(as.logical(private$output_gsheet)) && self$completion() == 1){
@@ -236,4 +236,131 @@
         }
       })
     })
+}
+
+#' Server module handling label updates
+#'
+#' @param self the public element of 'quetzio_server' or 'quetzio_link_server'
+#' @param tigger reactive triggering the update
+#' @param source_method character string specifying in what form the source
+#' config file will be provided. Can be either 'gsheet', 'yaml' or 'raw'.
+#' Necessity of other arguments is dependent on this choice
+#' @param source_yaml path to the source yaml file
+#' @param source_gsheet_id id of the source googlesheet file
+#' @param source_gsheet_sheetname name of the source spreadsheet
+#' @param source_object object of class `list` (similiar in structure to
+#' 'yaml' source) or `data.frame` (similiar in structure to 'googlesheet'
+#' source) to be the source of questions. You can create a sample data.frame
+#' with \code{create_survey_source()}. Needed when `source_method == 'raw'`
+#'
+#' @import shiny
+#'
+
+.quetzio_label_update <- function(
+  self,
+  trigger,
+  source_method,
+  source_yaml,
+  source_gsheet_id,
+  source_gsheet_sheetname,
+  source_object
+) {
+
+  # initialize checks
+
+  # check if all needed arguments are provided for source methods
+  if (source_method == "gsheet") {
+    #for gsheet source: if package is installed and if source ids are specified
+    .check_package("googlesheets4")
+    if (is.null(source_gsheet_id) || is.null(source_gsheet_sheetname)) {
+      stop("When 'source_method' == 'gsheet', you need to specify 'source_gsheet_id' and 'source_gsheet_sheetname'.")
+    }
+    #for yaml source: if package is installed and if source file is provided
+  } else if (source_method == "yaml") {
+    .check_package("yaml")
+    if (is.null(source_yaml)) {
+      stop("When 'source_method' == 'yaml', you need to specify 'source_yaml'")
+    }
+    # for raw: if object is a dataframe or list
+  } else if (source_method == "raw" && (is.null(source_object) && !class(source_object) %in% c("data.frame", "list"))) {
+    stop("When 'source_method' == 'raw', you need to pass an object of class 'data.frame' or 'list' to 'source_object'")
+    # if other source method is provided: error
+  } else if (!source_method %in% c("gsheet", "yaml", "raw")) {
+    stop("'source_method' must be chosen between 'gsheet', 'yaml' or raw.")
+  }
+
+  # loading data
+
+  if (source_method == "yaml") {
+    source <- .list_to_df(yaml::read_yaml(source_yaml))
+
+  } else if (source_method == "gsheet") {
+
+    source <- googlesheets4::read_sheet(
+      ss = source_gsheet_id,
+      sheet = source_gsheet_name
+    )
+  } else if (source_method == "raw") {
+
+    if (class(source_object) == "data.frame") {
+
+      # checks if df is valid
+      # .check_source_df(source_object)
+      source <- source_object
+
+    } else if (class(source_object) == "list") {
+
+      # checks if list is valid
+      # .check_source_list(source_object)
+      source <- .list_to_df(source_object)
+
+    } else {
+      stop("Source object needs to be of class 'data.frame' or 'list'")
+    }
+
+  }
+
+  moduleServer(
+    id = self$module_ui_id,
+    function(input, output, session) {
+
+      # observe the change in the trigger reactive
+      observeEvent(trigger(), {
+
+        for (row in 1:nrow(source)) {
+
+          # deterime if the item is mandatory - the label needs to be updated
+          # with 'mandatory_star' if that is the case
+          is_mandatory <- isTRUE(self$source_list[[source[row, ]$id]]$mandatory)
+
+          # all columns beside id are holding the labels to change with reactive
+          # value
+          if (trigger() %in% names(source)[names(source) != "id"]) {
+
+            new_label <- as.character(source[row, trigger()])
+
+            # update the label accordingly
+            .update_label(self,
+                          inputId = source[row, ]$id,
+                          label = new_label,
+                          is_mandatory = is_mandatory)
+
+
+          } else {
+
+            # if the trigger() value is not specified in config, return to the
+            # default label
+            default_label <- as.character(self$source_list[[source[row, ]$id]]$label)
+
+            # update the label accordingly
+            .update_label(self,
+                          inputId = source[row, ]$id,
+                          label = default_label,
+                          is_mandatory = is_mandatory)
+
+          }
+        }
+      })
+    }
+  )
 }
