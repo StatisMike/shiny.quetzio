@@ -77,8 +77,8 @@
 
 
       if (x$type == "numericInput") {
-        if (is.null(x$value) || is.null(x$min) || is.null(x$max) || is.null(x$step)) {
-          stop("'value', 'min', 'max' and 'step' are mandatory for 'numericInput'")
+        if (is.null(x$value)) {
+          stop("'value' is mandatory for 'numericInput'")
         }
       } else if (x$type == "selectizeInput" || x$type == "radioButtons") {
         if (is.null(x$choices) && all(is.null(x$choiceValues), is.null(x$choiceNames))) {

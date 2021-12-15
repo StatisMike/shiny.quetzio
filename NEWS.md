@@ -52,3 +52,7 @@ of questionnaire items based on some external `reactive()`.
 * fixed the bug with 'mandatory star' disappearing on mandatory items
 when their label gets updated
 
+# shiny.survey 0.0.10
+
+* support for populating data with default values have been added, with
+`source_yaml_default` argument to the `quetzio_server` class initialization

@@ -67,10 +67,11 @@ Initializing the 'quetzio_server' object
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{quetzio_server$new(
   source_method,
-  source_object = NULL,
   source_yaml = NULL,
+  source_yaml_default = NULL,
   source_gsheet_id = NULL,
   source_gsheet_sheetname = NULL,
+  source_object = NULL,
   output_gsheet = FALSE,
   output_gsheet_id = NULL,
   output_gsheet_sheetname = NULL,
@@ -91,16 +92,19 @@ config file will be provided. Can be either 'gsheet', 'yaml' or 'raw'.
 Necessity of other arguments is dependent on this choice. For more info
 see 'details'}
 
-\item{\code{source_object}}{object of class \code{list} (similiar in structure to
-'yaml' source) or \code{data.frame} (similiar in structure to 'googlesheet'
-source) to be the source of questions. You can create a sample data.frame
-with \code{create_survey_source()}. Needed when \code{source_method == 'raw'}}
-
 \item{\code{source_yaml}}{path to the source yaml file}
+
+\item{\code{source_yaml_default}}{path to the optional default options for items
+generated with 'source_yaml' file. Needs to be a yaml file.}
 
 \item{\code{source_gsheet_id}}{id of the source googlesheet file}
 
 \item{\code{source_gsheet_sheetname}}{name of the source spreadsheet}
+
+\item{\code{source_object}}{object of class \code{list} (similiar in structure to
+'yaml' source) or \code{data.frame} (similiar in structure to 'googlesheet'
+source) to be the source of questions. You can create a sample data.frame
+with \code{create_survey_source()}. Needed when \code{source_method == 'raw'}}
 
 \item{\code{output_gsheet}}{logical: do you wish to save the answers automatically
 to the googlesheet. If TRUE, the 'output_gsheet_id' and 'output_gsheet_sheetname'

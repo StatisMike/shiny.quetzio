@@ -381,3 +381,65 @@
   )
 
 }
+
+#' Populate missing values in your inputs with default provided data
+#'
+#' @param source_list list containing source data
+#' @param default_config list containing default configuration
+#'
+#' @details The default_config object can have only one default configuration
+#' per input type specified.
+#' If there were some values specified in the vanilla configuration, they won't
+#' be overwritten by configuration
+#'
+
+.populate_from_default <- function(
+  source_list,
+  default_config
+) {
+
+  option_names <- list(
+    uni = c("mandatory", "width"),
+    textInput = c("placeholder"),
+    numericInput = c("value", "min", "max", "step"),
+    radioButtons = c("choices", "choiceValues", "choiceNames", "selected", "inline"),
+    selectizeInput = c("choices", "choiceValues", "choiceNames", "selected", "maxItems")
+  )
+
+  output_source <- source_list
+
+  # check for all input types with default configuration
+  for (input_type in names(default_config)) {
+
+    # loop on all items in source_list
+    for (item in names(source_list)) {
+
+      # and check only types specified in config
+      if (source_list[[item]][["type"]] == input_type) {
+
+        # check for every option
+        for (option in c(option_names[["uni"]], option_names[[input_type]])) {
+
+          # check if the option is specified in default and not in output_source
+          if (is.null(source_list[[item]][[option]]) && !is.null(default_config[[input_type]][[option]])) {
+
+            # replace the option with one from default
+            output_source[[item]][[option]] <- default_config[[input_type]][[option]]
+
+          }
+        }
+        # safety measure - if the 'choice' option was provided before or has been provided
+        # during population from default, the choiceValues and choiceNames are being deleted
+        if (!is.null(output_source[[item]][["choices"]])) {
+
+          output_source[[item]][["choiceValues"]] <- NULL
+          output_source[[item]][["choiceNames"]] <- NULL
+
+        }
+      }
+    }
+  }
+
+  return(output_source)
+}
+

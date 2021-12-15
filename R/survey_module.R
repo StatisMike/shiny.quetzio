@@ -88,6 +88,8 @@ quetzio_server <- R6::R6Class(
     #' Necessity of other arguments is dependent on this choice. For more info
     #' see 'details'
     #' @param source_yaml path to the source yaml file
+    #' @param source_yaml_default path to the optional default options for items
+    #' generated with 'source_yaml' file. Needs to be a yaml file.
     #' @param source_gsheet_id id of the source googlesheet file
     #' @param source_gsheet_sheetname name of the source spreadsheet
     #' @param source_object object of class `list` (similiar in structure to
@@ -138,10 +140,11 @@ quetzio_server <- R6::R6Class(
 
     initialize = function(
       source_method,
-      source_object = NULL,
       source_yaml = NULL,
+      source_yaml_default = NULL,
       source_gsheet_id = NULL,
       source_gsheet_sheetname = NULL,
+      source_object = NULL,
       output_gsheet = FALSE,
       output_gsheet_id = NULL,
       output_gsheet_sheetname = NULL,
@@ -213,6 +216,14 @@ quetzio_server <- R6::R6Class(
       } else if (source_method == "yaml") {
         source_list <- .yaml_to_list(
           yaml_file = source_yaml)
+
+        # if default is provided, populate source list
+        if (!is.null(source_yaml_default)) {
+          source_list <- .populate_from_default(
+            source_list,
+            yaml::read_yaml(source_yaml_default)
+          )
+        }
 
         # check list validity
         .check_source_list(source_list)
