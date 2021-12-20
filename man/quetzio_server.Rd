@@ -13,6 +13,8 @@ of your questionnaire
 \describe{
 \item{\code{source_list}}{List containing the data for all the inputs}
 
+\item{\code{description}}{List containing survey instruction and description}
+
 \item{\code{div_id}}{ID of the div containing the survey UI}
 
 \item{\code{module_id}}{ID of the shiny module}
@@ -69,6 +71,7 @@ Initializing the 'quetzio_server' object
   source_method,
   source_yaml = NULL,
   source_yaml_default = NULL,
+  source_yaml_desc = NULL,
   source_gsheet_id = NULL,
   source_gsheet_sheetname = NULL,
   source_object = NULL,
@@ -76,7 +79,7 @@ Initializing the 'quetzio_server' object
   output_gsheet_id = NULL,
   output_gsheet_sheetname = NULL,
   module_id = NULL,
-  div_id = "form",
+  div_id = NULL,
   custom_css = NULL,
   button_labels = c("Submit", "Cannot submit", "Submitted!", "Error occured!"),
   render_ui = TRUE,
@@ -95,7 +98,10 @@ see 'details'}
 \item{\code{source_yaml}}{path to the source yaml file}
 
 \item{\code{source_yaml_default}}{path to the optional default options for items
-generated with 'source_yaml' file. Needs to be a yaml file.}
+generated with 'source_yaml' file. Only when \code{source_method == 'yaml'}.}
+
+\item{\code{source_yaml_desc}}{path to the optional instruction and item
+descriptions. Generated only if provided.}
 
 \item{\code{source_gsheet_id}}{id of the source googlesheet file}
 

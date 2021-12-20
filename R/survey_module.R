@@ -47,6 +47,9 @@ quetzio_server <- R6::R6Class(
     #' @field source_list List containing the data for all the inputs
     source_list = NULL,
 
+    #' @field description List containing survey instruction and description
+    description = NULL,
+
     #' @field div_id ID of the div containing the survey UI
     div_id = NULL,
 
@@ -89,7 +92,9 @@ quetzio_server <- R6::R6Class(
     #' see 'details'
     #' @param source_yaml path to the source yaml file
     #' @param source_yaml_default path to the optional default options for items
-    #' generated with 'source_yaml' file. Needs to be a yaml file.
+    #' generated with 'source_yaml' file. Only when `source_method == 'yaml'`.
+    #' @param source_yaml_desc path to the optional instruction and item
+    #' descriptions. Generated only if provided.
     #' @param source_gsheet_id id of the source googlesheet file
     #' @param source_gsheet_sheetname name of the source spreadsheet
     #' @param source_object object of class `list` (similiar in structure to
@@ -142,6 +147,7 @@ quetzio_server <- R6::R6Class(
       source_method,
       source_yaml = NULL,
       source_yaml_default = NULL,
+      source_yaml_desc = NULL,
       source_gsheet_id = NULL,
       source_gsheet_sheetname = NULL,
       source_object = NULL,
@@ -149,7 +155,7 @@ quetzio_server <- R6::R6Class(
       output_gsheet_id = NULL,
       output_gsheet_sheetname = NULL,
       module_id = NULL,
-      div_id = "form",
+      div_id = NULL,
       custom_css = NULL,
       button_labels = c("Submit", "Cannot submit", "Submitted!", "Error occured!"),
       render_ui = TRUE,
@@ -195,6 +201,12 @@ quetzio_server <- R6::R6Class(
         self$module_ui_id <- self$module_id
       } else {
         self$module_ui_id <- paste(link_id, self$module_id, sep = ns.sep)
+      }
+
+      # save the div id if not provided
+
+      if (is.null(div_id)) {
+        self$div_id <- paste(self$module_ui_id, "form", sep = "_")
       }
       # read the file and save resulting list in the environment
 
@@ -258,6 +270,12 @@ quetzio_server <- R6::R6Class(
         stop("'button_labels' should be specified as character vector of length 2")
       }
 
+      # load description list
+      if (!is.null(source_yaml_desc)) {
+        .check_package("yaml")
+        self$description <- yaml::read_yaml(source_yaml_desc)
+      }
+
       # check for mandatory and numeric inputs
 
       private$mandatory_items <- .get_mandatory(self$source_list)
@@ -265,7 +283,6 @@ quetzio_server <- R6::R6Class(
 
       # save other information in private
 
-      self$div_id <- div_id
       self$button_labels <- button_labels
       private$output_gsheet <- output_gsheet
       if(output_gsheet) {
