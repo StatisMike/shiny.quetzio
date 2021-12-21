@@ -85,3 +85,146 @@ create_survey_source <- function(
   return(out)
 
 }
+
+#' Create source list from 'data.frame'
+#' @param source_df source `data.frame` object
+#' @param type character which strategy to take
+#'
+#' @import stringr
+#'
+
+.df_to_list <- function(source_df, type = "quetzio_source"){
+
+  source_list <- list()
+
+  if (type == "quetzio_source") {
+
+    for (row in 1:nrow(source_df)){
+
+      data_row <- source_df[row, ]
+      inputId <- data_row$inputId
+
+      row_as_list <-
+        list(type = as.character(data_row$type),
+             label = as.character(data_row$label),
+             mandatory = as.logical(data_row$mandatory),
+             width = as.character(data_row$width))
+
+      if (row_as_list$type == "textInput") {
+        pat <- "^chr_"
+
+      } else if (row_as_list$type == "numericInput") {
+        pat <- "^num_"
+
+      } else if (row_as_list$type == "selectizeInput") {
+        pat <- "^mult_|^select_"
+
+      } else if (row_as_list$type == "radioButtons") {
+        pat <- "^mult_|^radio_"
+
+      } else {
+        stop("Type of the question needs to be one of 'textInput', 'numericInput', 'selectizeInput', 'radioButtons'")
+      }
+
+      data_row <- data_row[, grepl(x = names(data_row), pattern = pat)]
+      names(data_row) <- gsub(names(data_row), pattern = pat, replacement = "")
+      row_as_list <- c(row_as_list, as.list(data_row))
+
+      if (row_as_list$type == "selectizeInput" || row_as_list$type == "radioButtons") {
+
+        if ((is.null(row_as_list$choices)||is.na(row_as_list$choices)) &&
+            ((is.null(row_as_list$choiceValues)||is.na(row_as_list$choiceValues)) &
+             (is.null(row_as_list$choiceNames)||is.na(row_as_list$choiceNames)))) {
+          stop (paste0("For ", inputId, "both choices and choiceValues, choiceNames are missing."))
+        }
+
+        row_as_list[["choices"]] <-
+          stringr::str_trim(unlist(stringr::str_split(row_as_list$choices, pattern = ";|\n")))
+        row_as_list[["choiceValues"]] <-
+          stringr::str_trim(unlist(stringr::str_split(row_as_list$choiceValues, pattern = ";|\n")))
+        row_as_list[["choiceNames"]] <-
+          stringr::str_trim(unlist(stringr::str_split(row_as_list$choiceNames, pattern = ";|\n")))
+
+      }
+
+      source_list[[as.character(inputId)]] <- row_as_list
+
+    }
+
+  } else if (type == "quetzio_desc") {
+
+    source_list <- lapply(c(1:nrow(source_df)), \(i) {
+
+      x <- as.list(source_df[i,])
+
+      row_as_list <- list(
+        type = x$type,
+        html = .null_def(x$html, FALSE),
+        text = x$text
+      )
+
+      switch(
+        row_as_list$type,
+
+        instruction_title = {
+          row_as_list$align <- .null_def(x$align, "left")
+
+        },
+
+        instruction_para = {
+          row_as_list$align <- .null_def(x$align, "left")
+
+        },
+
+        instruction_list = {
+          row_as_list$order <- .null_def(x$align, FALSE)
+          row_as_list$text <- unlist(
+            stringr::str_split(
+              string = row_as_list$text,
+              pattern = ";|\n")
+          )
+
+        },
+
+        item_desc = {
+          row_as_list$inputId <- x$inputId
+          row_as_list$align <- .null_def(x$align, "left")
+
+        }
+      )
+
+      return(row_as_list)
+
+    })
+
+
+  }
+
+  return(source_list)
+
+}
+
+#' Generate source list from yaml
+#'
+#' @param yaml_file path to the source yaml file
+
+
+.yaml_to_list <- function(yaml_file){
+  yaml::read_yaml(file = yaml_file)
+}
+
+#' Read the Answer data from Google Sheets
+#' @param output_ss character vector with output googlesheet ID
+#' @param output_sheet character vector with output spreadsheet name
+
+
+.read_all_answers <- function(
+  output_ss,
+  output_sheet
+) {
+  googlesheets4::read_sheet(
+    ss = output_ss,
+    sheet = output_sheet
+  )
+}
+

@@ -93,14 +93,20 @@ quetzio_server <- R6::R6Class(
     #' @param source_yaml path to the source yaml file
     #' @param source_yaml_default path to the optional default options for items
     #' generated with 'source_yaml' file. Only when `source_method == 'yaml'`.
-    #' @param source_yaml_desc path to the optional instruction and item
-    #' descriptions. Generated only if provided.
     #' @param source_gsheet_id id of the source googlesheet file
     #' @param source_gsheet_sheetname name of the source spreadsheet
     #' @param source_object object of class `list` (similiar in structure to
     #' 'yaml' source) or `data.frame` (similiar in structure to 'googlesheet'
     #' source) to be the source of questions. You can create a sample data.frame
     #' with \code{create_survey_source()}. Needed when `source_method == 'raw'`
+    #' @param desc_yaml path to the optional instruction and item
+    #' descriptions.
+    #' @param desc_gsheet_id id of the googlesheet to provide optional instruction
+    #' and item descriptions. Defaults to 'source_gsheet_id', if not provided.
+    #' @param desc_gsheet_sheetname name of source for optional instruction and
+    #' item descriptions.
+    #' @param desc_object object of class `list` or `data.frame` to be the source
+    #' of optional instruction and item descriptions.
     #' @param output_gsheet logical: do you wish to save the answers automatically
     #' to the googlesheet. If TRUE, the 'output_gsheet_id' and 'output_gsheet_sheetname'
     #' arguments need to be specified. Defaults to FALSE
@@ -140,6 +146,17 @@ quetzio_server <- R6::R6Class(
     #'   - \code{output_gsheet == TRUE}: 'output_gsheet_id' (if other than 'source_gsheet_id')
     #'   and 'output_gsheet_sheetname'
     #'
+    #' There are also some optional functionalities, that can be used with sources.
+    #'
+    #' - optional instructions and item descriptions - they are generated only
+    #' if one of the following is provided:
+    #'    - `desc_yaml`: rendering from YAML file
+    #'    - `desc_gsheet_sheetname`: rendering from googlesheet. If the `source_method`
+    #'    isn't `gsheet` or the 'googlesheet_id' containing description is different
+    #'    from source, the `desc_gsheet_id` need to be provided too
+    #'    - `desc_object`: rendering from R object of classes 'data.frame' or 'list'
+    #' - optional default configuration - it is used for a type of shinyInput.
+    #' Need to provide `source_yaml_default` - there are no other methods ATM.
     #'
     #' @return the 'quetzio_server' serverModule
 
@@ -147,13 +164,16 @@ quetzio_server <- R6::R6Class(
       source_method,
       source_yaml = NULL,
       source_yaml_default = NULL,
-      source_yaml_desc = NULL,
       source_gsheet_id = NULL,
       source_gsheet_sheetname = NULL,
       source_object = NULL,
       output_gsheet = FALSE,
       output_gsheet_id = NULL,
       output_gsheet_sheetname = NULL,
+      desc_yaml = NULL,
+      desc_gsheet_id = NULL,
+      desc_gsheet_sheetname = NULL,
+      desc_object = NULL,
       module_id = NULL,
       div_id = NULL,
       custom_css = NULL,
@@ -266,14 +286,30 @@ quetzio_server <- R6::R6Class(
       }
 
       # check if the submit button labels are correct
-      if (class(button_labels) != "character" && length(button_labels) != 2) {
-        stop("'button_labels' should be specified as character vector of length 2")
+      if (class(button_labels) != "character" || length(button_labels) != 4) {
+        stop("'button_labels' should be specified as character vector of length 4")
       }
 
       # load description list
-      if (!is.null(source_yaml_desc)) {
+      if (!is.null(desc_yaml)) {
+        # from YAML
         .check_package("yaml")
-        self$description <- yaml::read_yaml(source_yaml_desc)
+        self$description <- yaml::read_yaml(desc_yaml)
+      } else if (!is.null(desc_gsheet_sheetname)) {
+        # from googlesheet
+        .check_package("googlesheets4")
+        desc_from_gsheet <- googlesheets4::read_sheet(
+          ss = if (is.null(desc_gsheet_id)) source_gsheet_id else desc_gsheet_id,
+          sheet = desc_gsheet_sheetname
+        )
+        # turn into the list
+        self$description <- .df_to_list(desc_from_gsheet, type = "quetzio_desc")
+      } else if (!is.null(desc_object)) {
+        if (class(desc_object) == "data.frame")
+          self$description <- .df_to_list(desc_object, type = "quetzio_desc")
+        else if (class(desc_object) == "list")
+          self$description <- desc_object
+        else stop(call. = F, "'desc_object', if provided needs to be of classes 'data.frame' or 'list'")
       }
 
       # check for mandatory and numeric inputs

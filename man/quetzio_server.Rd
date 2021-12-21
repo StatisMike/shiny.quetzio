@@ -71,13 +71,16 @@ Initializing the 'quetzio_server' object
   source_method,
   source_yaml = NULL,
   source_yaml_default = NULL,
-  source_yaml_desc = NULL,
   source_gsheet_id = NULL,
   source_gsheet_sheetname = NULL,
   source_object = NULL,
   output_gsheet = FALSE,
   output_gsheet_id = NULL,
   output_gsheet_sheetname = NULL,
+  desc_yaml = NULL,
+  desc_gsheet_id = NULL,
+  desc_gsheet_sheetname = NULL,
+  desc_object = NULL,
   module_id = NULL,
   div_id = NULL,
   custom_css = NULL,
@@ -100,9 +103,6 @@ see 'details'}
 \item{\code{source_yaml_default}}{path to the optional default options for items
 generated with 'source_yaml' file. Only when \code{source_method == 'yaml'}.}
 
-\item{\code{source_yaml_desc}}{path to the optional instruction and item
-descriptions. Generated only if provided.}
-
 \item{\code{source_gsheet_id}}{id of the source googlesheet file}
 
 \item{\code{source_gsheet_sheetname}}{name of the source spreadsheet}
@@ -120,6 +120,18 @@ arguments need to be specified. Defaults to FALSE}
 the same googlesheet as for 'source' will be used}
 
 \item{\code{output_gsheet_sheetname}}{name of the output spreadsheet}
+
+\item{\code{desc_yaml}}{path to the optional instruction and item
+descriptions.}
+
+\item{\code{desc_gsheet_id}}{id of the googlesheet to provide optional instruction
+and item descriptions. Defaults to 'source_gsheet_id', if not provided.}
+
+\item{\code{desc_gsheet_sheetname}}{name of source for optional instruction and
+item descriptions.}
+
+\item{\code{desc_object}}{object of class \code{list} or \code{data.frame} to be the source
+of optional instruction and item descriptions.}
 
 \item{\code{module_id}}{character string with unique id for the module. If not
 specified, it will be automatically generated}
@@ -163,6 +175,21 @@ choices:
 \item \code{output_gsheet == TRUE}: 'output_gsheet_id' (if other than 'source_gsheet_id')
 and 'output_gsheet_sheetname'
 }
+}
+
+There are also some optional functionalities, that can be used with sources.
+\itemize{
+\item optional instructions and item descriptions - they are generated only
+if one of the following is provided:
+\itemize{
+\item \code{desc_yaml}: rendering from YAML file
+\item \code{desc_gsheet_sheetname}: rendering from googlesheet. If the \code{source_method}
+isn't \code{gsheet} or the 'googlesheet_id' containing description is different
+from source, the \code{desc_gsheet_id} need to be provided too
+\item \code{desc_object}: rendering from R object of classes 'data.frame' or 'list'
+}
+\item optional default configuration - it is used for a type of shinyInput.
+Need to provide \code{source_yaml_default} - there are no other methods ATM.
 }
 }
 
