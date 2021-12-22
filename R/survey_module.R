@@ -66,7 +66,7 @@ quetzio_server <- R6::R6Class(
     #' @field message reactiveVal catching any warning messages
     message = NULL,
 
-    #' @field answers reactiveValues object containing answers to questions
+    #' @field answers reactiveVal object containing list with answers to questions
     answers = NULL,
 
     #' @description method to change the state of the UI

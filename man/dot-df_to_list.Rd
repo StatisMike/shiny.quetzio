@@ -9,7 +9,7 @@
 \arguments{
 \item{source_df}{source \code{data.frame} object}
 
-\item{type}{character which strategy to take}
+\item{type}{character indicating which strategy to take}
 }
 \description{
 Create source list from 'data.frame'

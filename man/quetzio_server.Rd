@@ -26,7 +26,7 @@ button in active and disabled state}
 
 \item{\code{message}}{reactiveVal catching any warning messages}
 
-\item{\code{answers}}{reactiveValues object containing answers to questions}
+\item{\code{answers}}{reactiveVal object containing list with answers to questions}
 
 \item{\code{module_ui_id}}{character string used to generate UI. It needs to
 be modified when linking the questionnaires}

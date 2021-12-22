@@ -1,6 +1,6 @@
 Package: shiny.survey
 Title: Create a survey module in ShinyApp
-Version: 0.0.10.9002
+Version: 0.0.10.9003
 Authors@R: 
     person(given = "Michal",
            family = "Kosinski",
@@ -21,10 +21,13 @@ Imports:
    shinyjs, 
    stringr
 Suggests: 
-   googlesheets4, 
-   yaml
+    knitr,
+    googlesheets4,
+    yaml,
+    rmarkdown
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
+VignetteBuilder: knitr

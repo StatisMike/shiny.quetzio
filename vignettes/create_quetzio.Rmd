@@ -1,0 +1,310 @@
+---
+title: "Create questionnaire"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Create questionnaire}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, echo=F, message=F, warning=F}
+library(shiny.survey)
+googlesheets4::gs4_auth(email = "statismike@gmail.com")
+```
+
+Package **shiny.survey** provides a relatively simple but also highly
+customizable framework for creation and deploying questionnaire as a part
+of your *shinyApp*.
+
+Every questionnaire created in this framework takes a form of object of class
+**quetzio_server**, and needs to be called inside the *server* of your application.
+
+This vignette is going to take you on all basic things you should know about using
+this package to include a questionnaire within your application - how to
+build your configuration file, what are the core possibilities of **quetzio_server**
+both as an semi-independent object and as a part of more complex logic in
+your application.
+
+## What is the **quetzio_server**?
+
+It is main element of the whole functionality of **shiny.survey**. Its the 
+*R6* class definition used to create objects creating Shiny modules upon
+initialization. It takes a source of the questions (and optionally: additional instruction 
+and descriptions for individual inputs) and generates the whole questionnaire UI. 
+Within the created module the entire backend for the reactivity is contained 
+(consisting of answers validation and their output).
+
+Generally, the basic dataflow within this process is shown in figure below.
+
+```{r quetzio_server_logic, echo=F, fig.cap="Logic of quetzio_server object"}
+knitr::include_graphics("quetzio_server_logic.png")
+```
+
+## What is the structure of question source?
+
+As seen on the figure above, there are three possible sources for the questions:
+- googlesheets (needs **googlesheets4** package installed)
+- yaml (needs **yaml** package installed)
+- R object (*list* or *data.frame*)
+
+Only one source method can be used. It needs to be defined during initialization
+by specifying `source_method` argument in the call of `quetzio_server$new()`
+
+In the source, for every *shinyInput* you can specify following parameters:
+
+- **inputId** (as the name of the sequence)
+- **type**
+- **label**
+- mandatory: (true/false) if the input must be filled
+- width: the same as in regular input specification. If not provided, defaults to 500px
+
+>**Bold** ones are mandatory!
+
+Additionally, various supported shinyInput types support additional parameters.
+Table of the supported shinyInputs with all possible parameters is provided below:
+
+|    parameter   |  textInput |numericInput|selectizeInput|radioButtons|
+|    :----:      |   :----:   |   :----:   |    :----:    |   :----:   |
+|placeholder     |      x     |            |              |            |    
+|value           |            |     **x**  |              |            |    
+|min             |            |     x      |              |            |    
+|max             |            |     x      |              |            |    
+|step            |            |     x      |              |            |    
+|*choices*       |            |            |     **x**    |    **x**   |    
+|*choiceValues*  |            |            |     **x**    |    **x**   |    
+|*choiceNames*   |            |            |     **x**    |    **x**   |    
+|maxItems        |            |            |       x      |            |    
+|selected        |            |            |       x      |      x     |    
+|inline          |            |            |              |      x     |   
+
+> - *Italic* parameters are interchangeable. You can specify either *choices* or both *choiceValues* and *choiceNames* for single input. They are also multiple-value parameters.
+> - Bold **x** indicates that the parameter is mandatory and need to be specified for given *shinyInput*
+
+### YAML source method (`source_method == 'yaml'`)
+
+The main intended way of sourcing data for the module is by creating a *YAML*
+source file in a very simple form - template shown below. It also requires 
+installation of the *yaml* R package
+
+```{yaml, yaml_template, eval=F}
+inputId_1:
+   type: shinyInput_type
+   label: shinyInput_label
+   parameter_1: value
+   parameter_2: value
+   parameter_n: value
+inputId_2:
+   type: shinyInput_type
+   label: shinyInput_label
+   parameter: value
+   multi-value_parameter:
+     - value_1
+     - value_2
+     - value_n
+inputId_n: ...
+```
+
+### googlesheets source method (`source_method == 'gsheet'`)
+
+Additional way of sourcing data, especially useful if you intend to frequently 
+update the questions or there will be multiple people collaborating during the
+run of the Shiny application.
+
+To use this method the *googlesheets4* R package needs to be installed.
+
+You can create example googlesheet using helper function provided with the 
+package. It makes sure that all needed columns are present and they are containing
+correct classes. 
+
+```{r create_googlesheets_source, message=F}
+# assignement to hold the ID of created googlesheet
+id <- create_quetzio_source(
+  method = "gsheet")
+
+# see the data structure:
+str(
+  googlesheets4::read_sheet(ss = id, sheet = "Questions")
+  )
+
+# I remove the googlesheet created for this presentation
+googledrive::drive_trash(id)
+```
+
+As you can see, it contains one placeholder row with exemplary values and
+correct types. You can populate the *googlesheet* using Google Drive GUI - 
+remember to remove the placeholder row!
+
+>Values of multi-values parameters need to be separated within one cell with
+either a semicolon or newline
+
+### providing R object as a source (`source_method == 'raw'`)
+
+If, for any reason you can't or won't install *yaml* or *googlesheets4* packages
+or just prefer assigning the created R object as a source, you can provide
+either a list or data.frame during initialization of new *quetzio_server* object.
+
+They are analogous to the structure of *yaml* (list) or *googlesheet* (data.frame)
+source file. You can check the correct structure for the same two-item example 
+questionnaire configured in both list and data.frame below.
+
+```{r raw_sources}
+# every nested list need to be named with the inputId
+list_source <- list(
+  textItem = list(
+    type = "textInput",
+    label = "First input",
+    placeholder = "Write inside of me, please!"),
+  selectizeItem = list(
+    type = "selectizeInput",
+    label = "Choose up to two",
+    choices = c("I am first", "I am second", "I am third", "Who am I?"),
+    maxItems = 2,
+    mandatory = TRUE
+  )
+)
+
+# data.frame can be configured explicitly by 'data.frame'
+df_source <- data.frame(
+  inputId = c("textItem", "selectizeItem"),
+  type = c("textInput", "selectizeInput"),
+  mandatory = c(NA, TRUE),
+  label = c("First input", "Choose up to two"),
+  chr_placeholder = c("Write inside of me, please!", NA),
+  mult_choices = c(NA, "I am first;I am second;I am third;Who am I?"),
+  select_maxItems = c(NA, 2)
+)
+
+# You can also use the same function as for googlesheet generation to generate
+# example data.frame with placeholder row, though you need to modify it
+# afterwards
+
+df_source2 <- create_quetzio_source(method = "df")
+str(df_source2)
+```
+
+>The list is recommended for source, though with long questionnaires and
+>similiar shinyInput types the data.frame source can be easier to generate - 
+>it all depends on your workflow and the structure of the questionnaire
+
+## Embedding the questionnaire in your shinyApp
+
+If you have your source created correctly, it is the time to embed the
+questionnaire in your Shiny application. You need to make some calls
+both in the *server* and in the *ui* parts of your application.
+
+### Generation of the quetzio_server object
+
+You need to create the **quetzio_server** object inside of your *server* code.
+There are following mandatory arguments for the `quetzio_server$new()`
+
+- source_method: to choose the source method ('yaml', 'gsheet', 'raw')
+  - for `source_method == 'yaml'`: **source_yaml**
+  - for `source_method == 'gsheet'`: **source_gsheet_id** and **source_gsheet_sheetname**
+  - for `source_method == 'raw'`: **source_object**
+- module_id: character string to reference created module
+
+So to create the questionnaire based on the source created above:
+
+```{r quetzio_server_code, eval=F}
+quetzio_from_list <- quetzio_server$new(
+  source_method = "raw",
+  source_object = list_source,
+  module_id = "my_questionnaire"
+)
+```
+
+### Adding the questionnaire to you UI
+
+The questionnaire isn't seen anywhere in the UI yet! You can show it by
+adding in your UI the following call:
+
+```{r quetzio_ui_code, eval = F}
+quetzio_UI(module_id = "my_questionnaire")
+```
+
+Yes - this is all!
+
+> Remember that all shiny modules IDs needs to be unique withing your application
+environement!
+
+### Using the built-in googlesheets output method
+
+If you wish to send the results of the survey automatically to some *googlesheet*
+file, you can specify additional arguments in the **quetzio_server$new()**
+
+```{r quetzio_gsheet_output_server, eval = F}
+# the same questionnaire as above
+quetzio_server$new(
+  source_method = "raw",
+  source_object = list_source,
+  module_id = "my_questionnaire",
+  # but with specific arguments for the googlesheet output
+  output_gsheet = TRUE,
+  output_gsheet_id = "your_googlesheet_id",
+  output_gsheet_sheetname = "sheet_name"
+)
+```
+
+> As you can see above, the assignement of the object isn't necessary. It don't
+allow for reading the state of the questionnaire or getting the asnwers in the
+application. In the example above, the answers will be saved in the external
+*googlesheet*, so the answer reading won't be necessary.
+
+### Reading the state of the created quetzio_server object within the application.
+
+You can get some information from your questionnaire by calling the following
+calls on your object:
+
+```{r, eval=F}
+# All of the above are 'reactiveVal' object, so they need to be 
+# accessed in the observe() or reactive() context
+observe({
+  
+  # is the questionnaire done: TRUE or FALSE
+  my_questionnaire$is_done()
+
+  # check if there are any warning messages: if none, then NULL
+  my_questionnaire$message()
+
+  # get the list of answers. If questionnaire isn't done, then NULL
+  my_questionnaire$answers()
+})
+```
+
+## Additional features
+
+There are some more features that are out of the scope of this vignette, for more
+information check other vignettes and help files
+
+- Functional features
+  - get answers in form of data.frame with **get_answers_df** method
+  - toggle the UI to be visible or not with **toggle_ui** method
+  - add instructions and additional item descriptions during initialization
+  with **desc_yaml**, **desc_gsheet_id** and **desc_gsheet_sheetname** or
+  **desc_object**
+  - update item labels based on some *reactiveVal* with **update_labels** method
+  - link multiple **quetzio_server** objects with **quetzio_link_server** object
+- Customizable features
+  - add your own submit button labels
+  - add custom css to alternate the look of invalid input label highlight and
+  mandatory stars
+  - use specific div id to customize css styles more easily
+
+## Alternatives to shiny.survey
+
+I feel like it needs to be stated that **shiny.survey** isn't your only option for
+creating questionnaires with Shiny. The main alternative is 
+[**shinysurveys** package](https://github.com/jdtrat/shinysurveys){target=_blank}.
+
+Main difference between these are the embedding - while **shiny.surveys** can be used
+to create questionnaire (or multiple of them) within more complex Shiny application, 
+the **shinysurverys** are tailored to create whole ShinyApp by itself. They also
+currently (as of 0.2.0.) don't offer built-in support with **googlesheets4**, 
+either for source or data collection.
