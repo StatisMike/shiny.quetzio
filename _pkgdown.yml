@@ -1,0 +1,17 @@
+url: ~
+template:
+  bootstrap: 5
+reference:
+- title: Create exemplary source
+  desc:  Generate a data.frame or googlesheet sources with placeholder row.
+- contents:
+  - starts_with("create_")
+- title: Generate single questionnaire
+- contents:
+  - quetzio_server
+  - quetzio_UI
+- title: Link multiple questionnaires together
+- contents:
+  - quetzio_link_server
+  - quetzio_link_UI
+

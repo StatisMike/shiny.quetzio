@@ -120,8 +120,7 @@
           actionButton(
             inputId = ns("submit"),
             label = button_label,
-            class = "btn-primary",
-            width = "350px"
+            class = "btn-primary"
           )
         ), splice = TRUE)
     )
