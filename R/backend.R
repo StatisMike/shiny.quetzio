@@ -371,3 +371,64 @@
     }
   )
 }
+
+#' Server module handling value updates
+#'
+#' @param self R6 self object
+#' @param values reactive object that triggers the change and contains
+#' new values
+#'
+#' @import shiny
+
+.quetzio_value_update <- function(
+  self,
+  values
+) {
+
+  moduleServer(
+    id = self$module_ui_id,
+
+    function(input, output, session){
+
+      observe({
+
+        req(values())
+
+        # firstly, filter the values for only these, that have the same names
+        # as any of the inputs in quetzio's source_list
+        values <- values()
+        filtered_values <- values[names(values) %in% names(self$source_list)]
+
+        lapply(seq_along(filtered_values), \(i) {
+
+          if (!is.null(filtered_values[[i]]) && !is.na(filtered_values[[i]])) {
+
+            # get the type of the shinyInput in the source list
+            input_name <- names(filtered_values)[i]
+            input_type <- self$source_list[[input_name]]$type
+
+            # call update*Input function for the type of shinyInput
+            switch(
+              input_type,
+
+              numericInput = updateNumericInput(session,
+                                                inputId = input_name,
+                                                value = filtered_values[[input_name]]),
+
+              textInput = updateTextInput(session,
+                                          inputId = input_name,
+                                          value = filtered_values[[input_name]]),
+
+              selectizeInput = updateSelectizeInput(session,
+                                                    inputId = input_name,
+                                                    selected = filtered_values[[input_name]]),
+
+              radioButtons = updateRadioButtons(session,
+                                                inputId = input_name,
+                                                selected = filtered_values[[input_name]])
+            )
+          }
+        })
+      })
+    })
+}

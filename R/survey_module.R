@@ -227,6 +227,8 @@ quetzio_server <- R6::R6Class(
 
       if (is.null(div_id)) {
         self$div_id <- paste(self$module_ui_id, "form", sep = "_")
+      } else {
+        self$div_id <- div_id
       }
       # read the file and save resulting list in the environment
 
@@ -378,7 +380,6 @@ quetzio_server <- R6::R6Class(
     #'
     #'
 
-
     update_labels = function(
       trigger,
       source_method,
@@ -397,8 +398,19 @@ quetzio_server <- R6::R6Class(
         source_gsheet_sheetname = source_gsheet_sheetname,
         source_object = source_object
       )
-    }
+    },
 
+    #' @description Method to update selected values on the change in reactive
+    #'
+    #' @param values reactive which will trigger the update and contain named list
+    #' with values to update. List need to be named, as the names are going to be
+    #' used to identify which inputId to update
+
+    update_values = function(
+      values
+    ){
+      .update_values_module(self, values)
+    }
   )
 )
 

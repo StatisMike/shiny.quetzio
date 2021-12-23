@@ -129,7 +129,7 @@ quetzio_link_server <- R6::R6Class(
 
     #' @description Method to update labels on the change in reactive
     #'
-    #' @param quetzio_name character vector indicating in which questionnaire
+    #' @param quetzio_name string indicating in which questionnaire
     #' the questions to update are located
     #' @param trigger reactive which will trigger the update. It needs to take
     #' values linked to the changes in the source
@@ -167,6 +167,24 @@ quetzio_link_server <- R6::R6Class(
           source_object = source_object
         )
       )
+    },
+
+    #' @description Method to update selected values on the change in reactive
+    #'
+    #' @param quetzio_name string indicating in which questionnaire
+    #' the item values to update are located
+    #' @param values reactive which will trigger the update and contain named list
+    #' with values to update. List need to be named, as the names are going to be
+    #' used to identify which inputId to update
+
+    update_values = function(
+      quetzio_name,
+      values
+    ){
+      observe(
+        self$quetzio_list[[quetzio_name]]$update_values(values)
+      )
     }
+
   )
 )
