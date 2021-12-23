@@ -99,96 +99,6 @@
   return(fields_of_type)
 }
 
-#' Create source list from 'data.frame'
-#' @param source_df source `data.frame` object
-#'
-#' @import stringr
-#'
-
-.df_to_list <- function(source_df){
-
-  source_list <- list()
-
-  for (row in 1:nrow(source_df)){
-
-    data_row <- source_df[row, ]
-    inputId <- data_row$inputId
-
-    row_as_list <-
-      list(type = as.character(data_row$type),
-           label = as.character(data_row$label),
-           mandatory = as.logical(data_row$mandatory),
-           width = as.character(data_row$width))
-
-    if (row_as_list$type == "textInput") {
-      pat <- "^chr_"
-
-    } else if (row_as_list$type == "numericInput") {
-      pat <- "^num_"
-
-    } else if (row_as_list$type == "selectizeInput") {
-      pat <- "^mult_|^select_"
-
-    } else if (row_as_list$type == "radioButtons") {
-      pat <- "^mult_|^radio_"
-
-    } else {
-      stop("Type of the question needs to be one of 'textInput', 'numericInput', 'selectizeInput', 'radioButtons'")
-    }
-
-    data_row <- data_row[, grepl(x = names(data_row), pattern = pat)]
-    names(data_row) <- gsub(names(data_row), pattern = pat, replacement = "")
-    row_as_list <- c(row_as_list, as.list(data_row))
-
-    if (row_as_list$type == "selectizeInput" || row_as_list$type == "radioButtons") {
-
-      if ((is.null(row_as_list$choices)||is.na(row_as_list$choices)) &&
-          ((is.null(row_as_list$choiceValues)||is.na(row_as_list$choiceValues)) &
-           (is.null(row_as_list$choiceNames)||is.na(row_as_list$choiceNames)))) {
-        stop (paste0("For ", inputId, "both choices and choiceValues, choiceNames are missing."))
-      }
-
-      row_as_list[["choices"]] <-
-        stringr::str_trim(unlist(stringr::str_split(row_as_list$choices, pattern = ";|\n")))
-      row_as_list[["choiceValues"]] <-
-        stringr::str_trim(unlist(stringr::str_split(row_as_list$choiceValues, pattern = ";|\n")))
-      row_as_list[["choiceNames"]] <-
-        stringr::str_trim(unlist(stringr::str_split(row_as_list$choiceNames, pattern = ";|\n")))
-
-    }
-
-    source_list[[as.character(inputId)]] <- row_as_list
-
-  }
-
-  return(source_list)
-
-}
-
-#' Generate source list from yaml
-#'
-#' @param yaml_file path to the source yaml file
-
-
-.yaml_to_list <- function(yaml_file){
-  yaml::read_yaml(file = yaml_file)
-}
-
-#' Read the Answer data from Google Sheets
-#' @param output_ss character vector with output googlesheet ID
-#' @param output_sheet character vector with output spreadsheet name
-
-
-.read_all_answers <- function(
-  output_ss,
-  output_sheet
-) {
-  googlesheets4::read_sheet(
-    ss = output_ss,
-    sheet = output_sheet
-  )
-}
-
 #' Save the answer user input to Google Sheet
 #' @param user_answers the object with inputs to extract
 #' @param output_ss character vector with output googlesheet ID
@@ -443,3 +353,79 @@
   return(output_source)
 }
 
+#' generate instructions and item descriptions for quetzio with the use of
+#' source list and 'insertUI'
+#'
+#' @param self R6 'self' object
+#' @import shiny
+
+.generate_description <- function(
+  self
+) {
+
+  # instruction rendering
+  instruction <- self$description[sapply(self$description, \(x) grepl(pattern = "instruction", x = x$type))]
+
+  if (length(instruction) > 0) {
+
+    # initialize the list
+    inst_list <- list()
+
+    # for every element of instructions
+    for (inst in instruction) {
+
+      # if title, create h1 tag
+      if (grepl(pattern = "title", x = inst$type)) {
+
+        list_el <- tagList(tags$h1(align = .null_def(inst$align, "left"),
+                                   if (isTRUE(inst$html)) HTML(inst$text) else inst$text))
+
+        inst_list <- c(inst_list, list_el)
+
+        # if paragraph, create p tag
+      } else if (grepl(pattern = "para", x = inst$type)) {
+
+        list_el <- tagList(tags$p(align = .null_def(inst$align, "left"),
+                                  if (isTRUE(inst$html)) HTML(inst$text) else inst$text))
+
+        inst_list <- c(inst_list, list_el)
+
+      } else if (grepl(pattern = "list", x = inst$type)) {
+
+        list_el <- if(isTRUE(inst$order))
+          tagList(tags$ol(tagList(lapply(inst$text, tags$li))))
+        else
+          tagList(tags$ul(tagList(lapply(inst$text, tags$li))))
+
+        inst_list <- c(inst_list, list_el)
+      }
+
+    }
+
+    insertUI(
+      selector = paste0("#", self$div_id),
+      where = "afterBegin",
+      ui = tags$div(class = "quetzioInstruction",
+                    inst_list))
+
+  }
+
+  # rendering descriptions
+  descriptions <- self$description[sapply(self$description, \(x) grepl(pattern = "item_desc", x = x$type))]
+
+  if (length(descriptions) > 0) {
+
+    for (desc in descriptions) {
+
+      insertUI(
+        selector = paste0("#", paste(sep = ns.sep, self$module_ui_id, desc$inputId, "label")),
+        where = "afterEnd",
+        ui = tags$div(
+          align = .null_def(desc$align, "left"),
+          class = "quetzioDescription",
+          if (isTRUE(desc$html)) HTML(desc$text) else desc$text
+        )
+      )
+    }
+  }
+}

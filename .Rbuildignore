@@ -3,3 +3,6 @@
 ^\.Rproj\.user$
 ^LICENSE\.md$
 ^shiny\.survey\.Rproj$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$

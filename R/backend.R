@@ -13,16 +13,23 @@
     id = self$module_id,
     function(input, output, session) {
 
-      output$quetzio_UI <- renderUI({
+      observeEvent(private$render_ui(), {
 
-        req(private$render_ui())
+        output$quetzio_UI <- renderUI(
+          if (private$render_ui())
+          .generate_ui(source_list = self$source_list,
+                       div_id = self$div_id,
+                       css = private$css,
+                       button_label = self$button_labels[1],
+                       module_ui_id = self$module_ui_id)
+        )
 
-        .generate_ui(source_list = self$source_list,
-                     div_id = self$div_id,
-                     css = private$css,
-                     button_label = self$button_labels[1],
-                     module_ui_id = self$module_ui_id)}
-      )
+        outputOptions(output, "quetzio_UI", suspendWhenHidden = F)
+
+        if (private$render_ui() && !is.null(self$description))
+          .generate_description(self)
+
+      })
 
       # reactiveValues for storing valid and mandatory inputs status
       # as valid$mandatory_filled and valid$minmax_matched
