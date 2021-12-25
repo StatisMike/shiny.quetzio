@@ -3,5 +3,8 @@ pkgdown: 2.0.1
 pkgdown_sha: ~
 articles:
   create_quetzio: create_quetzio.html
-last_built: 2021-12-25T13:23Z
+last_built: 2021-12-25T13:30Z
+urls:
+  reference: https://statismike.github.io/shiny.survey/reference
+  article: https://statismike.github.io/shiny.survey/articles
 
