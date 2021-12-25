@@ -5,6 +5,7 @@
 #'
 #' @import shiny
 #' @export
+#' @seealso quetzio_link_server
 #'
 
 quetzio_link_UI <- function(link_id) {
@@ -23,6 +24,8 @@ quetzio_link_UI <- function(link_id) {
 #' @import R6
 #' @import shiny
 #' @import dplyr
+#' @seealso quetzio_server
+#' @seealso quetzio_link_UI
 #' @export
 #'
 
@@ -188,3 +191,7 @@ quetzio_link_server <- R6::R6Class(
 
   )
 )
+
+#' @name quetzio_link_server
+#' @example inst/examples/quetzio_link_server.R
+NULL

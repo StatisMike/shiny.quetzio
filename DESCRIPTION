@@ -1,6 +1,6 @@
 Package: shiny.survey
 Title: Create a survey module in ShinyApp
-Version: 0.0.11
+Version: 0.0.11.9001
 Authors@R: 
     person(given = "Michal",
            family = "Kosinski",
@@ -14,15 +14,17 @@ Description: Functions to create a shiny.survey_module for you ShinyApp.
 Depends:
    R (>= 4.1.0),
    shiny, 
-   R6, 
-   dplyr
+   R6
 Imports: 
    htmltools, 
    shinyjs, 
+   dplyr,
    stringr
 Suggests: 
     knitr,
+    rmarkdown,
     googlesheets4,
+    googledrive,
     yaml
 License: MIT + file LICENSE
 Encoding: UTF-8

@@ -323,7 +323,7 @@
 
     source <- googlesheets4::read_sheet(
       ss = source_gsheet_id,
-      sheet = source_gsheet_name
+      sheet = source_gsheet_sheetname
     )
   } else if (source_method == "raw") {
 

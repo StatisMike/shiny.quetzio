@@ -13,3 +13,6 @@ same as one provided in 'quetzio_link_server'}
 \description{
 Create UI for linked questionnaires
 }
+\seealso{
+quetzio_link_server
+}

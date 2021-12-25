@@ -13,3 +13,6 @@ same as one provided for 'quetzio_server'}
 \description{
 Create UI of your questionnaire
 }
+\seealso{
+quetzio_server
+}

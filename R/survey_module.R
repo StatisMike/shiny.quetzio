@@ -4,7 +4,7 @@
 #' same as one provided for 'quetzio_server'
 #' @import shiny
 #' @export
-#'
+#' @seealso quetzio_server
 
 quetzio_UI <- function(module_id) {
   ns <- NS(module_id)
@@ -18,6 +18,8 @@ quetzio_UI <- function(module_id) {
 #'
 #' @description Create R6-based server module to generate and hold the state
 #' of your questionnaire
+#'
+#' @seealso quetzio_UI
 #'
 #' @import R6
 #' @import shiny
@@ -414,5 +416,7 @@ quetzio_server <- R6::R6Class(
   )
 )
 
-
+#' @name quetzio_server
+#' @example inst/examples/quetzio_server.R
+NULL
 
