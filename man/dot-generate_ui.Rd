@@ -22,3 +22,4 @@ button}
 \description{
 Generate all shinyInputs from yaml source file function
 }
+\keyword{internal}

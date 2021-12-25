@@ -12,3 +12,4 @@
 \description{
 Helper function to check namespace
 }
+\keyword{internal}

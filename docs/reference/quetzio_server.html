@@ -12,7 +12,7 @@ of your questionnaire"><!-- mathjax --><script src="https://cdnjs.cloudflare.com
     
     <a class="navbar-brand me-2" href="../index.html">shiny.survey</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.10.9003</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.11</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -105,6 +105,7 @@ be modified when linking the questionnaires</p></dd>
 <li><p><a href="#method-new"><code>quetzio_server$new()</code></a></p></li>
 <li><p><a href="#method-get_answers_df"><code>quetzio_server$get_answers_df()</code></a></p></li>
 <li><p><a href="#method-update_labels"><code>quetzio_server$update_labels()</code></a></p></li>
+<li><p><a href="#method-update_values"><code>quetzio_server$update_values()</code></a></p></li>
 <li><p><a href="#method-clone"><code>quetzio_server$clone()</code></a></p></li>
 </ul></div><p></p><hr><a id="method-toggle_ui"></a><div class="section">
 <h3 id="method-toggle-ui-">Method <code>toggle_ui()</code><a class="anchor" aria-label="anchor" href="#method-toggle-ui-"></a></h3>
@@ -343,15 +344,33 @@ with <code>create_survey_source()</code>. Needed when <code>source_method == 'ra
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-clone"></a><div class="section">
-<h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
-<p>The objects of this class are cloneable with this method.</p><div class="section">
+</div><p></p><hr><a id="method-update_values"></a><div class="section">
+<h3 id="method-update-values-">Method <code>update_values()</code><a class="anchor" aria-label="anchor" href="#method-update-values-"></a></h3>
+<p>Method to update selected values on the change in reactive</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">quetzio_server</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">quetzio_server</span><span class="op">$</span><span class="fu">update_values</span><span class="op">(</span><span class="va">values</span><span class="op">)</span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>values</code></dt>
+<dd><p>reactive which will trigger the update and contain named list
+with values to update. List need to be named, as the names are going to be
+used to identify which inputId to update</p></dd>
+
+
+</dl><p></p></div>
+</div>
+
+</div><p></p><hr><a id="method-clone"></a><div class="section">
+<h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
+<p>The objects of this class are cloneable with this method.</p><div class="section">
+<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">quetzio_server</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
 

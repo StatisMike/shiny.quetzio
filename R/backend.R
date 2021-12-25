@@ -4,6 +4,7 @@
 #'
 #' @import shiny
 #' @import shinyjs
+#' @keywords internal
 
 .survey_backend <- function(
   self,
@@ -184,6 +185,7 @@
 #' list of questionnaires
 #'
 #' @import shiny
+#' @keywords internal
 
 .link_backend <- function(self, private, uneval){
   moduleServer(
@@ -192,6 +194,32 @@
 
       # assign the provided 'quetzio_server' objects inside a reactiveValues
       self$quetzio_list <- eval(uneval)
+
+      # create the UI holding the UIs of all linked questionnaires
+
+      # output$quetzio_link_UI <- renderUI(
+      #   tagList(
+      #     lapply(seq_along(private$quetzio_names),
+      #            function(i) quetzio_UI(session$ns(
+      #              self$quetzio_list[[private$quetzio_names[i]]]$module_id)
+      #            )
+      #     ) ) )
+
+      observe({
+
+        output$quetzio_link_UI <- renderUI(
+          tagList(
+            lapply(seq_along(private$quetzio_names),
+                   function(i) quetzio_UI(session$ns(
+                     self$quetzio_list[[private$quetzio_names[i]]]$module_id)
+                   )
+            ) ) )
+
+        outputOptions(output, "quetzio_link_UI", suspendWhenHidden = F)
+
+        self$quetzio_list[[private$quetzio_names[1]]]$toggle_ui(TRUE)
+
+        })
 
       # toggle the state of UIs - hide the UI of the completed questionnaire
       # and show the next one (minus the last, which will be retained)
@@ -207,16 +235,6 @@
 
         }
       })
-
-      # create the UI holding the UIs of all linked questionnaires
-
-      output$quetzio_link_UI <- renderUI(
-        tagList(
-          lapply(seq_along(private$quetzio_names),
-                 function(i) quetzio_UI(session$ns(
-                   self$quetzio_list[[private$quetzio_names[i]]]$module_id)
-                 )
-          ) ) )
 
       # initialize the reactiveVals holding the objects
       self$completion <- reactiveVal()
@@ -261,7 +279,7 @@
 #' with \code{create_survey_source()}. Needed when `source_method == 'raw'`
 #'
 #' @import shiny
-#'
+#' @keywords internal
 
 .quetzio_label_update <- function(
   self,
@@ -370,4 +388,66 @@
       })
     }
   )
+}
+
+#' Server module handling value updates
+#'
+#' @param self R6 self object
+#' @param values reactive object that triggers the change and contains
+#' new values
+#'
+#' @import shiny
+#' @keywords internal
+
+.quetzio_value_update <- function(
+  self,
+  values
+) {
+
+  moduleServer(
+    id = self$module_ui_id,
+
+    function(input, output, session){
+
+      observe({
+
+        req(values())
+
+        # firstly, filter the values for only these, that have the same names
+        # as any of the inputs in quetzio's source_list
+        values <- values()
+        filtered_values <- values[names(values) %in% names(self$source_list)]
+
+        lapply(seq_along(filtered_values), \(i) {
+
+          if (!is.null(filtered_values[[i]]) && !is.na(filtered_values[[i]])) {
+
+            # get the type of the shinyInput in the source list
+            input_name <- names(filtered_values)[i]
+            input_type <- self$source_list[[input_name]]$type
+
+            # call update*Input function for the type of shinyInput
+            switch(
+              input_type,
+
+              numericInput = updateNumericInput(session,
+                                                inputId = input_name,
+                                                value = filtered_values[[input_name]]),
+
+              textInput = updateTextInput(session,
+                                          inputId = input_name,
+                                          value = filtered_values[[input_name]]),
+
+              selectizeInput = updateSelectizeInput(session,
+                                                    inputId = input_name,
+                                                    selected = filtered_values[[input_name]]),
+
+              radioButtons = updateRadioButtons(session,
+                                                inputId = input_name,
+                                                selected = filtered_values[[input_name]])
+            )
+          }
+        })
+      })
+    })
 }

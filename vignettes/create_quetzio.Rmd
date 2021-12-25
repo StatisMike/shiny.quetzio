@@ -290,26 +290,26 @@ For elements of instruction and/or item description you need to provide correct
 config, describing following element *types*:
 
 - for instruction
-  - **instruction_title**: generates *h1* tag
-  - **instruction_para**: generates *p* tag
-  - **instruction_list**: generates *ul* or *ol* tag
+  - **instruction_title**: generates *h1* tag of class **quetzio_title**
+  - **instruction_para**: generates *p* tag of class **quetzio_paragraph**
+  - **instruction_list**: generates *ul* or *ol* tag of class **quetzio_list**
   - all elements are pasted together in the given order within *div* of css class
-  **quetzioInstruction**. It will be located just before the first question.
+  **quetzio_instruction**. It will be located just before the first question.
 - for descriptions
   - **item_desc**: generates item description, which will appear between item
   label and input
-  - it will be contained within *div* of css class **quetzioDescription**
+  - it will be contained within *div* of css class **quetzio_description**
 
 Following parameters can be provided to these element (with some mandatory!):
 
-- *text*: the whole content of the given element
+- *content*: the whole content of the given element
   - **mandatory**
+  - for every element type
+- *align*: how the *content* should be aligned withing its container
+  - optional: if not specified, the default is 'left'
   - for every element type
 - *html*: are there any HTML tags specified in the *text* 
   - optional: if not specified, the default is FALSE
-  - for every element type but *instruction_list*
-- *align*: how the *text* should be aligned withing its container
-  - optional: if not specified, the default is 'left'
   - for every element type but *instruction_list*
 - *order*: should the list be ordered
   - optional: if not specified, the default is FALSE
@@ -328,11 +328,11 @@ need to be named:
 ```{yaml, eval = F}
 -
   type: some_element_type
-  text: content_of_element
+  content: content_of_element
   additional_parameter: value
 -
   type: type_of_second_element
-  text: content_of_second
+  content: content_of_second
   parameter_1: value
   parameter_n: value
 ```
@@ -371,12 +371,12 @@ argument during *quetzio_server* initialization:
 list_source <- list(
   list(
     type = "instruction_title",
-    text = "I am the <b>title</b> of this <i>questionnaire</i>",
+    content = "I am the <b>title</b> of this <i>questionnaire</i>",
     html = TRUE,
     align = "center"),
   list(
     type = "instruction_list",
-    choices = c("I am first", "I am second", "I am third", "Who am I?"),
+    content = c("I am first", "I am second", "I am third", "Who am I?"),
     order = TRUE
   )
 )
@@ -384,7 +384,7 @@ list_source <- list(
 # data.frame can be configured explicitly by 'data.frame'
 df_source <- data.frame(
   type = c("instruction_title", "instruction_list"),
-  text = c("I am the <b>title</b> of this <i>questionnaire</i>",
+  content = c("I am the <b>title</b> of this <i>questionnaire</i>",
            "I am first;I am second;I am third;Who am I?"),
   html = c(TRUE, NA),
   align = c("center", NA),

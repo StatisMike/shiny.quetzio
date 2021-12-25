@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">shiny.survey</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.10.9003</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.11</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,15 +45,42 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.0.3" id="shinysurvey-003">shiny.survey 0.0.3<a class="anchor" aria-label="anchor" href="#shinysurvey-003"></a></h2>
-<ul><li>First production-ready version.</li>
-<li>Added a <code>NEWS.md</code> file to track changes to the package.</li>
+<h2 class="pkg-version" data-toc-text="0.0.11" id="shinysurvey-0011">shiny.survey 0.0.11<a class="anchor" aria-label="anchor" href="#shinysurvey-0011"></a></h2>
+<ul><li>R6 methods <code>update_values</code> supports updating chosen values with external source</li>
+<li>support for adding instructions for questionnaire from YAML, googlesheet or R object source has been added</li>
 </ul></div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.0.4" id="shinysurvey-004">shiny.survey 0.0.4<a class="anchor" aria-label="anchor" href="#shinysurvey-004"></a></h2>
-<ul><li>Rebuilding of the whole system for modules</li>
-<li>Begin rebranding to shiny.quetzio</li>
-<li>Removal of <code>survey_module</code> object and creating <code>quetzio_server</code> R6 object and <code>quetzio_UI</code> function</li>
+<h2 class="pkg-version" data-toc-text="0.0.10" id="shinysurvey-0010">shiny.survey 0.0.10<a class="anchor" aria-label="anchor" href="#shinysurvey-0010"></a></h2>
+<ul><li>support for populating data with default values have been added, with <code>source_yaml_default</code> argument to the <code>quetzio_server</code> class initialization</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.0.9" id="shinysurvey-009">shiny.survey 0.0.9<a class="anchor" aria-label="anchor" href="#shinysurvey-009"></a></h2>
+<ul><li>added <code>update_labels</code> method to <code>quetzio_link_server</code> class</li>
+<li>polished the documentation and code for the <code>update_labels</code> methods</li>
+<li>fixed the bug with ‘mandatory star’ disappearing on mandatory items when their label gets updated</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.0.8" id="shinysurvey-008">shiny.survey 0.0.8<a class="anchor" aria-label="anchor" href="#shinysurvey-008"></a></h2>
+<ul><li>moved <code>quetzio_list</code> of <code>quetzio_link_server</code> from private to public. It is now easier to access separate questionnaires from there</li>
+<li>added <code>update_labels</code> method to the <code>quetzio_survey</code>. You can now update labels of questionnaire items based on some external <code>reactive()</code>.
+<ul><li>works also with questionnaires linked by <code>quetzio_link_server</code>, though the call need to be made on the <code>quetzio_server</code> itself directly within observer: <code>observe(quetzio_link_object$quetzio_list[['quetzio_name']]$update_labels(...))</code>
+</li>
+<li>the wrapper function for this functionality is considered</li>
+</ul></li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.0.7" id="shinysurvey-007">shiny.survey 0.0.7<a class="anchor" aria-label="anchor" href="#shinysurvey-007"></a></h2>
+<ul><li>
+<code>selectizeInputs</code> works better: by default they are using selectize.js and <code>multiple = TRUE</code>, which allows for empty initial value. Instead of specifying <code>multiple</code>, user can now specify <code>maxItems</code>, which indicates how many items can be specified. If left <code>NULL</code>, it allows for selecting all of the options.</li>
+<li>
+<em>invalid_input</em> class is now added to the <em>labels</em>, not whole <em>div</em>. It remedies problem with selectizeInputs, which main div isn’t showing in the rendered state.
+<ul><li>the default <em>invalid_input</em> css style is changed to <code>color: red; font-style: italic;</code>
+</li>
+</ul></li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.0.6" id="shinysurvey-006">shiny.survey 0.0.6<a class="anchor" aria-label="anchor" href="#shinysurvey-006"></a></h2>
+<ul><li>Made the <code>link_id</code> and <code>render_ui</code> arguments of linked <code>quetzio_server</code> modules set automatically: no need to specify it automatically any more!</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.0.5" id="shinysurvey-005">shiny,survey 0.0.5<a class="anchor" aria-label="anchor" href="#shinysurvey-005"></a></h2>
@@ -68,37 +95,15 @@
 </ul></li>
 </ul></div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.0.6" id="shinysurvey-006">shiny.survey 0.0.6<a class="anchor" aria-label="anchor" href="#shinysurvey-006"></a></h2>
-<ul><li>Made the <code>link_id</code> and <code>render_ui</code> arguments of linked <code>quetzio_server</code> modules set automatically: no need to specify it automatically any more!</li>
+<h2 class="pkg-version" data-toc-text="0.0.4" id="shinysurvey-004">shiny.survey 0.0.4<a class="anchor" aria-label="anchor" href="#shinysurvey-004"></a></h2>
+<ul><li>Rebuilding of the whole system for modules</li>
+<li>Begin rebranding to shiny.quetzio</li>
+<li>Removal of <code>survey_module</code> object and creating <code>quetzio_server</code> R6 object and <code>quetzio_UI</code> function</li>
 </ul></div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.0.7" id="shinysurvey-007">shiny.survey 0.0.7<a class="anchor" aria-label="anchor" href="#shinysurvey-007"></a></h2>
-<ul><li>
-<code>selectizeInputs</code> works better: by default they are using selectize.js and <code>multiple = TRUE</code>, which allows for empty initial value. Instead of specifying <code>multiple</code>, user can now specify <code>maxItems</code>, which indicates how many items can be specified. If left <code>NULL</code>, it allows for selecting all of the options.</li>
-<li>
-<em>invalid_input</em> class is now added to the <em>labels</em>, not whole <em>div</em>. It remedies problem with selectizeInputs, which main div isn’t showing in the rendered state.
-<ul><li>the default <em>invalid_input</em> css style is changed to <code>color: red; font-style: italic;</code>
-</li>
-</ul></li>
-</ul></div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.0.8" id="shinysurvey-008">shiny.survey 0.0.8<a class="anchor" aria-label="anchor" href="#shinysurvey-008"></a></h2>
-<ul><li>moved <code>quetzio_list</code> of <code>quetzio_link_server</code> from private to public. It is now easier to access separate questionnaires from there</li>
-<li>added <code>update_labels</code> method to the <code>quetzio_survey</code>. You can now update labels of questionnaire items based on some external <code>reactive()</code>.
-<ul><li>works also with questionnaires linked by <code>quetzio_link_server</code>, though the call need to be made on the <code>quetzio_server</code> itself directly within observer: <code>observe(quetzio_link_object$quetzio_list[['quetzio_name']]$update_labels(...))</code>
-</li>
-<li>the wrapper function for this functionality is considered</li>
-</ul></li>
-</ul></div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.0.9" id="shinysurvey-009">shiny.survey 0.0.9<a class="anchor" aria-label="anchor" href="#shinysurvey-009"></a></h2>
-<ul><li>added <code>update_labels</code> method to <code>quetzio_link_server</code> class</li>
-<li>polished the documentation and code for the <code>update_labels</code> methods</li>
-<li>fixed the bug with ‘mandatory star’ disappearing on mandatory items when their label gets updated</li>
-</ul></div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.0.10" id="shinysurvey-0010">shiny.survey 0.0.10<a class="anchor" aria-label="anchor" href="#shinysurvey-0010"></a></h2>
-<ul><li>support for populating data with default values have been added, with <code>source_yaml_default</code> argument to the <code>quetzio_server</code> class initialization</li>
+<h2 class="pkg-version" data-toc-text="0.0.3" id="shinysurvey-003">shiny.survey 0.0.3<a class="anchor" aria-label="anchor" href="#shinysurvey-003"></a></h2>
+<ul><li>First production-ready version.</li>
+<li>Added a <code>NEWS.md</code> file to track changes to the package.</li>
 </ul></div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>

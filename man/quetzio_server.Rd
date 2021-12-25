@@ -40,6 +40,7 @@ be modified when linking the questionnaires}
 \item \href{#method-new}{\code{quetzio_server$new()}}
 \item \href{#method-get_answers_df}{\code{quetzio_server$get_answers_df()}}
 \item \href{#method-update_labels}{\code{quetzio_server$update_labels()}}
+\item \href{#method-update_values}{\code{quetzio_server$update_values()}}
 \item \href{#method-clone}{\code{quetzio_server$clone()}}
 }
 }
@@ -247,6 +248,25 @@ Necessity of other arguments is dependent on this choice}
 'yaml' source) or \code{data.frame} (similiar in structure to 'googlesheet'
 source) to be the source of questions. You can create a sample data.frame
 with \code{create_survey_source()}. Needed when \code{source_method == 'raw'}}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-update_values"></a>}}
+\if{latex}{\out{\hypertarget{method-update_values}{}}}
+\subsection{Method \code{update_values()}}{
+Method to update selected values on the change in reactive
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{quetzio_server$update_values(values)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{values}}{reactive which will trigger the update and contain named list
+with values to update. List need to be named, as the names are going to be
+used to identify which inputId to update}
 }
 \if{html}{\out{</div>}}
 }

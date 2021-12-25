@@ -153,7 +153,7 @@ create_desc_source <- function(
     html = TRUE,
     order = TRUE,
     inputId = "placeholder",
-    text = "<b>Delete</b> this <i>example</i>"
+    content = "<b>Delete</b> this <i>example</i>"
   )
 
   if (method == "gsheet") {
@@ -195,7 +195,7 @@ create_desc_source <- function(
 #' @param type character indicating which strategy to take
 #'
 #' @import stringr
-#'
+#' @keywords internal
 
 .df_to_list <- function(source_df, type = "quetzio_source"){
 
@@ -278,37 +278,23 @@ create_desc_source <- function(
       row_as_list <- list(
         type = x$type,
         html = .null_def(x$html, FALSE),
-        text = x$text
+        content = x$content,
+        align = .null_def(x$align, "left")
       )
 
       # for every type get needed arguments
-      switch(
-        row_as_list$type,
 
-        instruction_title = {
-          row_as_list$align <- .null_def(x$align, "left")
-        },
+      if (row_as_list$type == "instruction_list") {
 
-        instruction_para = {
-          row_as_list$align <- .null_def(x$align, "left")
-        },
+        row_as_list$order <- .null_def(x$align, FALSE)
+        # split multiple values on separators ';' and '\n'
+        row_as_list$content <- unlist(
+          stringr::str_split(
+            string = row_as_list$content,
+            pattern = ";|\n"))
 
-        instruction_list = {
-          row_as_list$order <- .null_def(x$align, FALSE)
-          # split multiple values on separators ';' and '\n'
-          row_as_list$text <- unlist(
-            stringr::str_split(
-              string = row_as_list$text,
-              pattern = ";|\n")
-          )
-        },
+      }
 
-        item_desc = {
-          row_as_list$inputId <- x$inputId
-          row_as_list$align <- .null_def(x$align, "left")
-
-        }
-      )
       # return value from lapplied function
       return(row_as_list)
     })
@@ -317,29 +303,5 @@ create_desc_source <- function(
 
   return(source_list)
 
-}
-
-#' Generate source list from yaml
-#'
-#' @param yaml_file path to the source yaml file
-
-
-.yaml_to_list <- function(yaml_file){
-  yaml::read_yaml(file = yaml_file)
-}
-
-#' Read the Answer data from Google Sheets
-#' @param output_ss character vector with output googlesheet ID
-#' @param output_sheet character vector with output spreadsheet name
-
-
-.read_all_answers <- function(
-  output_ss,
-  output_sheet
-) {
-  googlesheets4::read_sheet(
-    ss = output_ss,
-    sheet = output_sheet
-  )
 }
 
