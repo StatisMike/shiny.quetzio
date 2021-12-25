@@ -12,3 +12,4 @@
 \description{
 function to get indices of numeric fields
 }
+\keyword{internal}

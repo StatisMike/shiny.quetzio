@@ -1,7 +1,7 @@
 #' Helper function to check namespace
 #'
 #' @param package Character string declaring which package to check for
-#'
+#' @keywords internal
 
 .check_package <- function(package) {
 
@@ -17,6 +17,7 @@
 #'
 #' @param label Character string with item label
 #' @import shiny
+#' @keywords internal
 #'
 .label_mandatory <- function(label){
   tagList(
@@ -26,23 +27,42 @@
 }
 
 
-#' function to handle css for quetzio UI for custom classes: '.invalid_input' and '.mandatory_star'
+#' function to handle css for quetzio UI css classes
 #'
-#' @param css list containing two character objects, named 'invalid_input' and 'mandatory_star'. By default it
+#' @param css list containing two character objects named with names of css classes. By default it
 #' will provide these styles:
 #' \itemize{
-#' \item{invalid_input = "outline: red; outline-style: dashed; outline-offset: 10px;"}
+#' \item{invalid_input = "color: red; font-style: italic;"}
 #' \item{mandatory_star = "color: red;"}
+#' \item{quetzio_submit = "color: #fff; background-color: #337ab7; border-color: #2e6da4; width: 200px;"}
+#' \item{quetzio_description = "font-size: 0.7em;"}
 #' }
+#' If any of these aren't provided in the list passed to `css`, the default values would be added.
 #' @param div_id character string indicating the div id to use this stylesheet
-#'
-.custom_css_handler <- function(css = list(invalid_input = "color: red; font-style: italic;",
-                                           mandatory_star = "color: red;"),
+#' @keywords internal
+
+.custom_css_handler <- function(css = NULL,
                                 div_id) {
 
-  if (!all(c("invalid_input", "mandatory_star") %in% names(css)) | class(css) != "list") {
-    stop("Object provided to 'css' argument should be a 'list' with at least two character objects named 'invalid_input' and 'mandatory_star'",
+
+  defaults_css <- list(
+    invalid_input = "color: red; font-style: italic;",
+    mandatory_star = "color: red;",
+    quetzio_submit = "color: #fff; background-color: #337ab7; border-color: #2e6da4; width: 200px;",
+    quetzio_description = "font-size: 0.9em;"
+  )
+
+  if (!is.null(css) && class(css) != "list") {
+    stop("Object provided to 'css' argument should be a named 'list' object (with names indicating css classes)",
          call. = F)
+  }
+  # if any default isn't in css provided, it should take the default value
+
+  if (!is.null(css)) {
+    css_def_not_present <- defaults_css[!names(defaults_css) %in% names(css)]
+    css <- c(css_def_not_present, css)
+  } else {
+    css <- defaults_css
   }
 
   paste(
@@ -56,6 +76,7 @@
 #'
 #' @param x the value to check
 #' @param default the default value if null or NA
+#' @keywords internal
 
 .null_def <- function(x, default){
   ifelse(is.null(x) || is.na(x), default, x)
@@ -64,7 +85,7 @@
 #' function to get indices of mandatory fields
 #'
 #' @param source_list Source list of inputs
-#'
+#' @keywords internal
 
 .get_mandatory <- function(source_list){
 
@@ -83,7 +104,7 @@
 #' function to get indices of numeric fields
 #'
 #' @param source_list Source list of inputs
-#'
+#' @keywords internal
 
 .get_type <- function(source_list, type){
 
@@ -105,6 +126,7 @@
 #' @param output_sheet character vector with output spreadsheet name
 #'
 #' @import dplyr
+#' @keywords internal
 
 .save_new_answers <- function(
   user_answers,
@@ -149,6 +171,7 @@
 #' @param call the function call to modify
 #' @param arg_name argument name
 #' @param arg_value argument value to set
+#' @keywords internal
 
 .modify_arg <- function(call, arg_name, arg_value) {
 
@@ -166,6 +189,7 @@
 #' function to modify the 'quetzio_server' arguments
 #' @param ... dotdotdot passed from parent function
 #' @param link_id character string indicating what the value of the argument should be
+#' @keywords internal
 
 .modify_quetzio_arg <- function(..., link_id) {
 
@@ -178,13 +202,13 @@
     # all will have added link_id argument
     raw_call[i] <- .modify_arg(raw_call[i], "link_id", link_id)
 
-    if (i == 2) {
-      # only first value will have the render ui set to TRUE
-      raw_call[i] <- .modify_arg(raw_call[i], "render_ui", TRUE)
-    } else {
-      # every next will have it set to FALSE
+    # if (i == 2) {
+    #   # only first value will have the render ui set to TRUE
+    #   raw_call[i] <- .modify_arg(raw_call[i], "render_ui", TRUE)
+    # } else {
+    #   # every next will have it set to FALSE
       raw_call[i] <- .modify_arg(raw_call[i], "render_ui", FALSE)
-    }
+    # }
   }
 
   # finally, we need to substitute 'list()' with 'reactiveValues()' in the call
@@ -199,6 +223,7 @@
 #' @param answers_object the 'self$answers()' object from 'quetzio_link_server'
 #' @param quetzio_names the names of the surveys in correct order from the
 #' 'self$quetzio_names' object from 'quetzio_link_server'
+#' @keywords internal
 
 .merge_linked_answers_to_df <- function(answers_object, quetzio_names) {
 
@@ -218,6 +243,7 @@
 #'
 #' @param answers list of answers from one questionnaire
 #' @param name name of the questionnaire
+#' @keywords internal
 
 .sanitize_answers <- function(answers, name = NULL) {
 
@@ -239,6 +265,7 @@
 #' Create correct data.frame from list
 #'
 #' @param list source to be converted into data.frame
+#' @keywords internal
 
 .list_to_df <- function(list) {
 
@@ -272,7 +299,7 @@
 #' Secondly - and most important - `update*Input` functions don't allow
 #' supplementing labels with 'HTML' tags, as everything passed through them as
 #' label is coerced to character. `shinyjs::html()` remedies this problem.
-#'
+#' @keywords internal
 
 .update_label <- function (self, inputId, label,
                            is_mandatory)
@@ -292,140 +319,28 @@
 
 }
 
-#' Populate missing values in your inputs with default provided data
+#' Generate source list from yaml
 #'
-#' @param source_list list containing source data
-#' @param default_config list containing default configuration
-#'
-#' @details The default_config object can have only one default configuration
-#' per input type specified.
-#' If there were some values specified in the vanilla configuration, they won't
-#' be overwritten by configuration
-#'
+#' @param yaml_file path to the source yaml file
+#' @keywords internal
 
-.populate_from_default <- function(
-  source_list,
-  default_config
-) {
 
-  option_names <- list(
-    uni = c("mandatory", "width"),
-    textInput = c("placeholder"),
-    numericInput = c("value", "min", "max", "step"),
-    radioButtons = c("choices", "choiceValues", "choiceNames", "selected", "inline"),
-    selectizeInput = c("choices", "choiceValues", "choiceNames", "selected", "maxItems")
-  )
-
-  output_source <- source_list
-
-  # check for all input types with default configuration
-  for (input_type in names(default_config)) {
-
-    # loop on all items in source_list
-    for (item in names(source_list)) {
-
-      # and check only types specified in config
-      if (source_list[[item]][["type"]] == input_type) {
-
-        # check for every option
-        for (option in c(option_names[["uni"]], option_names[[input_type]])) {
-
-          # check if the option is specified in default and not in output_source
-          if (is.null(source_list[[item]][[option]]) && !is.null(default_config[[input_type]][[option]])) {
-
-            # replace the option with one from default
-            output_source[[item]][[option]] <- default_config[[input_type]][[option]]
-
-          }
-        }
-        # safety measure - if the 'choice' option was provided before or has been provided
-        # during population from default, the choiceValues and choiceNames are being deleted
-        if (!is.null(output_source[[item]][["choices"]])) {
-
-          output_source[[item]][["choiceValues"]] <- NULL
-          output_source[[item]][["choiceNames"]] <- NULL
-
-        }
-      }
-    }
-  }
-
-  return(output_source)
+.yaml_to_list <- function(yaml_file){
+  yaml::read_yaml(file = yaml_file)
 }
 
-#' generate instructions and item descriptions for quetzio with the use of
-#' source list and 'insertUI'
-#'
-#' @param self R6 'self' object
-#' @import shiny
+#' Read the Answer data from Google Sheets
+#' @param output_ss character vector with output googlesheet ID
+#' @param output_sheet character vector with output spreadsheet name
+#' @keywords internal
 
-.generate_description <- function(
-  self
+
+.read_all_answers <- function(
+  output_ss,
+  output_sheet
 ) {
-
-  # instruction rendering
-  instruction <- self$description[sapply(self$description, \(x) grepl(pattern = "instruction", x = x$type))]
-
-  if (length(instruction) > 0) {
-
-    # initialize the list
-    inst_list <- list()
-
-    # for every element of instructions
-    for (inst in instruction) {
-
-      # if title, create h1 tag
-      if (grepl(pattern = "title", x = inst$type)) {
-
-        list_el <- tagList(tags$h1(align = .null_def(inst$align, "left"),
-                                   if (isTRUE(inst$html)) HTML(inst$text) else inst$text))
-
-        inst_list <- c(inst_list, list_el)
-
-        # if paragraph, create p tag
-      } else if (grepl(pattern = "para", x = inst$type)) {
-
-        list_el <- tagList(tags$p(align = .null_def(inst$align, "left"),
-                                  if (isTRUE(inst$html)) HTML(inst$text) else inst$text))
-
-        inst_list <- c(inst_list, list_el)
-
-      } else if (grepl(pattern = "list", x = inst$type)) {
-
-        list_el <- if(isTRUE(inst$order))
-          tagList(tags$ol(tagList(lapply(inst$text, tags$li))))
-        else
-          tagList(tags$ul(tagList(lapply(inst$text, tags$li))))
-
-        inst_list <- c(inst_list, list_el)
-      }
-
-    }
-
-    insertUI(
-      selector = paste0("#", self$div_id),
-      where = "afterBegin",
-      ui = tags$div(class = "quetzioInstruction",
-                    inst_list))
-
-  }
-
-  # rendering descriptions
-  descriptions <- self$description[sapply(self$description, \(x) grepl(pattern = "item_desc", x = x$type))]
-
-  if (length(descriptions) > 0) {
-
-    for (desc in descriptions) {
-
-      insertUI(
-        selector = paste0("#", paste(sep = ns.sep, self$module_ui_id, desc$inputId, "label")),
-        where = "afterEnd",
-        ui = tags$div(
-          align = .null_def(desc$align, "left"),
-          class = "quetzioDescription",
-          if (isTRUE(desc$html)) HTML(desc$text) else desc$text
-        )
-      )
-    }
-  }
+  googlesheets4::read_sheet(
+    ss = output_ss,
+    sheet = output_sheet
+  )
 }

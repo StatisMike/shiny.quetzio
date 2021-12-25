@@ -26,3 +26,4 @@ Secondly - and most important - \code{update*Input} functions don't allow
 supplementing labels with 'HTML' tags, as everything passed through them as
 label is coerced to character. \code{shinyjs::html()} remedies this problem.
 }
+\keyword{internal}

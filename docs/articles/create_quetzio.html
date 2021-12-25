@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">shiny.survey</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.10.9003</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.11</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -408,19 +408,22 @@ Logic of quetzio_server object
 <li>for instruction
 <ul>
 <li>
-<strong>instruction_title</strong>: generates <em>h1</em> tag</li>
+<strong>instruction_title</strong>: generates <em>h1</em> tag of class <strong>quetzio_title</strong>
+</li>
 <li>
-<strong>instruction_para</strong>: generates <em>p</em> tag</li>
+<strong>instruction_para</strong>: generates <em>p</em> tag of class <strong>quetzio_paragraph</strong>
+</li>
 <li>
-<strong>instruction_list</strong>: generates <em>ul</em> or <em>ol</em> tag</li>
-<li>all elements are pasted together in the given order within <em>div</em> of css class <strong>quetzioInstruction</strong>. It will be located just before the first question.</li>
+<strong>instruction_list</strong>: generates <em>ul</em> or <em>ol</em> tag of class <strong>quetzio_list</strong>
+</li>
+<li>all elements are pasted together in the given order within <em>div</em> of css class <strong>quetzio_instruction</strong>. It will be located just before the first question.</li>
 </ul>
 </li>
 <li>for descriptions
 <ul>
 <li>
 <strong>item_desc</strong>: generates item description, which will appear between item label and input</li>
-<li>it will be contained within <em>div</em> of css class <strong>quetzioDescription</strong>
+<li>it will be contained within <em>div</em> of css class <strong>quetzio_description</strong>
 </li>
 </ul>
 </li>
@@ -428,9 +431,16 @@ Logic of quetzio_server object
 <p>Following parameters can be provided to these element (with some mandatory!):</p>
 <ul>
 <li>
-<em>text</em>: the whole content of the given element
+<em>content</em>: the whole content of the given element
 <ul>
 <li><strong>mandatory</strong></li>
+<li>for every element type</li>
+</ul>
+</li>
+<li>
+<em>align</em>: how the <em>content</em> should be aligned withing its container
+<ul>
+<li>optional: if not specified, the default is ‘left’</li>
 <li>for every element type</li>
 </ul>
 </li>
@@ -438,14 +448,6 @@ Logic of quetzio_server object
 <em>html</em>: are there any HTML tags specified in the <em>text</em>
 <ul>
 <li>optional: if not specified, the default is FALSE</li>
-<li>for every element type but <em>instruction_list</em>
-</li>
-</ul>
-</li>
-<li>
-<em>align</em>: how the <em>text</em> should be aligned withing its container
-<ul>
-<li>optional: if not specified, the default is ‘left’</li>
 <li>for every element type but <em>instruction_list</em>
 </li>
 </ul>
@@ -473,11 +475,11 @@ Logic of quetzio_server object
 <p>Its form is similiar to the one of the YAML question source, but the sequences don’t need to be named:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> some_element_type</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">text</span><span class="kw">:</span><span class="at"> content_of_element</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">content</span><span class="kw">:</span><span class="at"> content_of_element</span></span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">additional_parameter</span><span class="kw">:</span><span class="at"> value</span></span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span></span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> type_of_second_element</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">text</span><span class="kw">:</span><span class="at"> content_of_second</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">content</span><span class="kw">:</span><span class="at"> content_of_second</span></span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">parameter_1</span><span class="kw">:</span><span class="at"> value</span></span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">parameter_n</span><span class="kw">:</span><span class="at"> value</span></span></code></pre></div>
 </div>
@@ -501,7 +503,7 @@ Logic of quetzio_server object
 <span class="co">#&gt;  $ html   : logi TRUE</span>
 <span class="co">#&gt;  $ order  : logi TRUE</span>
 <span class="co">#&gt;  $ inputId: chr "placeholder"</span>
-<span class="co">#&gt;  $ text   : chr "&lt;b&gt;Delete&lt;/b&gt; this &lt;i&gt;example&lt;/i&gt;"</span>
+<span class="co">#&gt;  $ content: chr "&lt;b&gt;Delete&lt;/b&gt; this &lt;i&gt;example&lt;/i&gt;"</span>
 
 <span class="co"># I remove the googlesheet created for this presentation</span>
 <span class="fu">googledrive</span><span class="fu">::</span><span class="fu"><a href="https://googledrive.tidyverse.org/reference/drive_trash.html" class="external-link">drive_trash</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span></code></pre></div>
@@ -515,12 +517,12 @@ Logic of quetzio_server object
 <span class="va">list_source</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
   <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
     type <span class="op">=</span> <span class="st">"instruction_title"</span>,
-    text <span class="op">=</span> <span class="st">"I am the &lt;b&gt;title&lt;/b&gt; of this &lt;i&gt;questionnaire&lt;/i&gt;"</span>,
+    content <span class="op">=</span> <span class="st">"I am the &lt;b&gt;title&lt;/b&gt; of this &lt;i&gt;questionnaire&lt;/i&gt;"</span>,
     html <span class="op">=</span> <span class="cn">TRUE</span>,
     align <span class="op">=</span> <span class="st">"center"</span><span class="op">)</span>,
   <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
     type <span class="op">=</span> <span class="st">"instruction_list"</span>,
-    choices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"I am first"</span>, <span class="st">"I am second"</span>, <span class="st">"I am third"</span>, <span class="st">"Who am I?"</span><span class="op">)</span>,
+    content <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"I am first"</span>, <span class="st">"I am second"</span>, <span class="st">"I am third"</span>, <span class="st">"Who am I?"</span><span class="op">)</span>,
     order <span class="op">=</span> <span class="cn">TRUE</span>
   <span class="op">)</span>
 <span class="op">)</span>
@@ -528,7 +530,7 @@ Logic of quetzio_server object
 <span class="co"># data.frame can be configured explicitly by 'data.frame'</span>
 <span class="va">df_source</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>
   type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"instruction_title"</span>, <span class="st">"instruction_list"</span><span class="op">)</span>,
-  text <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"I am the &lt;b&gt;title&lt;/b&gt; of this &lt;i&gt;questionnaire&lt;/i&gt;"</span>,
+  content <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"I am the &lt;b&gt;title&lt;/b&gt; of this &lt;i&gt;questionnaire&lt;/i&gt;"</span>,
            <span class="st">"I am first;I am second;I am third;Who am I?"</span><span class="op">)</span>,
   html <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">NA</span><span class="op">)</span>,
   align <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"center"</span>, <span class="cn">NA</span><span class="op">)</span>,
@@ -547,7 +549,7 @@ Logic of quetzio_server object
 <span class="co">#&gt;  $ html   : logi TRUE</span>
 <span class="co">#&gt;  $ order  : logi TRUE</span>
 <span class="co">#&gt;  $ inputId: chr "placeholder"</span>
-<span class="co">#&gt;  $ text   : chr "&lt;b&gt;Delete&lt;/b&gt; this &lt;i&gt;example&lt;/i&gt;"</span></code></pre></div>
+<span class="co">#&gt;  $ content: chr "&lt;b&gt;Delete&lt;/b&gt; this &lt;i&gt;example&lt;/i&gt;"</span></code></pre></div>
 </div>
 </div>
 <div class="section level2">

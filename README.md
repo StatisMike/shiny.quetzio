@@ -18,6 +18,9 @@ It is all completely handled by `R6` shiny modules, so it is easy to
 include even multiple independend questionnaires in your ShinyApp and
 keep your code clean!
 
+You can preview the `pkgdown` generated website
+[here](https://statismike.github.io/shiny.survey/)
+
 ## Installation
 
 You can install the development version of shiny.survey from
@@ -101,9 +104,9 @@ gsheet_quetzio <- quetzio_server$new(
   )
 ```
 
-3.  There is also a possibility to link your questionnaires in a way,
-    that they will appear one after another. It is now needed to
-    configure your calls accordingly:
+3.  There is also a possibility to link your questionnaires in a way
+    that they will appear one after another with `quetzio_link_server`
+    R6 class:
 
 ``` r
 ui <- fluidPage(
@@ -186,7 +189,7 @@ For every input you can specify:
 |   *choices*    |           |              |       x        |      x       |
 | *choiceValues* |           |              |       x        |      x       |
 | *choiceNames*  |           |              |       x        |      x       |
-|    multiple    |           |              |       x        |              |
+|    maxItems    |           |              |       x        |              |
 |    selected    |           |              |       x        |      x       |
 |     inline     |           |              |                |      x       |
 

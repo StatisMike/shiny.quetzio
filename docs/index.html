@@ -32,7 +32,7 @@
     
     <a class="navbar-brand me-2" href="index.html">shiny.survey</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.10.9003</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.11</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -72,6 +72,7 @@
 
 <p>This package includes the way to create a survey using various Shiny widgets from a source file: either a local YAML file, or GoogleSheet over the net. Results of the surveys are send to GoogleSheet of your choice.</p>
 <p>It is all completely handled by <code>R6</code> shiny modules, so it is easy to include even multiple independend questionnaires in your ShinyApp and keep your code clean!</p>
+<p>You can preview the <code>pkgdown</code> generated website <a href="https://statismike.github.io/shiny.survey/" class="external-link">here</a></p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -146,7 +147,7 @@
     <span class="va">gsheet_quetzio</span><span class="op">$</span><span class="fu">answers</span><span class="op">(</span><span class="op">)</span>
   <span class="op">)</span></code></pre></div>
 <ol start="3" style="list-style-type: decimal">
-<li>There is also a possibility to link your questionnaires in a way, that they will appear one after another. It is now needed to configure your calls accordingly:</li>
+<li>There is also a possibility to link your questionnaires in a way that they will appear one after another with <code>quetzio_link_server</code> R6 class:</li>
 </ol>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu">fluidPage</span><span class="op">(</span>
@@ -286,7 +287,7 @@
 <td align="center">x</td>
 </tr>
 <tr class="odd">
-<td align="center">multiple</td>
+<td align="center">maxItems</td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center">x</td>

@@ -2,24 +2,24 @@
 % Please edit documentation in R/utils.R
 \name{.custom_css_handler}
 \alias{.custom_css_handler}
-\title{function to handle css for quetzio UI for custom classes: '.invalid_input' and '.mandatory_star'}
+\title{function to handle css for quetzio UI css classes}
 \usage{
-.custom_css_handler(
-  css = list(invalid_input = "color: red; font-style: italic;", mandatory_star =
-    "color: red;"),
-  div_id
-)
+.custom_css_handler(css = NULL, div_id)
 }
 \arguments{
-\item{css}{list containing two character objects, named 'invalid_input' and 'mandatory_star'. By default it
+\item{css}{list containing two character objects named with names of css classes. By default it
 will provide these styles:
 \itemize{
-\item{invalid_input = "outline: red; outline-style: dashed; outline-offset: 10px;"}
+\item{invalid_input = "color: red; font-style: italic;"}
 \item{mandatory_star = "color: red;"}
-}}
+\item{quetzio_submit = "color: #fff; background-color: #337ab7; border-color: #2e6da4; width: 200px;"}
+\item{quetzio_description = "font-size: 0.7em;"}
+}
+If any of these aren't provided in the list passed to \code{css}, the default values would be added.}
 
 \item{div_id}{character string indicating the div id to use this stylesheet}
 }
 \description{
-function to handle css for quetzio UI for custom classes: '.invalid_input' and '.mandatory_star'
+function to handle css for quetzio UI css classes
 }
+\keyword{internal}
