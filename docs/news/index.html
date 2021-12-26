@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">shiny.survey</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.11</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.11.9001</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -62,7 +62,7 @@
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.0.8" id="shinysurvey-008">shiny.survey 0.0.8<a class="anchor" aria-label="anchor" href="#shinysurvey-008"></a></h2>
 <ul><li>moved <code>quetzio_list</code> of <code>quetzio_link_server</code> from private to public. It is now easier to access separate questionnaires from there</li>
-<li>added <code>update_labels</code> method to the <code>quetzio_survey</code>. You can now update labels of questionnaire items based on some external <code>reactive()</code>.
+<li>added <code>update_labels</code> method to the <code>quetzio_survey</code>. You can now update labels of questionnaire items based on some external <code><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive()</a></code>.
 <ul><li>works also with questionnaires linked by <code>quetzio_link_server</code>, though the call need to be made on the <code>quetzio_server</code> itself directly within observer: <code>observe(quetzio_link_object$quetzio_list[['quetzio_name']]$update_labels(...))</code>
 </li>
 <li>the wrapper function for this functionality is considered</li>

@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">shiny.survey</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.11</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.11.9001</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -113,14 +113,14 @@ Logic of quetzio_server object
 <tr class="odd">
 <td align="center">placeholder</td>
 <td align="center">x</td>
-<td align="center"></td>
+<td align="center">x</td>
 <td align="center"></td>
 <td align="center"></td>
 </tr>
 <tr class="even">
 <td align="center">value</td>
 <td align="center"></td>
-<td align="center"><strong>x</strong></td>
+<td align="center">x</td>
 <td align="center"></td>
 <td align="center"></td>
 </tr>
@@ -236,22 +236,22 @@ Logic of quetzio_server object
   <span class="fu">googlesheets4</span><span class="fu">::</span><span class="fu"><a href="https://googlesheets4.tidyverse.org/reference/range_read.html" class="external-link">read_sheet</a></span><span class="op">(</span>ss <span class="op">=</span> <span class="va">id</span>, sheet <span class="op">=</span> <span class="st">"Questions"</span><span class="op">)</span>
   <span class="op">)</span>
 <span class="co">#&gt; tibble [1 × 16] (S3: tbl_df/tbl/data.frame)</span>
-<span class="co">#&gt;  $ inputId          : chr "placeholder"</span>
-<span class="co">#&gt;  $ type             : chr "textInput"</span>
-<span class="co">#&gt;  $ mandatory        : logi TRUE</span>
-<span class="co">#&gt;  $ label            : chr "Remove before production"</span>
-<span class="co">#&gt;  $ width            : chr "500px"</span>
-<span class="co">#&gt;  $ chr_placeholder  : chr "some text"</span>
-<span class="co">#&gt;  $ num_value        : num 1</span>
-<span class="co">#&gt;  $ num_min          : num 0</span>
-<span class="co">#&gt;  $ num_max          : num 2</span>
-<span class="co">#&gt;  $ num_step         : num 0.5</span>
-<span class="co">#&gt;  $ mult_choices     : chr "Something\nElse\nMore"</span>
-<span class="co">#&gt;  $ mult_choiceValues: chr "1\n2\n3"</span>
-<span class="co">#&gt;  $ mult_choiceNames : chr "One\nTwo\nThree"</span>
-<span class="co">#&gt;  $ mult_selected    : chr "NULL"</span>
-<span class="co">#&gt;  $ select_maxItems  : num 1</span>
-<span class="co">#&gt;  $ radio_inline     : logi TRUE</span>
+<span class="co">#&gt;  $ inputId           : chr "placeholder"</span>
+<span class="co">#&gt;  $ type              : chr "textInput"</span>
+<span class="co">#&gt;  $ mandatory         : logi TRUE</span>
+<span class="co">#&gt;  $ label             : chr "Remove before production"</span>
+<span class="co">#&gt;  $ width             : chr "500px"</span>
+<span class="co">#&gt;  $ chrnum_placeholder: chr "some text"</span>
+<span class="co">#&gt;  $ num_value         : num 1</span>
+<span class="co">#&gt;  $ num_min           : num 0</span>
+<span class="co">#&gt;  $ num_max           : num 2</span>
+<span class="co">#&gt;  $ num_step          : num 0.5</span>
+<span class="co">#&gt;  $ mult_choices      : chr "Something\nElse\nMore"</span>
+<span class="co">#&gt;  $ mult_choiceValues : chr "1\n2\n3"</span>
+<span class="co">#&gt;  $ mult_choiceNames  : chr "One\nTwo\nThree"</span>
+<span class="co">#&gt;  $ mult_selected     : chr "NULL"</span>
+<span class="co">#&gt;  $ select_maxItems   : num 1</span>
+<span class="co">#&gt;  $ radio_inline      : logi TRUE</span>
 
 <span class="co"># I remove the googlesheet created for this presentation</span>
 <span class="fu">googledrive</span><span class="fu">::</span><span class="fu"><a href="https://googledrive.tidyverse.org/reference/drive_trash.html" class="external-link">drive_trash</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span></code></pre></div>
@@ -287,7 +287,7 @@ Logic of quetzio_server object
   type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"textInput"</span>, <span class="st">"selectizeInput"</span><span class="op">)</span>,
   mandatory <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="cn">TRUE</span><span class="op">)</span>,
   label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"First input"</span>, <span class="st">"Choose up to two"</span><span class="op">)</span>,
-  chr_placeholder <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Write inside of me, please!"</span>, <span class="cn">NA</span><span class="op">)</span>,
+  chrnum_placeholder <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Write inside of me, please!"</span>, <span class="cn">NA</span><span class="op">)</span>,
   mult_choices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="st">"I am first;I am second;I am third;Who am I?"</span><span class="op">)</span>,
   select_maxItems <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">2</span><span class="op">)</span>
 <span class="op">)</span>
@@ -299,22 +299,22 @@ Logic of quetzio_server object
 <span class="va">df_source2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_quetzio_source.html">create_quetzio_source</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"df"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">df_source2</span><span class="op">)</span>
 <span class="co">#&gt; 'data.frame':    1 obs. of  16 variables:</span>
-<span class="co">#&gt;  $ inputId          : chr "placeholder"</span>
-<span class="co">#&gt;  $ type             : chr "textInput"</span>
-<span class="co">#&gt;  $ mandatory        : logi TRUE</span>
-<span class="co">#&gt;  $ label            : chr "Remove before production"</span>
-<span class="co">#&gt;  $ width            : chr "500px"</span>
-<span class="co">#&gt;  $ chr_placeholder  : chr "some text"</span>
-<span class="co">#&gt;  $ num_value        : num 1</span>
-<span class="co">#&gt;  $ num_min          : num 0</span>
-<span class="co">#&gt;  $ num_max          : num 2</span>
-<span class="co">#&gt;  $ num_step         : num 0.5</span>
-<span class="co">#&gt;  $ mult_choices     : chr "Something\nElse\nMore"</span>
-<span class="co">#&gt;  $ mult_choiceValues: chr "1\n2\n3"</span>
-<span class="co">#&gt;  $ mult_choiceNames : chr "One\nTwo\nThree"</span>
-<span class="co">#&gt;  $ mult_selected    : chr "NULL"</span>
-<span class="co">#&gt;  $ select_maxItems  : num 1</span>
-<span class="co">#&gt;  $ radio_inline     : logi TRUE</span></code></pre></div>
+<span class="co">#&gt;  $ inputId           : chr "placeholder"</span>
+<span class="co">#&gt;  $ type              : chr "textInput"</span>
+<span class="co">#&gt;  $ mandatory         : logi TRUE</span>
+<span class="co">#&gt;  $ label             : chr "Remove before production"</span>
+<span class="co">#&gt;  $ width             : chr "500px"</span>
+<span class="co">#&gt;  $ chrnum_placeholder: chr "some text"</span>
+<span class="co">#&gt;  $ num_value         : num 1</span>
+<span class="co">#&gt;  $ num_min           : num 0</span>
+<span class="co">#&gt;  $ num_max           : num 2</span>
+<span class="co">#&gt;  $ num_step          : num 0.5</span>
+<span class="co">#&gt;  $ mult_choices      : chr "Something\nElse\nMore"</span>
+<span class="co">#&gt;  $ mult_choiceValues : chr "1\n2\n3"</span>
+<span class="co">#&gt;  $ mult_choiceNames  : chr "One\nTwo\nThree"</span>
+<span class="co">#&gt;  $ mult_selected     : chr "NULL"</span>
+<span class="co">#&gt;  $ select_maxItems   : num 1</span>
+<span class="co">#&gt;  $ radio_inline      : logi TRUE</span></code></pre></div>
 <blockquote>
 <p>The list is recommended for source, though with long questionnaires and similiar shinyInput types the data.frame source can be easier to generate - it all depends on your workflow and the structure of the questionnaire</p>
 </blockquote>
@@ -386,7 +386,7 @@ Logic of quetzio_server object
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># All of the above are 'reactiveVal' object, so they need to be </span>
 <span class="co"># accessed in the observe() or reactive() context</span>
-<span class="fu">observe</span><span class="op">(</span><span class="op">{</span>
+<span class="fu"><a href="https://rdrr.io/pkg/shiny/man/observe.html" class="external-link">observe</a></span><span class="op">(</span><span class="op">{</span>
   
   <span class="co"># is the questionnaire done: TRUE or FALSE</span>
   <span class="va">my_questionnaire</span><span class="op">$</span><span class="fu">is_done</span><span class="op">(</span><span class="op">)</span>

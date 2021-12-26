@@ -9,63 +9,167 @@ Create R6-based server module to generate and hold the state
 of your questionnaire
 }
 \examples{
+
+## ------------------------------------------------
+## Method `quetzio_server$new`
+## ------------------------------------------------
+
+
 ## Only run example in interactive R sessions
 
 if (interactive()) {
 
-# load libraries
-library(shiny)
-library(shiny.survey)
+ # load libraries
+ library(shiny)
+ library(shiny.survey)
 
-# create ui
-ui <- fluidPage(
-      column(6, align = "center",
-             # bind the UI with correct module_id
-             quetzio_UI("my_quetzio")
-             ),
-      column(6,
-             h2("State of", tags$i("quetzio_server")),
-             h3("Is it done?"),
-             verbatimTextOutput("quetzio_is_done"),
-             h3("Error messages?"),
-             verbatimTextOutput("quetzio_message"),
-             h3("Answers"),
-             verbatimTextOutput("quetzio_answers")
-             )
-)
+ # create ui
+ ui <- fluidPage(
+   column(6, align = "center",
+          # bind the UI with correct module_id
+          quetzio_UI("my_quetzio")
+   ),
+   column(6,
+          h2("State of", tags$i("quetzio_server")),
+          h3("Is it done?"),
+          verbatimTextOutput("quetzio_is_done"),
+          h3("Error messages?"),
+          verbatimTextOutput("quetzio_message"),
+          h3("Answers"),
+          verbatimTextOutput("quetzio_answers")
+   )
+ )
 
-server <- function(input, output, session) {
+ server <- function(input, output, session) {
 
-  # initialize new quetzio
-  questionnaire <- quetzio_server$new(
-    # load questions from R object
-    source_method = "raw",
-    source_object = quetzio_examples$questions_lists$simple_quetzio,
-    # optionally add descriptions
-    desc_object = quetzio_examples$description_lists$simple_quetzio,
-    # use the same module_id as in UI binding
-    module_id = "my_quetzio",
-    # custom_css to give margin but not center options explicitly
-    # it will affect only elements within the form div
-    custom_css = list(
-      "shiny-options-group" = "text-align: left; margin-left: 45\%"
-    ),
-    # you can also optionally give div unique id - useful for external styling
-    div_id = "my_questio_div_id"
-  )
+   # initialize new quetzio
+   questionnaire <- quetzio_server$new(
+     # load questions from R object
+     source_method = "raw",
+     source_object = quetzio_examples$questions_lists$simple_quetzio,
+     # optionally add descriptions
+     desc_object = quetzio_examples$description_lists$simple_quetzio,
+     # use the same module_id as in UI binding
+     module_id = "my_quetzio",
+     # custom_css to give margin but not center options explicitly
+     # it will affect only elements within the form div
+     custom_css = list(
+       "shiny-options-group" = "text-align: left; margin-left: 45\%"
+     ),
+     # you can also optionally give div unique id - useful for external styling
+     div_id = "my_questio_div_id"
+   )
 
-  # render objects to show your questionnaire status
-  output$quetzio_is_done <-
-    renderPrint(questionnaire$is_done())
-  output$quetzio_message <-
-    renderPrint(questionnaire$message())
-  output$quetzio_answers <-
-    renderPrint(questionnaire$answers())
+   # render objects to show your questionnaire status
+ output$quetzio_is_done <-
+     renderPrint(questionnaire$is_done())
+   output$quetzio_message <-
+     renderPrint(questionnaire$message())
+   output$quetzio_answers <-
+     renderPrint(questionnaire$answers())
+ }
+
+ shinyApp(ui, server)
+
 }
 
-shinyApp(ui, server)
 
+## ------------------------------------------------
+## Method `quetzio_server$update_labels`
+## ------------------------------------------------
+
+## only run examples in interactive environment
+
+if (interactive()) {
+
+ library(shiny)
+ library(shiny.survey)
+
+ ui <- fluidPage(
+   # some input to trigger label update
+   selectizeInput("gender", "What is your gender?",
+                  choices = c("Male" = "M",
+                              "Female" = "F",
+                              "I identify as neither of above" = "O",
+                              "Prefer not to say" = "NI"),
+                  selected = "NI"),
+   tags$hr(),
+   # quetzio to update labels
+   quetzio_UI("updating_labels")
+ )
+
+ server <- function(input, output, session) {
+
+   quetzio <- quetzio_server$new(
+     source_method = "raw",
+     source_object = quetzio_examples$questions_lists$gender_update,
+     module_id = "updating_labels"
+   )
+
+   # trigger need to be reactive
+   gender_react <- reactive(input$gender)
+
+   # update labels method call
+   quetzio$update_labels(
+     trigger = gender_react,
+     source_method = "raw",
+     source_object = quetzio_examples$label_update$gender_update
+   )
+ }
+ shinyApp(ui, server)
 }
+
+
+## ------------------------------------------------
+## Method `quetzio_server$update_values`
+## ------------------------------------------------
+
+## only run examples in interactive environment
+
+if (interactive()) {
+
+ library(shiny)
+ library(shiny.survey)
+
+ ui <- fluidPage(
+   # first questionnaire to get values from
+   column(6,
+          h1("Finish first questionnaire"),
+          quetzio_UI("first_questionnaire")
+   ),
+   # second questionnaire to update values
+   column(6,
+          h1("Update values of second questionnaire!"),
+          actionButton("update_vals", "Update values"),
+          tags$hr(),
+          quetzio_UI("second_questionnaire")
+   )
+ )
+
+ server <- function(input, output, session) {
+
+   quetzio_1st <- quetzio_server$new(
+     source_method = "raw",
+     source_object = quetzio_examples$questions_lists$simple_quetzio,
+     module_id = "first_questionnaire"
+   )
+   quetzio_2nd <- quetzio_server$new(
+     source_method = "raw",
+     source_object = quetzio_examples$questions_lists$simple_quetzio,
+     module_id = "second_questionnaire"
+   )
+
+   # update values on button press
+   observeEvent(input$update_vals, {
+     # you can use answers from one questionnaire to update another, though
+     # the used values can be any other static named list
+     quetzio_2nd$update_values(quetzio_1st$answers())
+   })
+ }
+ shinyApp(ui, server)
+}
+
+
 }
 \seealso{
 quetzio_UI
@@ -259,6 +363,72 @@ Need to provide \code{source_yaml_default} - there are no other methods ATM.
 \subsection{Returns}{
 the 'quetzio_server' serverModule
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{
+## Only run example in interactive R sessions
+
+if (interactive()) {
+
+ # load libraries
+ library(shiny)
+ library(shiny.survey)
+
+ # create ui
+ ui <- fluidPage(
+   column(6, align = "center",
+          # bind the UI with correct module_id
+          quetzio_UI("my_quetzio")
+   ),
+   column(6,
+          h2("State of", tags$i("quetzio_server")),
+          h3("Is it done?"),
+          verbatimTextOutput("quetzio_is_done"),
+          h3("Error messages?"),
+          verbatimTextOutput("quetzio_message"),
+          h3("Answers"),
+          verbatimTextOutput("quetzio_answers")
+   )
+ )
+
+ server <- function(input, output, session) {
+
+   # initialize new quetzio
+   questionnaire <- quetzio_server$new(
+     # load questions from R object
+     source_method = "raw",
+     source_object = quetzio_examples$questions_lists$simple_quetzio,
+     # optionally add descriptions
+     desc_object = quetzio_examples$description_lists$simple_quetzio,
+     # use the same module_id as in UI binding
+     module_id = "my_quetzio",
+     # custom_css to give margin but not center options explicitly
+     # it will affect only elements within the form div
+     custom_css = list(
+       "shiny-options-group" = "text-align: left; margin-left: 45\%"
+     ),
+     # you can also optionally give div unique id - useful for external styling
+     div_id = "my_questio_div_id"
+   )
+
+   # render objects to show your questionnaire status
+ output$quetzio_is_done <-
+     renderPrint(questionnaire$is_done())
+   output$quetzio_message <-
+     renderPrint(questionnaire$message())
+   output$quetzio_answers <-
+     renderPrint(questionnaire$answers())
+ }
+
+ shinyApp(ui, server)
+
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_answers_df"></a>}}
@@ -313,6 +483,54 @@ with \code{create_survey_source()}. Needed when \code{source_method == 'raw'}}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{## only run examples in interactive environment
+
+if (interactive()) {
+
+ library(shiny)
+ library(shiny.survey)
+
+ ui <- fluidPage(
+   # some input to trigger label update
+   selectizeInput("gender", "What is your gender?",
+                  choices = c("Male" = "M",
+                              "Female" = "F",
+                              "I identify as neither of above" = "O",
+                              "Prefer not to say" = "NI"),
+                  selected = "NI"),
+   tags$hr(),
+   # quetzio to update labels
+   quetzio_UI("updating_labels")
+ )
+
+ server <- function(input, output, session) {
+
+   quetzio <- quetzio_server$new(
+     source_method = "raw",
+     source_object = quetzio_examples$questions_lists$gender_update,
+     module_id = "updating_labels"
+   )
+
+   # trigger need to be reactive
+   gender_react <- reactive(input$gender)
+
+   # update labels method call
+   quetzio$update_labels(
+     trigger = gender_react,
+     source_method = "raw",
+     source_object = quetzio_examples$label_update$gender_update
+   )
+ }
+ shinyApp(ui, server)
+}
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-update_values"></a>}}
@@ -326,12 +544,64 @@ Method to update selected values on the change in reactive
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{values}}{reactive which will trigger the update and contain named list
-with values to update. List need to be named, as the names are going to be
-used to identify which inputId to update}
+\item{\code{values}}{list of values to update questionnaire with. List need to be named,
+as the names are going to be used to identify which inputId to update}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{## only run examples in interactive environment
+
+if (interactive()) {
+
+ library(shiny)
+ library(shiny.survey)
+
+ ui <- fluidPage(
+   # first questionnaire to get values from
+   column(6,
+          h1("Finish first questionnaire"),
+          quetzio_UI("first_questionnaire")
+   ),
+   # second questionnaire to update values
+   column(6,
+          h1("Update values of second questionnaire!"),
+          actionButton("update_vals", "Update values"),
+          tags$hr(),
+          quetzio_UI("second_questionnaire")
+   )
+ )
+
+ server <- function(input, output, session) {
+
+   quetzio_1st <- quetzio_server$new(
+     source_method = "raw",
+     source_object = quetzio_examples$questions_lists$simple_quetzio,
+     module_id = "first_questionnaire"
+   )
+   quetzio_2nd <- quetzio_server$new(
+     source_method = "raw",
+     source_object = quetzio_examples$questions_lists$simple_quetzio,
+     module_id = "second_questionnaire"
+   )
+
+   # update values on button press
+   observeEvent(input$update_vals, {
+     # you can use answers from one questionnaire to update another, though
+     # the used values can be any other static named list
+     quetzio_2nd$update_values(quetzio_1st$answers())
+   })
+ }
+ shinyApp(ui, server)
+}
+
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

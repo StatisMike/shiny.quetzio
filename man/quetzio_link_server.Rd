@@ -45,7 +45,10 @@ server <- function(input, output, session) {
       source_method = "raw",
       source_object = quetzio_examples$questions_lists$link_quetzio_1,
       desc_object = quetzio_examples$description_lists$link_quetzio_1,
-      module_id = "my_first_quetzio"
+      module_id = "my_first_quetzio",
+      custom_css = list(
+        "quetzio_list" = "text-align: left; margin-left: 35\%;"
+      )
     ),
     quetzio_second = quetzio_server$new(
       source_method = "raw",
@@ -53,7 +56,7 @@ server <- function(input, output, session) {
       desc_object = quetzio_examples$questions_lists$link_quetzio_2,
       module_id = "my_second_quetzio",
       custom_css = list(
-        "shiny-options-group" = "text-align: left; margin-left: 45\%"
+        "shiny-options-group" = "text-align: left; margin-left: 45\%;"
       )
     ),
     quetzio_third = quetzio_server$new(

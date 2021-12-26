@@ -32,7 +32,7 @@
     
     <a class="navbar-brand me-2" href="index.html">shiny.survey</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.11</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.11.9001</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -84,11 +84,23 @@
 <div class="section level2">
 <h2 id="current-features">Current features<a class="anchor" aria-label="anchor" href="#current-features"></a>
 </h2>
-<p>At the current stage of development the <code>shiny.survey</code> package consists of two exported <code>R6</code> classes used in server and corresponding functions to bind the UI in your shinyApp: * <code>quetzio_server</code> to create single questionnaire and <code>quetzio_UI</code> to input the UI of the questionnaire. Questionnaires at the moment handles these type of inputs: - <code>textInput</code> - <code>numericInput</code> - <code>selectizeInput</code> - <code>radioButtons</code></p>
+<p>At the current stage of development the <code>shiny.survey</code> package consists of two exported <code>R6</code> classes used in server and corresponding functions to bind the UI in your shinyApp:</p>
 <ul>
+<li>
+<code>quetzio_server</code> to create single questionnaire and <code>quetzio_UI</code> to input the UI of the questionnaire. Questionnaires at the moment handles these type of inputs:
+<ul>
+<li><code>textInput</code></li>
+<li><code>numericInput</code></li>
+<li><code>selectizeInput</code></li>
+<li><code>radioButtons</code></li>
+</ul>
+</li>
 <li>
 <code>quetzio_link_server</code> to link multiple semi-independent questionnaires and <code>quetzio_link_UI</code> to bind the connected UI.</li>
 </ul>
+<blockquote>
+<p>Choosing <code>numericInput</code> for item type, the object that will be generated is actually custom input widget: <code>numInput</code>. It allows no initial value and placeholder text.</p>
+</blockquote>
 <div class="section level3">
 <h3 id="in-app-usage">In-App usage<a class="anchor" aria-label="anchor" href="#in-app-usage"></a>
 </h3>
@@ -233,7 +245,7 @@
 <tr class="odd">
 <td align="center">placeholder</td>
 <td align="center">x</td>
-<td align="center"></td>
+<td align="center">x</td>
 <td align="center"></td>
 <td align="center"></td>
 </tr>

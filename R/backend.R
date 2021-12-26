@@ -413,11 +413,10 @@
 
       observe({
 
-        req(values())
+        req(values)
 
         # firstly, filter the values for only these, that have the same names
         # as any of the inputs in quetzio's source_list
-        values <- values()
         filtered_values <- values[names(values) %in% names(self$source_list)]
 
         lapply(seq_along(filtered_values), \(i) {
