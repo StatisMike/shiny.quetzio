@@ -14,20 +14,6 @@
   if (length(unique(source_df$inputId)) != nrow(source_df)) {
     stop("source: The specified inputIds need to be unique.")
   }
-  # check if there are all required columns for input type specified
-  # checks for numeric
-  invisible(
-    tryCatch({
-      check_df <- source_df[source_df$type == "numericInput",]
-      if (nrow(check_df) > 0){
-        check_df[, "num_value"]
-      }
-    },
-    error = function(e){
-      stop("source: With at least one 'numericInput' type, the column 'num_value' need to be specified.",
-           call. = F)
-    })
-  )
 
   # check for selectize and radio
 
@@ -77,12 +63,7 @@
   checks <- lapply(
     source_list, function(x){
 
-
-      if (x$type == "numericInput") {
-        if (is.null(x$value)) {
-          stop("'value' is mandatory for 'numericInput'")
-        }
-      } else if (x$type == "selectizeInput" || x$type == "radioButtons") {
+      if (x$type == "selectizeInput" || x$type == "radioButtons") {
         if (is.null(x$choices) && all(is.null(x$choiceValues), is.null(x$choiceNames))) {
           stop("'choices' or both 'choiceNames' and 'choiceValues' are mandatory for 'selectizeInput' or 'radioButtons'")
         }

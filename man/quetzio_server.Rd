@@ -13,65 +13,6 @@ of your questionnaire
 
 if (interactive()) {
 
-#### define questions UI
-
-list_of_questions <- list(
-  shiny_positive_text = list(
-    type = "textInput",
-    label = "What do you like about Shiny?",
-    placeholder = "Write here"
-  ),
-  other_langs = list(
-    type = "selectizeInput",
-    label = "What programming languages besides R are you using most of the time?",
-    mandatory = TRUE,
-    maxItems = 3,
-    choiceNames = c("C/C++", "Scala", "JavaScript", "Matlab", "Python", "SPSS",
-                    "Swift", "Go", "C#", "Julia", "Stata", "Ruby", "PHP", "SAS",
-                    "Java", "Other"),
-    choiceValues = c(1:16)
-  ),
-  years_of_experience = list(
-    type = "numericInput",
-    label = "How many years of experience in creating Shiny apps do you have?",
-    value = 0,
-    min = 0,
-    step = 1
-  ),
-  questio_need = list(
-    type = "radioButtons",
-    label = "Do you see yourself using shiny.survey in the future projects?",
-    mandatory = TRUE,
-    choices = c("Yes", "No", "Maybe")
-  )
-)
-
-#### define descriptions UI
-
-list_of_descriptions <- list(
-  list(
-    type = "instructions_title",
-    content = "Exemplary questionnaire with quetzio",
-    align = "center"
-  ),
-  list(
-   type = "instructions_para",
-   content = "This is an exemplary questionnaire that you can build using
-   <b>quetzio_server</b> class. You can use <i>HTML</i> tags in instruction
-   and item descriptions, including the emojis. Isn't that neat? &#128515;",
-   align = "center",
-   html = TRUE
-  ),
-  list(
-    type = "item_desc",
-    content = "Choose three maximum.",
-    align = "center",
-    inputId = "other_langs"
-  )
-)
-
-#### create shinyApp
-
 # load libraries
 library(shiny)
 library(shiny.survey)
@@ -96,12 +37,12 @@ ui <- fluidPage(
 server <- function(input, output, session) {
 
   # initialize new quetzio
-  quetzio_output <- quetzio_server$new(
+  questionnaire <- quetzio_server$new(
     # load questions from R object
     source_method = "raw",
-    source_object = list_of_questions,
+    source_object = quetzio_examples$questions_lists$simple_quetzio,
     # optionally add descriptions
-    desc_object = list_of_descriptions,
+    desc_object = quetzio_examples$description_lists$simple_quetzio,
     # use the same module_id as in UI binding
     module_id = "my_quetzio",
     # custom_css to give margin but not center options explicitly
@@ -113,13 +54,13 @@ server <- function(input, output, session) {
     div_id = "my_questio_div_id"
   )
 
-  # render objects from quetzio
+  # render objects to show your questionnaire status
   output$quetzio_is_done <-
-    renderPrint(quetzio_output$is_done())
+    renderPrint(questionnaire$is_done())
   output$quetzio_message <-
-    renderPrint(quetzio_output$message())
+    renderPrint(questionnaire$message())
   output$quetzio_answers <-
-    renderPrint(quetzio_output$answers())
+    renderPrint(questionnaire$answers())
 }
 
 shinyApp(ui, server)

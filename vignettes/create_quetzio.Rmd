@@ -72,8 +72,8 @@ Table of the supported shinyInputs with all possible parameters is provided belo
 
 |    parameter   |  textInput |numericInput|selectizeInput|radioButtons|
 |    :----:      |   :----:   |   :----:   |    :----:    |   :----:   |
-|placeholder     |      x     |            |              |            |    
-|value           |            |     **x**  |              |            |    
+|placeholder     |      x     |     x      |              |            |    
+|value           |            |     x      |              |            |    
 |min             |            |     x      |              |            |    
 |max             |            |     x      |              |            |    
 |step            |            |     x      |              |            |    
@@ -179,7 +179,7 @@ df_source <- data.frame(
   type = c("textInput", "selectizeInput"),
   mandatory = c(NA, TRUE),
   label = c("First input", "Choose up to two"),
-  chr_placeholder = c("Write inside of me, please!", NA),
+  chrnum_placeholder = c("Write inside of me, please!", NA),
   mult_choices = c(NA, "I am first;I am second;I am third;Who am I?"),
   select_maxItems = c(NA, 2)
 )

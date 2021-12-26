@@ -7,7 +7,7 @@
 #' Name suffix helps to determine for which types of inputs these columns
 #' are used. Variables without suffix are used in creation of all types.
 #' \itemize{
-#' \item{\code{chr_}: textInput}
+#' \item{\code{chrnum_}: textInput and numericInput}
 #' \item{\code{num_}: numericInput}
 #' \item{\code{select_}: selectizeInput}
 #' \item{\code{radio_}: radioButtons}
@@ -56,7 +56,7 @@ create_quetzio_source <- function(
       mandatory = TRUE,
       label = "Remove before production",
       width = "500px",
-      chr_placeholder = "some text",
+      chrnum_placeholder = "some text",
       num_value = 1,
       num_min = 0,
       num_max = 2,
@@ -219,10 +219,10 @@ create_desc_source <- function(
 
       # detect the type and set the pattern accordingly
       if (row_as_list$type == "textInput") {
-        pat <- "^chr_"
+        pat <- "^chrnum_"
 
       } else if (row_as_list$type == "numericInput") {
-        pat <- "^num_"
+        pat <- "^num_|^chrnum_"
 
       } else if (row_as_list$type == "selectizeInput") {
         pat <- "^mult_|^select_"

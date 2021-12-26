@@ -63,7 +63,9 @@
                    # if the item is numeric, check if its in correct min-max range
                    if(x %in% valid$numeric_ids){
                      state[[2]] <- (input[[x]] >= self$source_list[[x]]$min &&
-                        input[[x]] <= self$source_list[[x]]$max) || is.null(input[[x]])
+                        input[[x]] <= self$source_list[[x]]$max) || is.null(input[[x]]) ||
+                       is.na(input[[x]])
+
                      # last condition for inputs which aren't mandatory (can be null),
                      # but need to be in correct min-max range!
 

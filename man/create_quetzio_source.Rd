@@ -39,7 +39,7 @@ placeholder input to help populating next ones.
 Name suffix helps to determine for which types of inputs these columns
 are used. Variables without suffix are used in creation of all types.
 \itemize{
-\item{\code{chr_}: textInput}
+\item{\code{chrnum_}: textInput and numericInput}
 \item{\code{num_}: numericInput}
 \item{\code{select_}: selectizeInput}
 \item{\code{radio_}: radioButtons}
