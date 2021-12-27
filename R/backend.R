@@ -63,7 +63,9 @@
                    # if the item is numeric, check if its in correct min-max range
                    if(x %in% valid$numeric_ids){
                      state[[2]] <- (input[[x]] >= self$source_list[[x]]$min &&
-                        input[[x]] <= self$source_list[[x]]$max) || is.null(input[[x]])
+                        input[[x]] <= self$source_list[[x]]$max) || is.null(input[[x]]) ||
+                       is.na(input[[x]])
+
                      # last condition for inputs which aren't mandatory (can be null),
                      # but need to be in correct min-max range!
 
@@ -323,7 +325,7 @@
 
     source <- googlesheets4::read_sheet(
       ss = source_gsheet_id,
-      sheet = source_gsheet_name
+      sheet = source_gsheet_sheetname
     )
   } else if (source_method == "raw") {
 
@@ -411,11 +413,10 @@
 
       observe({
 
-        req(values())
+        req(values)
 
         # firstly, filter the values for only these, that have the same names
         # as any of the inputs in quetzio's source_list
-        values <- values()
         filtered_values <- values[names(values) %in% names(self$source_list)]
 
         lapply(seq_along(filtered_values), \(i) {

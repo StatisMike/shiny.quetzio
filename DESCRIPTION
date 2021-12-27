@@ -1,28 +1,30 @@
 Package: shiny.survey
-Title: Create a survey module in ShinyApp
-Version: 0.0.11
+Title: Create a questionnaire module in ShinyApp
+Version: 0.0.12
 Authors@R: 
     person(given = "Michal",
            family = "Kosinski",
            role = c("aut", "cre"),
            email = "kosinski.mich@gmail.com",
-           comment = c(ORCID = "https://orcid.org/0000-0002-8426-3654"))
-Description: Functions to create a shiny.survey_module for you ShinyApp. 
-    Create a survey based on googlesheets, YAML file or list/data.frame source, 
+           comment = c(ORCID = "0000-0002-8426-3654"))
+Description: Functions to create a questionnaire module for you ShinyApp. 
+    Generate questions sourcing some googlesheet, YAML file or list/data.frame source, 
     and save the results to the googlesheets file or catch them back in the
     ShinyApp.
 Depends:
    R (>= 4.1.0),
    shiny, 
-   R6, 
-   dplyr
+   R6
 Imports: 
    htmltools, 
    shinyjs, 
+   dplyr,
    stringr
 Suggests: 
     knitr,
+    rmarkdown,
     googlesheets4,
+    googledrive,
     yaml
 License: MIT + file LICENSE
 Encoding: UTF-8

@@ -12,7 +12,7 @@ of your questionnaire"><!-- mathjax --><script src="https://cdnjs.cloudflare.com
     
     <a class="navbar-brand me-2" href="../index.html">shiny.survey</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.11</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.12</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,6 +53,10 @@ of your questionnaire</p>
     </div>
 
 
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p>quetzio_UI</p></div>
+    </div>
     <div class="section level2">
     <h2 id="public-fields">Public fields<a class="anchor" aria-label="anchor" href="#public-fields"></a></h2>
     <p></p><div class="r6-fields"><dl><dt><code>source_list</code></dt>
@@ -125,7 +129,7 @@ then the UI will be rendered.</p></dd>
 </div>
 
 </div><p></p><hr><a id="method-new"></a><div class="section">
-<h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
+<h3 id="method-new-">Method <code><a href="https://rdrr.io/r/methods/new.html" class="external-link">new()</a></code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p>Initializing the 'quetzio_server' object</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span class="va"><a href="../reference/quetzio_server.html">quetzio_server</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
@@ -281,6 +285,67 @@ Need to provide <code>source_yaml_default</code> - there are no other methods AT
 <h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
 <p>the 'quetzio_server' serverModule</p>
 </div>
+<div class="section">
+<h4 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code><span class="co">## Only run example in interactive R sessions</span>
+
+<span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+
+ <span class="co"># load libraries</span>
+ <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.rstudio.com/" class="external-link">shiny</a></span><span class="op">)</span>
+ <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">shiny.survey</span><span class="op">)</span>
+
+ <span class="co"># create ui</span>
+ <span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html" class="external-link">fluidPage</a></span><span class="op">(</span>
+   <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/column.html" class="external-link">column</a></span><span class="op">(</span><span class="fl">6</span>, align <span class="op">=</span> <span class="st">"center"</span>,
+          <span class="co"># bind the UI with correct module_id</span>
+          <span class="fu"><a href="../reference/quetzio_UI.html">quetzio_UI</a></span><span class="op">(</span><span class="st">"my_quetzio"</span><span class="op">)</span>
+   <span class="op">)</span>,
+   <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/column.html" class="external-link">column</a></span><span class="op">(</span><span class="fl">6</span>,
+          <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html" class="external-link">h2</a></span><span class="op">(</span><span class="st">"State of"</span>, <span class="va">tags</span><span class="op">$</span><span class="fu">i</span><span class="op">(</span><span class="st">"quetzio_server"</span><span class="op">)</span><span class="op">)</span>,
+          <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html" class="external-link">h3</a></span><span class="op">(</span><span class="st">"Is it done?"</span><span class="op">)</span>,
+          <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/textOutput.html" class="external-link">verbatimTextOutput</a></span><span class="op">(</span><span class="st">"quetzio_is_done"</span><span class="op">)</span>,
+          <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html" class="external-link">h3</a></span><span class="op">(</span><span class="st">"Error messages?"</span><span class="op">)</span>,
+          <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/textOutput.html" class="external-link">verbatimTextOutput</a></span><span class="op">(</span><span class="st">"quetzio_message"</span><span class="op">)</span>,
+          <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html" class="external-link">h3</a></span><span class="op">(</span><span class="st">"Answers"</span><span class="op">)</span>,
+          <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/textOutput.html" class="external-link">verbatimTextOutput</a></span><span class="op">(</span><span class="st">"quetzio_answers"</span><span class="op">)</span>
+   <span class="op">)</span>
+ <span class="op">)</span>
+
+ <span class="va">server</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span>
+
+   <span class="co"># initialize new quetzio</span>
+   <span class="va">questionnaire</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/quetzio_server.html">quetzio_server</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
+     <span class="co"># load questions from R object</span>
+     source_method <span class="op">=</span> <span class="st">"raw"</span>,
+     source_object <span class="op">=</span> <span class="va">quetzio_examples</span><span class="op">$</span><span class="va">questions_lists</span><span class="op">$</span><span class="va">simple_quetzio</span>,
+     <span class="co"># optionally add descriptions</span>
+     desc_object <span class="op">=</span> <span class="va">quetzio_examples</span><span class="op">$</span><span class="va">description_lists</span><span class="op">$</span><span class="va">simple_quetzio</span>,
+     <span class="co"># use the same module_id as in UI binding</span>
+     module_id <span class="op">=</span> <span class="st">"my_quetzio"</span>,
+     <span class="co"># custom_css to give margin but not center options explicitly</span>
+     <span class="co"># it will affect only elements within the form div</span>
+     custom_css <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
+       <span class="st">"shiny-options-group"</span> <span class="op">=</span> <span class="st">"text-align: left; margin-left: 45%"</span>
+     <span class="op">)</span>,
+     <span class="co"># you can also optionally give div unique id - useful for external styling</span>
+     div_id <span class="op">=</span> <span class="st">"my_questio_div_id"</span>
+   <span class="op">)</span>
+
+   <span class="co"># render objects to show your questionnaire status</span>
+ <span class="va">output</span><span class="op">$</span><span class="va">quetzio_is_done</span> <span class="op">&lt;-</span>
+     <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPrint.html" class="external-link">renderPrint</a></span><span class="op">(</span><span class="va">questionnaire</span><span class="op">$</span><span class="fu">is_done</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+   <span class="va">output</span><span class="op">$</span><span class="va">quetzio_message</span> <span class="op">&lt;-</span>
+     <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPrint.html" class="external-link">renderPrint</a></span><span class="op">(</span><span class="va">questionnaire</span><span class="op">$</span><span class="fu">message</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+   <span class="va">output</span><span class="op">$</span><span class="va">quetzio_answers</span> <span class="op">&lt;-</span>
+     <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPrint.html" class="external-link">renderPrint</a></span><span class="op">(</span><span class="va">questionnaire</span><span class="op">$</span><span class="fu">answers</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+ <span class="op">}</span>
+
+ <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html" class="external-link">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span>
+
+<span class="op">}</span></code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-get_answers_df"></a><div class="section">
 <h3 id="method-get-answers-df-">Method <code>get_answers_df()</code><a class="anchor" aria-label="anchor" href="#method-get-answers-df-"></a></h3>
@@ -343,6 +408,50 @@ with <code>create_survey_source()</code>. Needed when <code>source_method == 'ra
 
 </dl><p></p></div>
 </div>
+<div class="section">
+<h4 id="examples-1">Examples<a class="anchor" aria-label="anchor" href="#examples-1"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code><span class="co">## only run examples in interactive environment</span>
+
+<span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+
+ <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.rstudio.com/" class="external-link">shiny</a></span><span class="op">)</span>
+ <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">shiny.survey</span><span class="op">)</span>
+
+ <span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html" class="external-link">fluidPage</a></span><span class="op">(</span>
+   <span class="co"># some input to trigger label update</span>
+   <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/selectInput.html" class="external-link">selectizeInput</a></span><span class="op">(</span><span class="st">"gender"</span>, <span class="st">"What is your gender?"</span>,
+                  choices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span> <span class="op">=</span> <span class="st">"M"</span>,
+                              <span class="st">"Female"</span> <span class="op">=</span> <span class="st">"F"</span>,
+                              <span class="st">"I identify as neither of above"</span> <span class="op">=</span> <span class="st">"O"</span>,
+                              <span class="st">"Prefer not to say"</span> <span class="op">=</span> <span class="st">"NI"</span><span class="op">)</span>,
+                  selected <span class="op">=</span> <span class="st">"NI"</span><span class="op">)</span>,
+   <span class="va">tags</span><span class="op">$</span><span class="fu">hr</span><span class="op">(</span><span class="op">)</span>,
+   <span class="co"># quetzio to update labels</span>
+   <span class="fu"><a href="../reference/quetzio_UI.html">quetzio_UI</a></span><span class="op">(</span><span class="st">"updating_labels"</span><span class="op">)</span>
+ <span class="op">)</span>
+
+ <span class="va">server</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span>
+
+   <span class="va">quetzio</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/quetzio_server.html">quetzio_server</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
+     source_method <span class="op">=</span> <span class="st">"raw"</span>,
+     source_object <span class="op">=</span> <span class="va">quetzio_examples</span><span class="op">$</span><span class="va">questions_lists</span><span class="op">$</span><span class="va">gender_update</span>,
+     module_id <span class="op">=</span> <span class="st">"updating_labels"</span>
+   <span class="op">)</span>
+
+   <span class="co"># trigger need to be reactive</span>
+   <span class="va">gender_react</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">gender</span><span class="op">)</span>
+
+   <span class="co"># update labels method call</span>
+   <span class="va">quetzio</span><span class="op">$</span><span class="fu">update_labels</span><span class="op">(</span>
+     trigger <span class="op">=</span> <span class="va">gender_react</span>,
+     source_method <span class="op">=</span> <span class="st">"raw"</span>,
+     source_object <span class="op">=</span> <span class="va">quetzio_examples</span><span class="op">$</span><span class="va">label_update</span><span class="op">$</span><span class="va">gender_update</span>
+   <span class="op">)</span>
+ <span class="op">}</span>
+ <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html" class="external-link">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span>
+<span class="op">}</span></code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-update_values"></a><div class="section">
 <h3 id="method-update-values-">Method <code>update_values()</code><a class="anchor" aria-label="anchor" href="#method-update-values-"></a></h3>
@@ -354,13 +463,60 @@ with <code>create_survey_source()</code>. Needed when <code>source_method == 'ra
 <div class="section">
 <h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>values</code></dt>
-<dd><p>reactive which will trigger the update and contain named list
-with values to update. List need to be named, as the names are going to be
-used to identify which inputId to update</p></dd>
+<dd><p>list of values to update questionnaire with. List need to be named,
+as the names are going to be used to identify which inputId to update</p></dd>
 
 
 </dl><p></p></div>
 </div>
+<div class="section">
+<h4 id="examples-2">Examples<a class="anchor" aria-label="anchor" href="#examples-2"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code><span class="co">## only run examples in interactive environment</span>
+
+<span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+
+ <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.rstudio.com/" class="external-link">shiny</a></span><span class="op">)</span>
+ <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">shiny.survey</span><span class="op">)</span>
+
+ <span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html" class="external-link">fluidPage</a></span><span class="op">(</span>
+   <span class="co"># first questionnaire to get values from</span>
+   <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/column.html" class="external-link">column</a></span><span class="op">(</span><span class="fl">6</span>,
+          <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html" class="external-link">h1</a></span><span class="op">(</span><span class="st">"Finish first questionnaire"</span><span class="op">)</span>,
+          <span class="fu"><a href="../reference/quetzio_UI.html">quetzio_UI</a></span><span class="op">(</span><span class="st">"first_questionnaire"</span><span class="op">)</span>
+   <span class="op">)</span>,
+   <span class="co"># second questionnaire to update values</span>
+   <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/column.html" class="external-link">column</a></span><span class="op">(</span><span class="fl">6</span>,
+          <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html" class="external-link">h1</a></span><span class="op">(</span><span class="st">"Update values of second questionnaire!"</span><span class="op">)</span>,
+          <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/actionButton.html" class="external-link">actionButton</a></span><span class="op">(</span><span class="st">"update_vals"</span>, <span class="st">"Update values"</span><span class="op">)</span>,
+          <span class="va">tags</span><span class="op">$</span><span class="fu">hr</span><span class="op">(</span><span class="op">)</span>,
+          <span class="fu"><a href="../reference/quetzio_UI.html">quetzio_UI</a></span><span class="op">(</span><span class="st">"second_questionnaire"</span><span class="op">)</span>
+   <span class="op">)</span>
+ <span class="op">)</span>
+
+ <span class="va">server</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span>
+
+   <span class="va">quetzio_1st</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/quetzio_server.html">quetzio_server</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
+     source_method <span class="op">=</span> <span class="st">"raw"</span>,
+     source_object <span class="op">=</span> <span class="va">quetzio_examples</span><span class="op">$</span><span class="va">questions_lists</span><span class="op">$</span><span class="va">simple_quetzio</span>,
+     module_id <span class="op">=</span> <span class="st">"first_questionnaire"</span>
+   <span class="op">)</span>
+   <span class="va">quetzio_2nd</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/quetzio_server.html">quetzio_server</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
+     source_method <span class="op">=</span> <span class="st">"raw"</span>,
+     source_object <span class="op">=</span> <span class="va">quetzio_examples</span><span class="op">$</span><span class="va">questions_lists</span><span class="op">$</span><span class="va">simple_quetzio</span>,
+     module_id <span class="op">=</span> <span class="st">"second_questionnaire"</span>
+   <span class="op">)</span>
+
+   <span class="co"># update values on button press</span>
+   <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html" class="external-link">observeEvent</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">update_vals</span>, <span class="op">{</span>
+     <span class="co"># you can use answers from one questionnaire to update another, though</span>
+     <span class="co"># the used values can be any other static named list</span>
+     <span class="va">quetzio_2nd</span><span class="op">$</span><span class="fu">update_values</span><span class="op">(</span><span class="va">quetzio_1st</span><span class="op">$</span><span class="fu">answers</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+   <span class="op">}</span><span class="op">)</span>
+ <span class="op">}</span>
+ <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html" class="external-link">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span>
+<span class="op">}</span></code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
@@ -382,6 +538,171 @@ used to identify which inputId to update</p></dd>
 
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
+<span class="r-in"><span class="co">## ------------------------------------------------</span></span>
+<span class="r-in"><span class="co">## Method `quetzio_server$new`</span></span>
+<span class="r-in"><span class="co">## ------------------------------------------------</span></span>
+<span class="r-in"></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co">## Only run example in interactive R sessions</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span class="r-in"></span>
+<span class="r-in"> <span class="co"># load libraries</span></span>
+<span class="r-in"> <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.rstudio.com/" class="external-link">shiny</a></span><span class="op">)</span></span>
+<span class="r-in"> <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">shiny.survey</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"> <span class="co"># create ui</span></span>
+<span class="r-in"> <span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html" class="external-link">fluidPage</a></span><span class="op">(</span></span>
+<span class="r-in">   <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/column.html" class="external-link">column</a></span><span class="op">(</span><span class="fl">6</span>, align <span class="op">=</span> <span class="st">"center"</span>,</span>
+<span class="r-in">          <span class="co"># bind the UI with correct module_id</span></span>
+<span class="r-in">          <span class="fu"><a href="quetzio_UI.html">quetzio_UI</a></span><span class="op">(</span><span class="st">"my_quetzio"</span><span class="op">)</span></span>
+<span class="r-in">   <span class="op">)</span>,</span>
+<span class="r-in">   <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/column.html" class="external-link">column</a></span><span class="op">(</span><span class="fl">6</span>,</span>
+<span class="r-in">          <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html" class="external-link">h2</a></span><span class="op">(</span><span class="st">"State of"</span>, <span class="va">tags</span><span class="op">$</span><span class="fu">i</span><span class="op">(</span><span class="st">"quetzio_server"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span class="r-in">          <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html" class="external-link">h3</a></span><span class="op">(</span><span class="st">"Is it done?"</span><span class="op">)</span>,</span>
+<span class="r-in">          <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/textOutput.html" class="external-link">verbatimTextOutput</a></span><span class="op">(</span><span class="st">"quetzio_is_done"</span><span class="op">)</span>,</span>
+<span class="r-in">          <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html" class="external-link">h3</a></span><span class="op">(</span><span class="st">"Error messages?"</span><span class="op">)</span>,</span>
+<span class="r-in">          <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/textOutput.html" class="external-link">verbatimTextOutput</a></span><span class="op">(</span><span class="st">"quetzio_message"</span><span class="op">)</span>,</span>
+<span class="r-in">          <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html" class="external-link">h3</a></span><span class="op">(</span><span class="st">"Answers"</span><span class="op">)</span>,</span>
+<span class="r-in">          <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/textOutput.html" class="external-link">verbatimTextOutput</a></span><span class="op">(</span><span class="st">"quetzio_answers"</span><span class="op">)</span></span>
+<span class="r-in">   <span class="op">)</span></span>
+<span class="r-in"> <span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"> <span class="va">server</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span></span>
+<span class="r-in"></span>
+<span class="r-in">   <span class="co"># initialize new quetzio</span></span>
+<span class="r-in">   <span class="va">questionnaire</span> <span class="op">&lt;-</span> <span class="va">quetzio_server</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
+<span class="r-in">     <span class="co"># load questions from R object</span></span>
+<span class="r-in">     source_method <span class="op">=</span> <span class="st">"raw"</span>,</span>
+<span class="r-in">     source_object <span class="op">=</span> <span class="va">quetzio_examples</span><span class="op">$</span><span class="va">questions_lists</span><span class="op">$</span><span class="va">simple_quetzio</span>,</span>
+<span class="r-in">     <span class="co"># optionally add descriptions</span></span>
+<span class="r-in">     desc_object <span class="op">=</span> <span class="va">quetzio_examples</span><span class="op">$</span><span class="va">description_lists</span><span class="op">$</span><span class="va">simple_quetzio</span>,</span>
+<span class="r-in">     <span class="co"># use the same module_id as in UI binding</span></span>
+<span class="r-in">     module_id <span class="op">=</span> <span class="st">"my_quetzio"</span>,</span>
+<span class="r-in">     <span class="co"># custom_css to give margin but not center options explicitly</span></span>
+<span class="r-in">     <span class="co"># it will affect only elements within the form div</span></span>
+<span class="r-in">     custom_css <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span class="r-in">       <span class="st">"shiny-options-group"</span> <span class="op">=</span> <span class="st">"text-align: left; margin-left: 45%"</span></span>
+<span class="r-in">     <span class="op">)</span>,</span>
+<span class="r-in">     <span class="co"># you can also optionally give div unique id - useful for external styling</span></span>
+<span class="r-in">     div_id <span class="op">=</span> <span class="st">"my_questio_div_id"</span></span>
+<span class="r-in">   <span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in">   <span class="co"># render objects to show your questionnaire status</span></span>
+<span class="r-in"> <span class="va">output</span><span class="op">$</span><span class="va">quetzio_is_done</span> <span class="op">&lt;-</span></span>
+<span class="r-in">     <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPrint.html" class="external-link">renderPrint</a></span><span class="op">(</span><span class="va">questionnaire</span><span class="op">$</span><span class="fu">is_done</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in">   <span class="va">output</span><span class="op">$</span><span class="va">quetzio_message</span> <span class="op">&lt;-</span></span>
+<span class="r-in">     <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPrint.html" class="external-link">renderPrint</a></span><span class="op">(</span><span class="va">questionnaire</span><span class="op">$</span><span class="fu">message</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in">   <span class="va">output</span><span class="op">$</span><span class="va">quetzio_answers</span> <span class="op">&lt;-</span></span>
+<span class="r-in">     <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPrint.html" class="external-link">renderPrint</a></span><span class="op">(</span><span class="va">questionnaire</span><span class="op">$</span><span class="fu">answers</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"> <span class="op">}</span></span>
+<span class="r-in"></span>
+<span class="r-in"> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html" class="external-link">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="op">}</span></span>
+<span class="r-in"></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co">## ------------------------------------------------</span></span>
+<span class="r-in"><span class="co">## Method `quetzio_server$update_labels`</span></span>
+<span class="r-in"><span class="co">## ------------------------------------------------</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co">## only run examples in interactive environment</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span class="r-in"></span>
+<span class="r-in"> <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.rstudio.com/" class="external-link">shiny</a></span><span class="op">)</span></span>
+<span class="r-in"> <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">shiny.survey</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"> <span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html" class="external-link">fluidPage</a></span><span class="op">(</span></span>
+<span class="r-in">   <span class="co"># some input to trigger label update</span></span>
+<span class="r-in">   <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/selectInput.html" class="external-link">selectizeInput</a></span><span class="op">(</span><span class="st">"gender"</span>, <span class="st">"What is your gender?"</span>,</span>
+<span class="r-in">                  choices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span> <span class="op">=</span> <span class="st">"M"</span>,</span>
+<span class="r-in">                              <span class="st">"Female"</span> <span class="op">=</span> <span class="st">"F"</span>,</span>
+<span class="r-in">                              <span class="st">"I identify as neither of above"</span> <span class="op">=</span> <span class="st">"O"</span>,</span>
+<span class="r-in">                              <span class="st">"Prefer not to say"</span> <span class="op">=</span> <span class="st">"NI"</span><span class="op">)</span>,</span>
+<span class="r-in">                  selected <span class="op">=</span> <span class="st">"NI"</span><span class="op">)</span>,</span>
+<span class="r-in">   <span class="va">tags</span><span class="op">$</span><span class="fu">hr</span><span class="op">(</span><span class="op">)</span>,</span>
+<span class="r-in">   <span class="co"># quetzio to update labels</span></span>
+<span class="r-in">   <span class="fu"><a href="quetzio_UI.html">quetzio_UI</a></span><span class="op">(</span><span class="st">"updating_labels"</span><span class="op">)</span></span>
+<span class="r-in"> <span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"> <span class="va">server</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span></span>
+<span class="r-in"></span>
+<span class="r-in">   <span class="va">quetzio</span> <span class="op">&lt;-</span> <span class="va">quetzio_server</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
+<span class="r-in">     source_method <span class="op">=</span> <span class="st">"raw"</span>,</span>
+<span class="r-in">     source_object <span class="op">=</span> <span class="va">quetzio_examples</span><span class="op">$</span><span class="va">questions_lists</span><span class="op">$</span><span class="va">gender_update</span>,</span>
+<span class="r-in">     module_id <span class="op">=</span> <span class="st">"updating_labels"</span></span>
+<span class="r-in">   <span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in">   <span class="co"># trigger need to be reactive</span></span>
+<span class="r-in">   <span class="va">gender_react</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">gender</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in">   <span class="co"># update labels method call</span></span>
+<span class="r-in">   <span class="va">quetzio</span><span class="op">$</span><span class="fu">update_labels</span><span class="op">(</span></span>
+<span class="r-in">     trigger <span class="op">=</span> <span class="va">gender_react</span>,</span>
+<span class="r-in">     source_method <span class="op">=</span> <span class="st">"raw"</span>,</span>
+<span class="r-in">     source_object <span class="op">=</span> <span class="va">quetzio_examples</span><span class="op">$</span><span class="va">label_update</span><span class="op">$</span><span class="va">gender_update</span></span>
+<span class="r-in">   <span class="op">)</span></span>
+<span class="r-in"> <span class="op">}</span></span>
+<span class="r-in"> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html" class="external-link">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></span>
+<span class="r-in"><span class="op">}</span></span>
+<span class="r-in"></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co">## ------------------------------------------------</span></span>
+<span class="r-in"><span class="co">## Method `quetzio_server$update_values`</span></span>
+<span class="r-in"><span class="co">## ------------------------------------------------</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co">## only run examples in interactive environment</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span class="r-in"></span>
+<span class="r-in"> <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.rstudio.com/" class="external-link">shiny</a></span><span class="op">)</span></span>
+<span class="r-in"> <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">shiny.survey</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"> <span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html" class="external-link">fluidPage</a></span><span class="op">(</span></span>
+<span class="r-in">   <span class="co"># first questionnaire to get values from</span></span>
+<span class="r-in">   <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/column.html" class="external-link">column</a></span><span class="op">(</span><span class="fl">6</span>,</span>
+<span class="r-in">          <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html" class="external-link">h1</a></span><span class="op">(</span><span class="st">"Finish first questionnaire"</span><span class="op">)</span>,</span>
+<span class="r-in">          <span class="fu"><a href="quetzio_UI.html">quetzio_UI</a></span><span class="op">(</span><span class="st">"first_questionnaire"</span><span class="op">)</span></span>
+<span class="r-in">   <span class="op">)</span>,</span>
+<span class="r-in">   <span class="co"># second questionnaire to update values</span></span>
+<span class="r-in">   <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/column.html" class="external-link">column</a></span><span class="op">(</span><span class="fl">6</span>,</span>
+<span class="r-in">          <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html" class="external-link">h1</a></span><span class="op">(</span><span class="st">"Update values of second questionnaire!"</span><span class="op">)</span>,</span>
+<span class="r-in">          <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/actionButton.html" class="external-link">actionButton</a></span><span class="op">(</span><span class="st">"update_vals"</span>, <span class="st">"Update values"</span><span class="op">)</span>,</span>
+<span class="r-in">          <span class="va">tags</span><span class="op">$</span><span class="fu">hr</span><span class="op">(</span><span class="op">)</span>,</span>
+<span class="r-in">          <span class="fu"><a href="quetzio_UI.html">quetzio_UI</a></span><span class="op">(</span><span class="st">"second_questionnaire"</span><span class="op">)</span></span>
+<span class="r-in">   <span class="op">)</span></span>
+<span class="r-in"> <span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"> <span class="va">server</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span></span>
+<span class="r-in"></span>
+<span class="r-in">   <span class="va">quetzio_1st</span> <span class="op">&lt;-</span> <span class="va">quetzio_server</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
+<span class="r-in">     source_method <span class="op">=</span> <span class="st">"raw"</span>,</span>
+<span class="r-in">     source_object <span class="op">=</span> <span class="va">quetzio_examples</span><span class="op">$</span><span class="va">questions_lists</span><span class="op">$</span><span class="va">simple_quetzio</span>,</span>
+<span class="r-in">     module_id <span class="op">=</span> <span class="st">"first_questionnaire"</span></span>
+<span class="r-in">   <span class="op">)</span></span>
+<span class="r-in">   <span class="va">quetzio_2nd</span> <span class="op">&lt;-</span> <span class="va">quetzio_server</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
+<span class="r-in">     source_method <span class="op">=</span> <span class="st">"raw"</span>,</span>
+<span class="r-in">     source_object <span class="op">=</span> <span class="va">quetzio_examples</span><span class="op">$</span><span class="va">questions_lists</span><span class="op">$</span><span class="va">simple_quetzio</span>,</span>
+<span class="r-in">     module_id <span class="op">=</span> <span class="st">"second_questionnaire"</span></span>
+<span class="r-in">   <span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in">   <span class="co"># update values on button press</span></span>
+<span class="r-in">   <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html" class="external-link">observeEvent</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">update_vals</span>, <span class="op">{</span></span>
+<span class="r-in">     <span class="co"># you can use answers from one questionnaire to update another, though</span></span>
+<span class="r-in">     <span class="co"># the used values can be any other static named list</span></span>
+<span class="r-in">     <span class="va">quetzio_2nd</span><span class="op">$</span><span class="fu">update_values</span><span class="op">(</span><span class="va">quetzio_1st</span><span class="op">$</span><span class="fu">answers</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in">   <span class="op">}</span><span class="op">)</span></span>
+<span class="r-in"> <span class="op">}</span></span>
+<span class="r-in"> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html" class="external-link">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></span>
+<span class="r-in"><span class="op">}</span></span>
+<span class="r-in"></span>
+<span class="r-in"></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 

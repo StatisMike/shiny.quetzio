@@ -112,7 +112,13 @@
     <loc>https://statismike.github.io/shiny.survey/reference/index.html</loc>
   </url>
   <url>
+    <loc>https://statismike.github.io/shiny.survey/reference/numInput.html</loc>
+  </url>
+  <url>
     <loc>https://statismike.github.io/shiny.survey/reference/quetzio_UI.html</loc>
+  </url>
+  <url>
+    <loc>https://statismike.github.io/shiny.survey/reference/quetzio_examples.html</loc>
   </url>
   <url>
     <loc>https://statismike.github.io/shiny.survey/reference/quetzio_link_UI.html</loc>

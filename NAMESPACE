@@ -2,6 +2,7 @@
 
 export(create_desc_source)
 export(create_quetzio_source)
+export(numInput)
 export(quetzio_UI)
 export(quetzio_link_UI)
 export(quetzio_link_server)
@@ -12,4 +13,5 @@ import(htmltools)
 import(shiny)
 import(shinyjs)
 import(stringr)
+importFrom(htmltools,css)
 importFrom(stats,setNames)

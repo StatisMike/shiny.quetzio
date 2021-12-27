@@ -1,3 +1,13 @@
+# shiny.survey 0.0.12
+
+* created `numInput` shiny widget - slightly modified `numericInput` to allow
+no initial value and placeholder text. All `quetzio`s use it in place of vanilla
+one.
+* added examples of usage for main methods of `quetzio_server` and 
+`quetzio_link_server`.
+* provided exemplary sources built-in to the package. Check `quetzio_examples`!
+* fixed wrong internal function call while during usage of `update_values` method.
+
 # shiny.survey 0.0.11
 
 * R6 methods `update_values` supports updating chosen values with external source

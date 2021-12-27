@@ -35,13 +35,21 @@ devtools::install_github("StatisMike/shiny.survey")
 
 At the current stage of development the `shiny.survey` package consists
 of two exported `R6` classes used in server and corresponding functions
-to bind the UI in your shinyApp: \* `quetzio_server` to create single
-questionnaire and `quetzio_UI` to input the UI of the questionnaire.
-Questionnaires at the moment handles these type of inputs: - `textInput`
-- `numericInput` - `selectizeInput` - `radioButtons`
+to bind the UI in your shinyApp:
 
+-   `quetzio_server` to create single questionnaire and `quetzio_UI` to
+    input the UI of the questionnaire. Questionnaires at the moment
+    handles these type of inputs:
+    -   `textInput`
+    -   `numericInput`
+    -   `selectizeInput`
+    -   `radioButtons`
 -   `quetzio_link_server` to link multiple semi-independent
     questionnaires and `quetzio_link_UI` to bind the connected UI.
+
+> Choosing `numericInput` for item type, the object that will be
+> generated is actually custom input widget: `numInput`. It allows no
+> initial value and placeholder text.
 
 ### In-App usage
 
@@ -181,7 +189,7 @@ For every input you can specify:
 
 |   parameter    | textInput | numericInput | selectizeInput | radioButtons |
 |:--------------:|:---------:|:------------:|:--------------:|:------------:|
-|  placeholder   |     x     |              |                |              |
+|  placeholder   |     x     |      x       |                |              |
 |     value      |           |      x       |                |              |
 |      min       |           |      x       |                |              |
 |      max       |           |      x       |                |              |

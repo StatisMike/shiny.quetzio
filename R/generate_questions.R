@@ -26,13 +26,14 @@
            args <- list(
              inputId = bquote(ns(.(inputId))),
              label = if(isTRUE(x$mandatory)){bquote(.label_mandatory(.(x$label)))} else {x$label},
-             value = x$value,
+             value = .null_def(x$value, NA),
+             placeholder = .null_def(x$placeholder, "Choose a number"),
              min = .null_def(x$min, NA),
              max = .null_def(x$max, NA),
              step = .null_def(x$step, NA),
              width = .null_def(x$width, 500)
            )
-           bquote(numericInput(..(args)), splice = TRUE)
+           bquote(numInput(..(args)), splice = TRUE)
          },
          selectizeInput = {
            args <- list(
@@ -149,7 +150,7 @@
   option_names <- list(
     uni = c("mandatory", "width"),
     textInput = c("placeholder"),
-    numericInput = c("value", "min", "max", "step"),
+    numericInput = c("placeholder", "value", "min", "max", "step"),
     radioButtons = c("choices", "choiceValues", "choiceNames", "selected", "inline"),
     selectizeInput = c("choices", "choiceValues", "choiceNames", "selected", "maxItems")
   )
