@@ -40,7 +40,9 @@ server <- function(input, output, session) {
       "shiny-options-group" = "text-align: left; margin-left: 45%"
     ),
     # you can also optionally give div unique id - useful for external styling
-    div_id = "my_questio_div_id"
+    div_id = "my_questio_div_id",
+    lang = "pl",
+    use_modal = F
   )
 
   # render objects to show your questionnaire status

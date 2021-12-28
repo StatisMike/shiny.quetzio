@@ -10,9 +10,25 @@
   self,
   private
 ){
+
   moduleServer(
     id = self$module_id,
     function(input, output, session) {
+
+      # set up language
+      lang <- use_language(private$language)
+
+      # if labels not provided, get default for language
+      if (is.null(self$button_labels)) {
+
+        self$button_labels <- c(
+          lang$get("submit_enabled"),
+          lang$get("submit_disabled"),
+          lang$get("submit_done"),
+          lang$get("submit_error")
+        )
+
+      }
 
       observeEvent(private$render_ui(), {
 
@@ -98,6 +114,13 @@
 
             }
           }
+
+          if (all(isTRUE(valid$items_validity)) && isFALSE(self$is_done())) {
+            self$message(NULL)
+          } else if (all(!isTRUE(valid$items_validity)) && isFALSE(self$is_done())) {
+            self$message("invalid_inputs")
+          }
+
         }
 
         # update buttons if there are any non-valid inputs AND survey isn't done already!
@@ -120,19 +143,23 @@
 
         if (!all(valid$items_validity)) {
 
-          # if something is not right, show the modalDialog!
+          if (isTRUE(private$use_modal)) {
 
-          showModal(
-            modalDialog(
-              title = "Error!",
-                tags$p("Some mandatory inputs aren't filled and/or numeric inputs aren't withing correct range:",
+            # if something is not right, show the modalDialog!
+
+            showModal(
+              modalDialog(
+                title = lang$get("modal_title"),
+                tags$p(lang$get("modal_content"),
                        HTML(paste0("<ul>",
-                              paste(
-                                paste("<li>", valid$invalid_labels, "</li>"), collapse = ""),
-                              "</ul>")
-                       ))
+                                   paste(
+                                     paste("<li>", valid$invalid_labels, "</li>"), collapse = ""),
+                                   "</ul>")
+                       )),
+                footer = modalButton(lang$get("modal_button"))
+              )
             )
-          )
+          }
 
         } else {
 
@@ -159,6 +186,16 @@
                                inputId = "submit",
                                label = self$button_labels[3],
                                icon = icon("thumbs-up"))
+
+            lapply(seq_along(self$source_list), \(i) {
+              #disable all inputs after questionnaire is done
+              shinyjs::disable(id = paste(self$module_ui_id,
+                                                names(self$source_list)[i],
+                                                sep = ns.sep),
+                               asis = TRUE)
+              })
+
+
           },
           error = function(err){
 

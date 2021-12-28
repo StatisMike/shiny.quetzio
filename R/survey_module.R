@@ -40,7 +40,9 @@ quetzio_server <- R6::R6Class(
     output_ss = NULL,
     output_sheet = NULL,
     css = NULL,
-    render_ui = NULL
+    render_ui = NULL,
+    language = NULL,
+    use_modal = NULL
 
   ),
 
@@ -126,13 +128,17 @@ quetzio_server <- R6::R6Class(
     #' \item{mandatory_star = "color: red;"}
     #' }
     #' @param button_labels character vector of length four with labels for submit
-    #' button i all states. Defaults to:
+    #' button in all states. If not provided, default names for language will
+    #' be used:
     #' \code{c('Submit', 'Cannot submit', 'Submitted!', 'Error occured!')}
     #' @param render_ui logical indicating if the UI for questionnaire should be
     #' rendered
     #' @param link_id character specifying the 'link_id' of the 'quetzio_link_server'
     #' object, modifying its namespace. Only used internally, if the questionnaire
     #' is part of linked server. Don't set it manually.
+    #' @param lang language to use. For now only 'en' and 'pl' are supported.
+    #' @param use_modal logical indicating if modalDialog for invalid inputs
+    #' should be triggered. Defaults to TRUE
     #'
     #' @details
     #'
@@ -239,9 +245,11 @@ quetzio_server <- R6::R6Class(
       module_id = NULL,
       div_id = NULL,
       custom_css = NULL,
-      button_labels = c("Submit", "Cannot submit", "Submitted!", "Error occured!"),
+      button_labels = NULL,
       render_ui = TRUE,
-      link_id = NULL
+      link_id = NULL,
+      lang = "en",
+      use_modal = TRUE
     ){
 
       # initialize checks
@@ -350,8 +358,10 @@ quetzio_server <- R6::R6Class(
       }
 
       # check if the submit button labels are correct
-      if (class(button_labels) != "character" || length(button_labels) != 4) {
-        stop("'button_labels' should be specified as character vector of length 4")
+      if (!is.null(button_labels)) {
+        if (class(button_labels) != "character" || length(button_labels) != 4) {
+          stop("'button_labels' should be specified as character vector of length 4")
+        }
       }
 
       # load description list
@@ -389,6 +399,8 @@ quetzio_server <- R6::R6Class(
         private$output_ss <- if (is.null(output_gsheet_id) || is.na(output_gsheet_id)) source_gsheet_id else output_gsheet_id
         private$output_sheet <- output_gsheet_sheetname
       }
+      private$language <- lang
+      private$use_modal <- use_modal
 
       # parsing css from the lists to the correct css
       if (is.null(custom_css)) {
