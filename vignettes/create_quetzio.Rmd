@@ -1,5 +1,5 @@
 ---
-title: "Create questionnaire"
+title: "Create a questionnaire"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Create questionnaire}

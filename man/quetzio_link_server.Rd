@@ -59,7 +59,7 @@ if (interactive()) {
      quetzio_second = quetzio_server$new(
        source_method = "raw",
        source_object = quetzio_examples$questions_lists$link_quetzio_2,
-       desc_object = quetzio_examples$questions_lists$link_quetzio_2,
+       desc_object = quetzio_examples$description_lists$link_quetzio_2,
        module_id = "my_second_quetzio",
        custom_css = list(
          "shiny-options-group" = "text-align: left; margin-left: 45\%;"
@@ -326,7 +326,7 @@ if (interactive()) {
      quetzio_second = quetzio_server$new(
        source_method = "raw",
        source_object = quetzio_examples$questions_lists$link_quetzio_2,
-       desc_object = quetzio_examples$questions_lists$link_quetzio_2,
+       desc_object = quetzio_examples$description_lists$link_quetzio_2,
        module_id = "my_second_quetzio",
        custom_css = list(
          "shiny-options-group" = "text-align: left; margin-left: 45\%;"

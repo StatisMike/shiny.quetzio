@@ -251,9 +251,11 @@ Initializing the 'quetzio_server' object
   module_id = NULL,
   div_id = NULL,
   custom_css = NULL,
-  button_labels = c("Submit", "Cannot submit", "Submitted!", "Error occured!"),
+  button_labels = NULL,
   render_ui = TRUE,
-  link_id = NULL
+  link_id = NULL,
+  lang = "en",
+  use_modal = TRUE
 )}\if{html}{\out{</div>}}
 }
 
@@ -314,7 +316,8 @@ If not specified, default look will be used:
 }}
 
 \item{\code{button_labels}}{character vector of length four with labels for submit
-button i all states. Defaults to:
+button in all states. If not provided, default names for language will
+be used:
 \code{c('Submit', 'Cannot submit', 'Submitted!', 'Error occured!')}}
 
 \item{\code{render_ui}}{logical indicating if the UI for questionnaire should be
@@ -323,6 +326,11 @@ rendered}
 \item{\code{link_id}}{character specifying the 'link_id' of the 'quetzio_link_server'
 object, modifying its namespace. Only used internally, if the questionnaire
 is part of linked server. Don't set it manually.}
+
+\item{\code{lang}}{language to use. For now only 'en' and 'pl' are supported.}
+
+\item{\code{use_modal}}{logical indicating if modalDialog for invalid inputs
+should be triggered. Defaults to TRUE}
 }
 \if{html}{\out{</div>}}
 }

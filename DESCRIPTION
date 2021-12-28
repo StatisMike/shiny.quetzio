@@ -1,6 +1,6 @@
 Package: shiny.survey
 Title: Create a questionnaire module in ShinyApp
-Version: 0.0.12
+Version: 0.0.12.9001
 Authors@R: 
     person(given = "Michal",
            family = "Kosinski",
