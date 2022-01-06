@@ -1,4 +1,4 @@
-url: https://statismike.github.io/shiny.survey/
+url: https://statismike.github.io/shiny.quetzio/
 development:
   mode: unreleased
 template:
@@ -18,6 +18,13 @@ reference:
   - starts_with("create_")
   - quetzio_examples
 - title: Custom shinyInputs
-  desc: Customized inputs to be used in created questionnaires, though you can also use them individually
+  desc: Customized inputs to be used in created questionnaires, though you can also use them externally
 - contents:
   - numInput
+- title: Set or modify language for internally generated messages
+  desc: >-
+   Mostly used internally. Exported for better grasp on how to provide custom
+   texts ion the fly. If you want to add support for language, it would be best
+   to check our GitHub repo and contribute by changing 'lang.R' file.
+- contents:
+   - quetzio_txt

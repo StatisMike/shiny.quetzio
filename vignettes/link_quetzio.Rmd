@@ -15,10 +15,10 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup, include = F}
-library(shiny.survey)
+library(shiny.quetzio)
 ```
 
-When you have created multiple questionnaires with help of the *shiny.survey*
+When you have created multiple questionnaires with help of the *shiny.quetzio*
 already, you may wish to present them to the user sequentially - after the
 completion of one it may be handy to handle another.
 
@@ -26,7 +26,7 @@ It can be done through the usage of *conditionalPanel* or by using the *toggle_U
 method of *quetzio_server*. It can unfortunately cause a lot of unpredicted
 effects in the end, with a need for more complex logic for you to implement.
 
-That's why the *shiny.survey* provides an easy way to link multiple questionnaires
+That's why the *shiny.quetzio* provides an easy way to link multiple questionnaires
 together with the use of *quetzio_link_server* R6 class!
 
 >In this vignette there is an assumption that you already know how to construct
@@ -97,7 +97,7 @@ quetzio_link_UI(
 )
 ```
 
-## Provide description!
+## Provide instructions and item descriptions!
 
 As with using only single *quetzio_server*, you can generate title, instructions
 and descriptions for individual questions. With single questionnaire you could
@@ -142,11 +142,107 @@ quetzio_link <- quetzio_link_server$new(
 There are some objects you can get from object to which the linked questionnaires
 server was assigned. Taking above assignement as example:
 
-- *quetzio_link$completion()* - the completion rate in form of numeric value between
+- **quetzio_link$completion()** - the completion rate in form of numeric value between
 0 and 1. It is generated as division: 
   - number of completed questionnaires / number of linked questionnaires
-- *quetzio_link$messages()* list of *messages()* of individual questionnaires
-- *quetzio_link$answers()* list of *answers()* of individual questionnaires
-- *quetzio_link$quetzio_list* gives you a way to access any element of object
+- **quetzio_link$message()** list of *message()* of individual questionnaires
+- **quetzio_link$answers()** list of *answers()* of individual questionnaires
+- **quetzio_link$quetzio_list** gives you a way to access any element of object
 from any individual *quetzio_survey* object.
 
+## Additional methods
+
+There are also additional methods to object of class *quetzio_link_server* - they
+are mostly analogous to methods of *quetzio_server*, but with some additional tweaks.
+To learn about these methods read **Update quetzio_server object** (WIP)
+
+### Reactive label update
+
+You can update labels of any of linked questionnaires reactively with *update_labels*
+method. It works basically the same like in method for *quetzio_server*, but you
+need to also specify which questionnaire labels you want to update.
+
+```{r update_labels, eval = F}
+# create linked questionnaires
+quetzio_link <- quetzio_link_server$new(
+  gender = quetzio_server$new(
+    source_method = "raw",
+    source_object = quetzio_examples$questions_lists$gender_update,
+    module_id = "updating_labels"
+  ),
+    quetzio_2nd = quetzio_server$new(
+    source_method = "raw",
+    source_object = quetzio_examples$questions_lists$simple_quetzio,
+    module_id = "second_in_link"
+  ),
+    link_id = "labels_link")
+
+# if we have some input defined in the UI, we can update labels
+# in reaction to it (in this example its inputId is 'gender')
+# Its value need to be passed in a reactive object, though:
+gender_react <- reactive(input$gender)
+
+# after that - just make a call in your server to the method
+quetzio_link$update_labels(
+  quetzio_name = "gender", # specify the name of questionnare
+  tigger = gender_react,   # pass reactive (without parentheses!)
+  source_method = "raw",   # specify source method and other args
+  source_object = quetzio_examples$label_update$gender_update
+)
+```
+
+You can also make something more complicated - for example get value to update 
+labels of second (or any following questionnaires) on basis of answer of previous
+questionnaire.
+
+```{r update_labels within, eval=F}
+quetzio_link <- quetzio_link_server$new(
+  gender_question = quetzio_server$new(
+   source_method = "raw",
+   source_object = gender_1_item_source,
+   module_id = "single_question"
+  ),
+  gender_update = quetzio_server$new(
+   source_method = "raw",
+   source_object = quetzio_examples$questions_lists$gender_update,
+   module_id = "update_gender"
+  ),
+  link_id = "labels_link")
+
+# trigger need to be reactive
+gender_react <- reactive({
+  quetzio_link$answers()$gender_question$gender_item
+})
+
+output$reactive_val <- renderPrint(gender_react())
+
+# update labels method call
+quetzio_link$update_labels(
+  # you need to provide the name of the quetzio_server in link
+  # where you need to update labels
+  quetzio_name = "gender_update",
+  # the trigger needs to be reactive, but without the parentheses
+  trigger = gender_react,
+  source_method = "raw",
+  source_object = quetzio_examples$label_update$gender_update
+)
+```
+
+### Update values of one questionnaire of the link
+
+Method is mostly identical to `quetzio_server$update_values()`, though you
+need to also provide `quetzio_name` argument to choose which questionnaire
+values you want to update.
+
+```{r update_values, eval=F}
+# update values on button press
+observeEvent(input$update_vals, {
+  quetzio_link$update_values(
+    # you need to provide quetzio name in the link to update
+    quetzio_name = "value_update",
+    # you can use answers from one questionnaire to update another, though
+    # the used values can be any other static named list
+    values = quetzio_1st$answers()
+    )
+})
+```

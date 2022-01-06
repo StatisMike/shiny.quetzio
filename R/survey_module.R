@@ -23,8 +23,6 @@ quetzio_UI <- function(module_id) {
 #'
 #' @import R6
 #' @import shiny
-#' @import shinyjs
-#' @import dplyr
 #' @export
 #'
 
@@ -42,7 +40,8 @@ quetzio_server <- R6::R6Class(
     css = NULL,
     render_ui = NULL,
     language = NULL,
-    use_modal = NULL
+    use_modal = NULL,
+    custom_txts = NULL
 
   ),
 
@@ -60,14 +59,10 @@ quetzio_server <- R6::R6Class(
     #' @field module_id ID of the shiny module
     module_id = NULL,
 
-    #' @field button_labels character vector of length two with labels for submit
-    #' button in active and disabled state
-    button_labels = NULL,
-
     #' @field is_done logical reactiveVal indicating if the survey has been completed
     is_done = NULL,
 
-    #' @field message reactiveVal catching any warning messages
+    #' @field message reactiveVal catching any messages from object
     message = NULL,
 
     #' @field answers reactiveVal object containing list with answers to questions
@@ -127,16 +122,14 @@ quetzio_server <- R6::R6Class(
     #' \item{invalid_input = "outline: red; outline-style: dashed; outline-offset: 10px;"}
     #' \item{mandatory_star = "color: red;"}
     #' }
-    #' @param button_labels character vector of length four with labels for submit
-    #' button in all states. If not provided, default names for language will
-    #' be used:
-    #' \code{c('Submit', 'Cannot submit', 'Submitted!', 'Error occured!')}
     #' @param render_ui logical indicating if the UI for questionnaire should be
     #' rendered
     #' @param link_id character specifying the 'link_id' of the 'quetzio_link_server'
     #' object, modifying its namespace. Only used internally, if the questionnaire
     #' is part of linked server. Don't set it manually.
     #' @param lang language to use. For now only 'en' and 'pl' are supported.
+    #' @param custom_txts named list with custom labels for specified language.
+    #' For more information look upon documentation for 'quetzio_txt'
     #' @param use_modal logical indicating if modalDialog for invalid inputs
     #' should be triggered. Defaults to TRUE
     #'
@@ -174,7 +167,7 @@ quetzio_server <- R6::R6Class(
     #'
     #'  # load libraries
     #'  library(shiny)
-    #'  library(shiny.survey)
+    #'  library(shiny.quetzio)
     #'
     #'  # create ui
     #'  ui <- fluidPage(
@@ -245,10 +238,10 @@ quetzio_server <- R6::R6Class(
       module_id = NULL,
       div_id = NULL,
       custom_css = NULL,
-      button_labels = NULL,
       render_ui = TRUE,
       link_id = NULL,
       lang = "en",
+      custom_txts = NULL,
       use_modal = TRUE
     ){
 
@@ -357,13 +350,6 @@ quetzio_server <- R6::R6Class(
         stop("Error - problems with source")
       }
 
-      # check if the submit button labels are correct
-      if (!is.null(button_labels)) {
-        if (class(button_labels) != "character" || length(button_labels) != 4) {
-          stop("'button_labels' should be specified as character vector of length 4")
-        }
-      }
-
       # load description list
       if (!is.null(desc_yaml)) {
         # from YAML
@@ -393,7 +379,7 @@ quetzio_server <- R6::R6Class(
 
       # save other information in private
 
-      self$button_labels <- button_labels
+      private$custom_txts <- custom_txts
       private$output_gsheet <- output_gsheet
       if(output_gsheet) {
         private$output_ss <- if (is.null(output_gsheet_id) || is.na(output_gsheet_id)) source_gsheet_id else output_gsheet_id
@@ -458,7 +444,7 @@ quetzio_server <- R6::R6Class(
     #'if (interactive()) {
     #'
     #'  library(shiny)
-    #'  library(shiny.survey)
+    #'  library(shiny.quetzio)
     #'
     #'  ui <- fluidPage(
     #'    # some input to trigger label update
@@ -506,6 +492,7 @@ quetzio_server <- R6::R6Class(
 
       .quetzio_label_update(
         self = self,
+        private = private,
         trigger = trigger,
         source_method = source_method,
         source_yaml = source_yaml,
@@ -517,7 +504,7 @@ quetzio_server <- R6::R6Class(
 
     #' @description Method to update selected values on the change in reactive
     #'
-    #' @param values list of values to update questionnaire with. List need to be named,
+    #' @param values list of values to update questionnaire with. List needs to be named,
     #' as the names are going to be used to identify which inputId to update
     #'
     #' @examples
@@ -526,7 +513,7 @@ quetzio_server <- R6::R6Class(
     #'if (interactive()) {
     #'
     #'  library(shiny)
-    #'  library(shiny.survey)
+    #'  library(shiny.quetzio)
     #'
     #'  ui <- fluidPage(
     #'    # first questionnaire to get values from

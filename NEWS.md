@@ -1,3 +1,21 @@
+# shiny.survey 0.0.13
+
+* added multiple language support for messages generated internally and
+default submit button options - `lang` argument in `quetzio_server`. Currently
+only 'en' for English and 'pl' for Polish are supported. All contributions to
+add support for more languages are welcome!
+  + `custom_txts` argument for `quetzio_server` also provide option to modify
+  messages shown to end-user on the fly. Replaces previous argument of `submit_labels`,
+  as it is now redundant.
+  + you can also check what are the default texts for specified language and retrieve
+  them outside of 'shiny_quetzio' with `quetzio_txt` function.
+* added option to mute the modalDialogs generated during questionnaire fillout
+* `messages()` object now contains information if there were any invalid inputs
+during submit
+* first vignettes detailing the usage of package are now provided
+* fixed bug that caused item labels to not update when the value provided in
+`trigger` was set before the questionnaire UI were rendered
+
 # shiny.survey 0.0.12
 
 * created `numInput` shiny widget - slightly modified `numericInput` to allow

@@ -23,7 +23,7 @@ if (interactive()) {
 
  # load libraries
  library(shiny)
- library(shiny.survey)
+ library(shiny.quetzio)
 
  # create ui
  ui <- fluidPage(
@@ -97,7 +97,7 @@ if (interactive()) {
 if (interactive()) {
 
  library(shiny)
- library(shiny.survey)
+ library(shiny.quetzio)
 
  ui <- fluidPage(
    # some input to trigger label update
@@ -156,7 +156,7 @@ if (interactive()) {
 if (interactive()) {
 
  library(shiny)
- library(shiny.survey)
+ library(shiny.quetzio)
 
  ui <- fluidPage(
    # first questionnaire to get values from
@@ -290,7 +290,7 @@ if (interactive()) {
 
  # load libraries
  library(shiny)
- library(shiny.survey)
+ library(shiny.quetzio)
 
  # create ui
  ui <- fluidPage(
@@ -425,7 +425,7 @@ with \code{create_survey_source()}. Needed when \code{source_method == 'raw'}}
 if (interactive()) {
 
  library(shiny)
- library(shiny.survey)
+ library(shiny.quetzio)
 
  ui <- fluidPage(
    # some input to trigger label update
@@ -494,9 +494,8 @@ Method to update selected values on the change in reactive
 \item{\code{quetzio_name}}{string indicating in which questionnaire
 the item values to update are located}
 
-\item{\code{values}}{reactive which will trigger the update and contain named list
-with values to update. List need to be named, as the names are going to be
-used to identify which inputId to update}
+\item{\code{values}}{list of values to update questionnaire with. List needs to be named,
+as the names are going to be used to identify which inputId to update}
 }
 \if{html}{\out{</div>}}
 }
@@ -508,7 +507,7 @@ used to identify which inputId to update}
 if (interactive()) {
 
  library(shiny)
- library(shiny.survey)
+ library(shiny.quetzio)
 
  ui <- fluidPage(
    # first questionnaire to get values from

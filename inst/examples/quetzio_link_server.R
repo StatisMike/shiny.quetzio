@@ -6,7 +6,7 @@ if (interactive()) {
 
 # load libraries
 library(shiny)
-library(shiny.survey)
+library(shiny.quetzio)
 
 # create ui
 ui <- fluidPage(

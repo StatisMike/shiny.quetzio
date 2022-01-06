@@ -3,7 +3,6 @@
 #' @param private R6 'private' object
 #'
 #' @import shiny
-#' @import shinyjs
 #' @keywords internal
 
 .survey_backend <- function(
@@ -15,20 +14,14 @@
     id = self$module_id,
     function(input, output, session) {
 
-      # set up language
-      lang <- use_language(private$language)
+      # get labels for buttons
 
-      # if labels not provided, get default for language
-      if (is.null(self$button_labels)) {
-
-        self$button_labels <- c(
-          lang$get("submit_enabled"),
-          lang$get("submit_disabled"),
-          lang$get("submit_done"),
-          lang$get("submit_error")
-        )
-
-      }
+      button_labels <- c(
+        quetzio_txt(lang = private$language, private = private, x = "submit_enabled"),
+        quetzio_txt(lang = private$language, private = private, x = "submit_disabled"),
+        quetzio_txt(lang = private$language, private = private, x = "submit_done"),
+        quetzio_txt(lang = private$language, private = private, x = "submit_error")
+      )
 
       observeEvent(private$render_ui(), {
 
@@ -37,7 +30,7 @@
           .generate_ui(source_list = self$source_list,
                        div_id = self$div_id,
                        css = private$css,
-                       button_label = self$button_labels[1],
+                       button_label = button_labels[1],
                        module_ui_id = self$module_ui_id)
         )
 
@@ -127,12 +120,12 @@
         if (!all(valid$items_validity) && !isTRUE(self$is_done())) {
 
           updateActionButton(session, inputId = "submit",
-                             label = self$button_labels[2])
+                             label = button_labels[2])
 
         } else if (!isTRUE(self$is_done())){
 
           updateActionButton(session, inputId = "submit",
-                             label = self$button_labels[1])
+                             label = button_labels[1])
 
         }
 
@@ -149,14 +142,14 @@
 
             showModal(
               modalDialog(
-                title = lang$get("modal_title"),
-                tags$p(lang$get("modal_content"),
+                title = quetzio_txt(lang = private$language, private = private, x = "modal_title"),
+                tags$p(quetzio_txt(lang = private$language, private = private, x = "modal_content"),
                        HTML(paste0("<ul>",
                                    paste(
                                      paste("<li>", valid$invalid_labels, "</li>"), collapse = ""),
                                    "</ul>")
                        )),
-                footer = modalButton(lang$get("modal_button"))
+                footer = modalButton(quetzio_txt(lang = private$language, private = private, x = "modal_button"))
               )
             )
           }
@@ -184,7 +177,7 @@
 
             updateActionButton(session,
                                inputId = "submit",
-                               label = self$button_labels[3],
+                               label = button_labels[3],
                                icon = icon("thumbs-up"))
 
             lapply(seq_along(self$source_list), \(i) {
@@ -204,7 +197,7 @@
 
             updateActionButton(session,
                                inputId = "submit",
-                               label = self$button_labels[4],
+                               label = button_labels[4],
                                icon = icon("frown-open"))
 
           }
@@ -322,6 +315,7 @@
 
 .quetzio_label_update <- function(
   self,
+  private,
   trigger,
   source_method,
   source_yaml,
@@ -389,7 +383,17 @@
     function(input, output, session) {
 
       # observe the change in the trigger reactive
-      observeEvent(trigger(), {
+      observe({
+
+      # some initial checks - change if any of these trigger the label change #
+        # make sure that the trigger value is not null
+        req(!is.null(trigger()))
+        # make sure that the trigger is reactive
+        req(any(class(trigger) == "reactive"))
+        # make sure that the UI is currently set to be rendered
+        req(isTRUE(private$render_ui()))
+        # make sure that the UI has been rendered completely
+        req(!is.null(input$submit))
 
         for (row in 1:nrow(source)) {
 
@@ -432,6 +436,7 @@
 #' Server module handling value updates
 #'
 #' @param self R6 self object
+#' @param values named list containing values to update inputs with
 #' @param values reactive object that triggers the change and contains
 #' new values
 #'
@@ -450,7 +455,10 @@
 
       observe({
 
+        # make sure that 'values' are not null
         req(values)
+        # and that they are in form of named list
+        req(class(values) == "list" && !is.null(names(values)))
 
         # firstly, filter the values for only these, that have the same names
         # as any of the inputs in quetzio's source_list

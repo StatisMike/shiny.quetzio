@@ -194,7 +194,6 @@ create_desc_source <- function(
 #' @param source_df source `data.frame` object
 #' @param type character indicating which strategy to take
 #'
-#' @import stringr
 #' @keywords internal
 
 .df_to_list <- function(source_df, type = "quetzio_source"){
@@ -252,11 +251,11 @@ create_desc_source <- function(
 
         # str_split the multiple values on ';' and '\n' separators
         row_as_list[["choices"]] <-
-          stringr::str_trim(unlist(stringr::str_split(row_as_list$choices, pattern = ";|\n")))
+          stringi::stri_trim_both(unlist(stringi::stri_split(row_as_list$choices, regex = ";|\n")))
         row_as_list[["choiceValues"]] <-
-          stringr::str_trim(unlist(stringr::str_split(row_as_list$choiceValues, pattern = ";|\n")))
+          stringi::stri_trim_both(unlist(stringi::stri_split(row_as_list$choiceValues, regex = ";|\n")))
         row_as_list[["choiceNames"]] <-
-          stringr::str_trim(unlist(stringr::str_split(row_as_list$choiceNames, pattern = ";|\n")))
+          stringi::stri_trim_both(unlist(stringi::stri_split(row_as_list$choiceNames, regex = ";|\n")))
 
       }
 
@@ -288,10 +287,10 @@ create_desc_source <- function(
 
         row_as_list$order <- .null_def(x$align, FALSE)
         # split multiple values on separators ';' and '\n'
-        row_as_list$content <- unlist(
-          stringr::str_split(
+        row_as_list$content <- stringi::stri_trim_both(unlist(
+          stringi::stri_split(
             string = row_as_list$content,
-            pattern = ";|\n"))
+            regex = ";|\n")))
 
       }
 
