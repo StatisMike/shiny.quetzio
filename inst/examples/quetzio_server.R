@@ -4,7 +4,7 @@ if (interactive()) {
 
 # load libraries
 library(shiny)
-library(shiny.survey)
+library(shiny.quetzio)
 
 # create ui
 ui <- fluidPage(
@@ -39,7 +39,7 @@ server <- function(input, output, session) {
     custom_css = list(
       "shiny-options-group" = "text-align: left; margin-left: 45%"
     ),
-    # you can also optionally give div unique id - useful for external styling
+    # you can also optionally give div unique id - useful for external css styling
     div_id = "my_questio_div_id"
   )
 

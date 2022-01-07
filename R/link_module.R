@@ -23,7 +23,6 @@ quetzio_link_UI <- function(link_id) {
 #'
 #' @import R6
 #' @import shiny
-#' @import dplyr
 #' @seealso quetzio_server
 #' @seealso quetzio_link_UI
 #' @export
@@ -88,7 +87,7 @@ quetzio_link_server <- R6::R6Class(
     #'
     #'  # load libraries
     #'  library(shiny)
-    #'  library(shiny.survey)
+    #'  library(shiny.quetzio)
     #'
     #'  # create ui
     #'  ui <- fluidPage(
@@ -124,7 +123,7 @@ quetzio_link_server <- R6::R6Class(
     #'      quetzio_second = quetzio_server$new(
     #'        source_method = "raw",
     #'        source_object = quetzio_examples$questions_lists$link_quetzio_2,
-    #'        desc_object = quetzio_examples$questions_lists$link_quetzio_2,
+    #'        desc_object = quetzio_examples$description_lists$link_quetzio_2,
     #'        module_id = "my_second_quetzio",
     #'        custom_css = list(
     #'          "shiny-options-group" = "text-align: left; margin-left: 45%;"
@@ -228,7 +227,7 @@ quetzio_link_server <- R6::R6Class(
     #'if (interactive()) {
     #'
     #'  library(shiny)
-    #'  library(shiny.survey)
+    #'  library(shiny.quetzio)
     #'
     #'  ui <- fluidPage(
     #'    # some input to trigger label update
@@ -303,9 +302,8 @@ quetzio_link_server <- R6::R6Class(
     #'
     #' @param quetzio_name string indicating in which questionnaire
     #' the item values to update are located
-    #' @param values reactive which will trigger the update and contain named list
-    #' with values to update. List need to be named, as the names are going to be
-    #' used to identify which inputId to update
+    #' @param values list of values to update questionnaire with. List needs to be named,
+    #' as the names are going to be used to identify which inputId to update
     #'
     #' @examples
     #'
@@ -314,7 +312,7 @@ quetzio_link_server <- R6::R6Class(
     #'if (interactive()) {
     #'
     #'  library(shiny)
-    #'  library(shiny.survey)
+    #'  library(shiny.quetzio)
     #'
     #'  ui <- fluidPage(
     #'    # first questionnaire to get values from

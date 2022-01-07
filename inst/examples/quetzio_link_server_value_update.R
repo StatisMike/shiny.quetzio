@@ -3,7 +3,7 @@
 if (interactive()) {
 
 library(shiny)
-library(shiny.survey)
+library(shiny.quetzio)
 
 ui <- fluidPage(
   # first questionnaire to get values from

@@ -3,16 +3,25 @@
 #' @param private R6 'private' object
 #'
 #' @import shiny
-#' @import shinyjs
 #' @keywords internal
 
 .survey_backend <- function(
   self,
   private
 ){
+
   moduleServer(
     id = self$module_id,
     function(input, output, session) {
+
+      # get labels for buttons
+
+      button_labels <- c(
+        quetzio_txt(lang = private$language, private = private, x = "submit_enabled"),
+        quetzio_txt(lang = private$language, private = private, x = "submit_disabled"),
+        quetzio_txt(lang = private$language, private = private, x = "submit_done"),
+        quetzio_txt(lang = private$language, private = private, x = "submit_error")
+      )
 
       observeEvent(private$render_ui(), {
 
@@ -21,7 +30,7 @@
           .generate_ui(source_list = self$source_list,
                        div_id = self$div_id,
                        css = private$css,
-                       button_label = self$button_labels[1],
+                       button_label = button_labels[1],
                        module_ui_id = self$module_ui_id)
         )
 
@@ -98,18 +107,25 @@
 
             }
           }
+
+          if (all(isTRUE(valid$items_validity)) && isFALSE(self$is_done())) {
+            self$message(NULL)
+          } else if (all(!isTRUE(valid$items_validity)) && isFALSE(self$is_done())) {
+            self$message("invalid_inputs")
+          }
+
         }
 
         # update buttons if there are any non-valid inputs AND survey isn't done already!
         if (!all(valid$items_validity) && !isTRUE(self$is_done())) {
 
           updateActionButton(session, inputId = "submit",
-                             label = self$button_labels[2])
+                             label = button_labels[2])
 
         } else if (!isTRUE(self$is_done())){
 
           updateActionButton(session, inputId = "submit",
-                             label = self$button_labels[1])
+                             label = button_labels[1])
 
         }
 
@@ -120,19 +136,23 @@
 
         if (!all(valid$items_validity)) {
 
-          # if something is not right, show the modalDialog!
+          if (isTRUE(private$use_modal)) {
 
-          showModal(
-            modalDialog(
-              title = "Error!",
-                tags$p("Some mandatory inputs aren't filled and/or numeric inputs aren't withing correct range:",
+            # if something is not right, show the modalDialog!
+
+            showModal(
+              modalDialog(
+                title = quetzio_txt(lang = private$language, private = private, x = "modal_title"),
+                tags$p(quetzio_txt(lang = private$language, private = private, x = "modal_content"),
                        HTML(paste0("<ul>",
-                              paste(
-                                paste("<li>", valid$invalid_labels, "</li>"), collapse = ""),
-                              "</ul>")
-                       ))
+                                   paste(
+                                     paste("<li>", valid$invalid_labels, "</li>"), collapse = ""),
+                                   "</ul>")
+                       )),
+                footer = modalButton(quetzio_txt(lang = private$language, private = private, x = "modal_button"))
+              )
             )
-          )
+          }
 
         } else {
 
@@ -157,8 +177,18 @@
 
             updateActionButton(session,
                                inputId = "submit",
-                               label = self$button_labels[3],
+                               label = button_labels[3],
                                icon = icon("thumbs-up"))
+
+            lapply(seq_along(self$source_list), \(i) {
+              #disable all inputs after questionnaire is done
+              shinyjs::disable(id = paste(self$module_ui_id,
+                                                names(self$source_list)[i],
+                                                sep = ns.sep),
+                               asis = TRUE)
+              })
+
+
           },
           error = function(err){
 
@@ -167,7 +197,7 @@
 
             updateActionButton(session,
                                inputId = "submit",
-                               label = self$button_labels[4],
+                               label = button_labels[4],
                                icon = icon("frown-open"))
 
           }
@@ -285,6 +315,7 @@
 
 .quetzio_label_update <- function(
   self,
+  private,
   trigger,
   source_method,
   source_yaml,
@@ -352,7 +383,17 @@
     function(input, output, session) {
 
       # observe the change in the trigger reactive
-      observeEvent(trigger(), {
+      observe({
+
+      # some initial checks - change if any of these trigger the label change #
+        # make sure that the trigger value is not null
+        req(!is.null(trigger()))
+        # make sure that the trigger is reactive
+        req(any(class(trigger) == "reactive"))
+        # make sure that the UI is currently set to be rendered
+        req(isTRUE(private$render_ui()))
+        # make sure that the UI has been rendered completely
+        req(!is.null(input$submit))
 
         for (row in 1:nrow(source)) {
 
@@ -395,6 +436,7 @@
 #' Server module handling value updates
 #'
 #' @param self R6 self object
+#' @param values named list containing values to update inputs with
 #' @param values reactive object that triggers the change and contains
 #' new values
 #'
@@ -413,7 +455,10 @@
 
       observe({
 
+        # make sure that 'values' are not null
         req(values)
+        # and that they are in form of named list
+        req(class(values) == "list" && !is.null(names(values)))
 
         # firstly, filter the values for only these, that have the same names
         # as any of the inputs in quetzio's source_list

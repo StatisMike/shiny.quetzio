@@ -3,7 +3,7 @@
 if (interactive()) {
 
 library(shiny)
-library(shiny.survey)
+library(shiny.quetzio)
 
 ui <- fluidPage(
   # some input to trigger label update
@@ -20,17 +20,17 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
 
-  quetzio_link <- quetzio_link_server$new(
+  quetzio_link <- quetzio_link_server$new(    quetzio_2nd = quetzio_server$new(
+      source_method = "raw",
+      source_object = quetzio_examples$questions_lists$simple_quetzio,
+      module_id = "second_in_link"
+    ),
     gender = quetzio_server$new(
       source_method = "raw",
       source_object = quetzio_examples$questions_lists$gender_update,
       module_id = "updating_labels"
     ),
-    quetzio_2nd = quetzio_server$new(
-      source_method = "raw",
-      source_object = quetzio_examples$questions_lists$simple_quetzio,
-      module_id = "second_in_link"
-    ),
+
     link_id = "labels_link")
 
   # trigger need to be reactive

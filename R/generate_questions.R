@@ -84,7 +84,7 @@
 #' @param div_id Character string declaring id for the div
 #' @param css Character string containing custom css rules for classes
 #' 'mandatory_star' and 'invalid_input'
-#' @param button_label character string with active lavel for the submission
+#' @param button_label character string with active label for the submission
 #' button
 #' @param module_ui_id character string declaring module id
 #' @import shiny

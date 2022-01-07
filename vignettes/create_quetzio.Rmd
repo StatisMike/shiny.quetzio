@@ -1,8 +1,8 @@
 ---
-title: "Create questionnaire"
+title: "Create a questionnaire"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Create questionnaire}
+  %\VignetteIndexEntry{Create a questionnaire}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -15,11 +15,11 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup, echo=F, message=F, warning=F}
-library(shiny.survey)
+library(shiny.quetzio)
 googlesheets4::gs4_auth(email = "statismike@gmail.com")
 ```
 
-Package **shiny.survey** provides a relatively simple but also highly
+Package **shiny.quetzio** provides a relatively simple but also highly
 customizable framework for creation and deploying questionnaire as a part
 of your *shinyApp*.
 
@@ -34,7 +34,7 @@ your application.
 
 ## What is the **quetzio_server**?
 
-It is main element of the whole functionality of **shiny.survey**. Its the 
+It is main element of the whole functionality of **shiny.quetzio**. Its the 
 *R6* class definition used to create objects creating Shiny modules upon
 initialization. It takes a source of the questions (and optionally: additional instruction 
 and descriptions for individual inputs) and generates the whole questionnaire UI. 
@@ -414,13 +414,13 @@ information check other vignettes and help files.
   mandatory stars
   - use specific div id to customize css styles more easily
 
-## Alternatives to shiny.survey
+## Alternatives to shiny.quetzio
 
-I feel like it needs to be stated that **shiny.survey** isn't your only option for
+I feel like it needs to be stated that **shiny.quetzio** isn't your only option for
 creating questionnaires with Shiny. The main alternative is 
 [**shinysurveys** package](https://github.com/jdtrat/shinysurveys){target=_blank}.
 
-Main difference between these are the embedding - while **shiny.surveys** can be used
+Main difference between these are the embedding - while **shiny.quetzio** can be used
 to create questionnaire (or multiple of them) within more complex Shiny application, 
 the **shinysurverys** are tailored to create whole ShinyApp by itself. It also
 currently (as of 0.2.0.) doesn't offer built-in support of **googlesheets4**, 

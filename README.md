@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# shiny.survey
+# shiny.quetzio
 
 <!-- badges: start -->
 
@@ -9,31 +9,31 @@
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-This package includes the way to create a survey using various Shiny
-widgets from a source file: either a local YAML file, or GoogleSheet
-over the net. Results of the surveys are send to GoogleSheet of your
-choice.
+This package includes the way to create a questionnaire using various
+Shiny widgets from a source file: either a local YAML file, or
+GoogleSheet over the net. Results of the surveys are send to GoogleSheet
+of your choice.
 
 It is all completely handled by `R6` shiny modules, so it is easy to
-include even multiple independend questionnaires in your ShinyApp and
+include even multiple independent questionnaires in your ShinyApp and
 keep your code clean!
 
 You can preview the `pkgdown` generated website
-[here](https://statismike.github.io/shiny.survey/)
+[here](https://statismike.github.io/shiny.quetzio/)
 
 ## Installation
 
-You can install the development version of shiny.survey from
+You can install the development version of shiny.quetzio from
 [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("StatisMike/shiny.survey")
+devtools::install_github("StatisMike/shiny.quetzio")
 ```
 
 ## Current features
 
-At the current stage of development the `shiny.survey` package consists
+At the current stage of development the `shiny.quetzio` package consists
 of two exported `R6` classes used in server and corresponding functions
 to bind the UI in your shinyApp:
 

@@ -21,7 +21,7 @@ if (interactive()) {
 
  # load libraries
  library(shiny)
- library(shiny.survey)
+ library(shiny.quetzio)
 
  # create ui
  ui <- fluidPage(
@@ -83,7 +83,7 @@ if (interactive()) {
 if (interactive()) {
 
  library(shiny)
- library(shiny.survey)
+ library(shiny.quetzio)
 
  ui <- fluidPage(
    # some input to trigger label update
@@ -129,7 +129,7 @@ if (interactive()) {
 if (interactive()) {
 
  library(shiny)
- library(shiny.survey)
+ library(shiny.quetzio)
 
  ui <- fluidPage(
    # first questionnaire to get values from
@@ -185,12 +185,9 @@ quetzio_UI
 
 \item{\code{module_id}}{ID of the shiny module}
 
-\item{\code{button_labels}}{character vector of length two with labels for submit
-button in active and disabled state}
-
 \item{\code{is_done}}{logical reactiveVal indicating if the survey has been completed}
 
-\item{\code{message}}{reactiveVal catching any warning messages}
+\item{\code{message}}{reactiveVal catching any messages from object}
 
 \item{\code{answers}}{reactiveVal object containing list with answers to questions}
 
@@ -251,9 +248,11 @@ Initializing the 'quetzio_server' object
   module_id = NULL,
   div_id = NULL,
   custom_css = NULL,
-  button_labels = c("Submit", "Cannot submit", "Submitted!", "Error occured!"),
   render_ui = TRUE,
-  link_id = NULL
+  link_id = NULL,
+  lang = "en",
+  custom_txts = NULL,
+  use_modal = TRUE
 )}\if{html}{\out{</div>}}
 }
 
@@ -313,16 +312,20 @@ If not specified, default look will be used:
 \item{mandatory_star = "color: red;"}
 }}
 
-\item{\code{button_labels}}{character vector of length four with labels for submit
-button i all states. Defaults to:
-\code{c('Submit', 'Cannot submit', 'Submitted!', 'Error occured!')}}
-
 \item{\code{render_ui}}{logical indicating if the UI for questionnaire should be
 rendered}
 
 \item{\code{link_id}}{character specifying the 'link_id' of the 'quetzio_link_server'
 object, modifying its namespace. Only used internally, if the questionnaire
 is part of linked server. Don't set it manually.}
+
+\item{\code{lang}}{language to use. For now only 'en' and 'pl' are supported.}
+
+\item{\code{custom_txts}}{named list with custom labels for specified language.
+For more information look upon documentation for 'quetzio_txt'}
+
+\item{\code{use_modal}}{logical indicating if modalDialog for invalid inputs
+should be triggered. Defaults to TRUE}
 }
 \if{html}{\out{</div>}}
 }
@@ -372,7 +375,7 @@ if (interactive()) {
 
  # load libraries
  library(shiny)
- library(shiny.survey)
+ library(shiny.quetzio)
 
  # create ui
  ui <- fluidPage(
@@ -490,7 +493,7 @@ with \code{create_survey_source()}. Needed when \code{source_method == 'raw'}}
 if (interactive()) {
 
  library(shiny)
- library(shiny.survey)
+ library(shiny.quetzio)
 
  ui <- fluidPage(
    # some input to trigger label update
@@ -544,7 +547,7 @@ Method to update selected values on the change in reactive
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{values}}{list of values to update questionnaire with. List need to be named,
+\item{\code{values}}{list of values to update questionnaire with. List needs to be named,
 as the names are going to be used to identify which inputId to update}
 }
 \if{html}{\out{</div>}}
@@ -556,7 +559,7 @@ as the names are going to be used to identify which inputId to update}
 if (interactive()) {
 
  library(shiny)
- library(shiny.survey)
+ library(shiny.quetzio)
 
  ui <- fluidPage(
    # first questionnaire to get values from

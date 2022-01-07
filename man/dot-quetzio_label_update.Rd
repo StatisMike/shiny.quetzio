@@ -6,6 +6,7 @@
 \usage{
 .quetzio_label_update(
   self,
+  private,
   trigger,
   source_method,
   source_yaml,
