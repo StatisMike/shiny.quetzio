@@ -191,6 +191,9 @@ quetzio_UI
 
 \item{\code{answers}}{reactiveVal object containing list with answers to questions}
 
+\item{\code{order}}{Indices of questions in order of their appearance, if you
+wished to randomize their order. Otherwise NULL}
+
 \item{\code{module_ui_id}}{character string used to generate UI. It needs to
 be modified when linking the questionnaires}
 }
@@ -245,14 +248,15 @@ Initializing the 'quetzio_server' object
   desc_gsheet_id = NULL,
   desc_gsheet_sheetname = NULL,
   desc_object = NULL,
+  randomize_order = FALSE,
   module_id = NULL,
   div_id = NULL,
   custom_css = NULL,
-  render_ui = TRUE,
-  link_id = NULL,
   lang = "en",
   custom_txts = NULL,
-  use_modal = TRUE
+  use_modal = TRUE,
+  render_ui = TRUE,
+  link_id = NULL
 )}\if{html}{\out{</div>}}
 }
 
@@ -299,6 +303,9 @@ item descriptions.}
 \item{\code{desc_object}}{object of class \code{list} or \code{data.frame} to be the source
 of optional instruction and item descriptions.}
 
+\item{\code{randomize_order}}{logical: do you wish to randomize order in which the
+items will appear? Defaults to FALSE}
+
 \item{\code{module_id}}{character string with unique id for the module. If not
 specified, it will be automatically generated}
 
@@ -312,13 +319,6 @@ If not specified, default look will be used:
 \item{mandatory_star = "color: red;"}
 }}
 
-\item{\code{render_ui}}{logical indicating if the UI for questionnaire should be
-rendered}
-
-\item{\code{link_id}}{character specifying the 'link_id' of the 'quetzio_link_server'
-object, modifying its namespace. Only used internally, if the questionnaire
-is part of linked server. Don't set it manually.}
-
 \item{\code{lang}}{language to use. For now only 'en' and 'pl' are supported.}
 
 \item{\code{custom_txts}}{named list with custom labels for specified language.
@@ -326,6 +326,13 @@ For more information look upon documentation for 'quetzio_txt'}
 
 \item{\code{use_modal}}{logical indicating if modalDialog for invalid inputs
 should be triggered. Defaults to TRUE}
+
+\item{\code{render_ui}}{logical indicating if the UI for questionnaire should be
+rendered}
+
+\item{\code{link_id}}{character specifying the 'link_id' of the 'quetzio_link_server'
+object, modifying its namespace. Only used internally, if the questionnaire
+is part of linked server. Don't set it manually.}
 }
 \if{html}{\out{</div>}}
 }
