@@ -26,11 +26,12 @@ Results of the surveys are send to GoogleSheet of your choice.
 It is all completely handled by `R6` shiny modules, so it is easy to include 
 even multiple independent questionnaires in your ShinyApp and keep your code clean!
 
-You can preview the `pkgdown` generated website [here](https://statismike.github.io/shiny.quetzio/)
+You can preview the `pkgdown` generated website [here](https://statismike.github.io/shiny.quetzio/){target="_blank"}
+You can view interactive demo hosted on shinyapps [here](https://statismik.shinyapps.io/quetzio-demo/){target="_blank"}
 
 ## Installation
 
-You can install the development version of shiny.quetzio from [GitHub](https://github.com/) with:
+You can install the development version of shiny.quetzio from *GitHub* with:
 
 ``` r
 # install.packages("devtools")
@@ -209,17 +210,7 @@ to 500px
 
 >*Italic* parameters are interchangeable. You can specify either *choices* or both *choiceValues* and *choiceNames* for single input.
 
-## Presentation
-
-You can check the running demo on [shinyapps.io](https://statismik.shinyapps.io/shinysurvey_sneakpeek/){target="_blank"}
-
 ## discoRd kudos
 
-Foundations for this package is in the 'discoRd' community, most notably users
-who created the underlying logic for the  [discoRd-survey](https://github.com/discoRd-org/discoRd-survey){target="_blank"}:
-
-- Alexander Lam ([acylam](https://github.com/acylam){target="_blank"})
-- Erez Shomron ([eshom](https://github.com/eshom){target="_blank"})
-- Eric Fletcher ([iamericfletcher](https://github.com/iamericfletcher){target="_blank"})
-
-Feel free to join our great community at [discoRd channel](https://discord.gg/FuTSvkSCVj){target="_blank"}!
+Foundations for this package is in the 'discoRd' community. Feel free to join our 
+[discoRd channel](https://discord.gg/FuTSvkSCVj){target="_blank"}!
