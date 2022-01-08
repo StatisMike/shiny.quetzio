@@ -19,12 +19,14 @@ include even multiple independent questionnaires in your ShinyApp and
 keep your code clean!
 
 You can preview the `pkgdown` generated website
-[here](https://statismike.github.io/shiny.quetzio/)
+<a href="https://statismike.github.io/shiny.quetzio/" target="_blank">here</a>
+You can view interactive demo hosted on shinyapps
+<a href="https://statismik.shinyapps.io/quetzio-demo/" target="_blank">here</a>
 
 ## Installation
 
-You can install the development version of shiny.quetzio from
-[GitHub](https://github.com/) with:
+You can install the development version of shiny.quetzio from *GitHub*
+with:
 
 ``` r
 # install.packages("devtools")
@@ -204,23 +206,8 @@ For every input you can specify:
 > *Italic* parameters are interchangeable. You can specify either
 > *choices* or both *choiceValues* and *choiceNames* for single input.
 
-## Presentation
-
-You can check the running demo on
-<a href="https://statismik.shinyapps.io/shinysurvey_sneakpeek/" target="_blank">shinyapps.io</a>
-
 ## discoRd kudos
 
-Foundations for this package is in the ‘discoRd’ community, most notably
-users who created the underlying logic for the
-<a href="https://github.com/discoRd-org/discoRd-survey" target="_blank">discoRd-survey</a>:
-
--   Alexander Lam
-    (<a href="https://github.com/acylam" target="_blank">acylam</a>)
--   Erez Shomron
-    (<a href="https://github.com/eshom" target="_blank">eshom</a>)
--   Eric Fletcher
-    (<a href="https://github.com/iamericfletcher" target="_blank">iamericfletcher</a>)
-
-Feel free to join our great community at
+Foundations for this package is in the ‘discoRd’ community. Feel free to
+join our
 <a href="https://discord.gg/FuTSvkSCVj" target="_blank">discoRd channel</a>!
