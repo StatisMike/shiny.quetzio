@@ -67,6 +67,10 @@ quetzio_server <- R6::R6Class(
 
     #' @field answers reactiveVal object containing list with answers to questions
     answers = NULL,
+    
+    #' @field order Indices of questions in order of their appearance, if you
+    #' wished to randomize their order. Otherwise NULL
+    order = NULL,
 
     #' @description method to change the state of the UI
     #'
@@ -106,6 +110,8 @@ quetzio_server <- R6::R6Class(
     #' item descriptions.
     #' @param desc_object object of class `list` or `data.frame` to be the source
     #' of optional instruction and item descriptions.
+    #' @param randomize_order logical: do you wish to randomize order in which the
+    #' items will appear? Defaults to FALSE
     #' @param output_gsheet logical: do you wish to save the answers automatically
     #' to the googlesheet. If TRUE, the 'output_gsheet_id' and 'output_gsheet_sheetname'
     #' arguments need to be specified. Defaults to FALSE
@@ -122,16 +128,16 @@ quetzio_server <- R6::R6Class(
     #' \item{invalid_input = "outline: red; outline-style: dashed; outline-offset: 10px;"}
     #' \item{mandatory_star = "color: red;"}
     #' }
-    #' @param render_ui logical indicating if the UI for questionnaire should be
-    #' rendered
-    #' @param link_id character specifying the 'link_id' of the 'quetzio_link_server'
-    #' object, modifying its namespace. Only used internally, if the questionnaire
-    #' is part of linked server. Don't set it manually.
     #' @param lang language to use. For now only 'en' and 'pl' are supported.
     #' @param custom_txts named list with custom labels for specified language.
     #' For more information look upon documentation for 'quetzio_txt'
     #' @param use_modal logical indicating if modalDialog for invalid inputs
     #' should be triggered. Defaults to TRUE
+    #' @param render_ui logical indicating if the UI for questionnaire should be
+    #' rendered
+    #' @param link_id character specifying the 'link_id' of the 'quetzio_link_server'
+    #' object, modifying its namespace. Only used internally, if the questionnaire
+    #' is part of linked server. Don't set it manually.
     #'
     #' @details
     #'
@@ -235,14 +241,15 @@ quetzio_server <- R6::R6Class(
       desc_gsheet_id = NULL,
       desc_gsheet_sheetname = NULL,
       desc_object = NULL,
+      randomize_order = FALSE,
       module_id = NULL,
       div_id = NULL,
       custom_css = NULL,
-      render_ui = TRUE,
-      link_id = NULL,
       lang = "en",
       custom_txts = NULL,
-      use_modal = TRUE
+      use_modal = TRUE,
+      render_ui = TRUE,
+      link_id = NULL
     ){
 
       # initialize checks
@@ -348,6 +355,16 @@ quetzio_server <- R6::R6Class(
 
       } else {
         stop("Error - problems with source")
+      }
+      
+      # optional randomization of source object
+      
+      if (isTRUE(randomize_order)) {
+        
+        randomized <- .randomize_source(self$source_list)
+        self$source_list <- randomized$source_list
+        self$order <- randomized$order
+        
       }
 
       # load description list

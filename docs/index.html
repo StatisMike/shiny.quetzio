@@ -73,17 +73,22 @@
 
 <p>This package includes the way to create a questionnaire using various Shiny widgets from a source file: either a local YAML file, or GoogleSheet over the net. Results of the surveys are send to GoogleSheet of your choice.</p>
 <p>It is all completely handled by <code>R6</code> shiny modules, so it is easy to include even multiple independent questionnaires in your ShinyApp and keep your code clean!</p>
-<p>You can preview the <code>pkgdown</code> generated website <a href="https://statismike.github.io/shiny.quetzio/">here</a></p>
+<ul>
+<li>Preview the <code>pkgdown</code> generated website <a href="https://statismike.github.io/shiny.quetzio/" target="_blank">here</a>
+</li>
+<li>View the interactive demo hosted on shinyapps <a href="https://statismik.shinyapps.io/quetzio-demo/" target="_blank" class="external-link">here</a>
+</li>
+</ul>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install the development version of shiny.quetzio from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
+<p>You can install the development version of shiny.quetzio from <em>GitHub</em> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># install.packages("devtools")</span>
 <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"StatisMike/shiny.quetzio"</span><span class="op">)</span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="current-features">Current features<a class="anchor" aria-label="anchor" href="#current-features"></a>
+<h2 id="main-features">Main features<a class="anchor" aria-label="anchor" href="#main-features"></a>
 </h2>
 <p>At the current stage of development the <code>shiny.quetzio</code> package consists of two exported <code>R6</code> classes used in server and corresponding functions to bind the UI in your shinyApp:</p>
 <ul>
@@ -329,20 +334,23 @@
 </div>
 </div>
 <div class="section level2">
-<h2 id="presentation">Presentation<a class="anchor" aria-label="anchor" href="#presentation"></a>
+<h2 id="other-features">Other features<a class="anchor" aria-label="anchor" href="#other-features"></a>
 </h2>
-<p>You can check the running demo on <a href="https://statismik.shinyapps.io/shinysurvey_sneakpeek/" target="_blank" class="external-link">shinyapps.io</a></p>
+<p>For more information about these, check vignettes and documentation.</p>
+<ul>
+<li>add instructions and additional item descriptions (also with <em>html</em> tags!)</li>
+<li>randomize order of items</li>
+<li>customize messages shown</li>
+<li>pre-fill questionnaire with list of values</li>
+<li>change labels depending on <code>reactive</code> expression value</li>
+<li>customize automatically generated messages</li>
+<li>add custom css rules for generated elements</li>
+</ul>
 </div>
 <div class="section level2">
 <h2 id="discord-kudos">discoRd kudos<a class="anchor" aria-label="anchor" href="#discord-kudos"></a>
 </h2>
-<p>Foundations for this package is in the ‘discoRd’ community, most notably users who created the underlying logic for the <a href="https://github.com/discoRd-org/discoRd-survey" target="_blank" class="external-link">discoRd-survey</a>:</p>
-<ul>
-<li>Alexander Lam (<a href="https://github.com/acylam" target="_blank" class="external-link">acylam</a>)</li>
-<li>Erez Shomron (<a href="https://github.com/eshom" target="_blank" class="external-link">eshom</a>)</li>
-<li>Eric Fletcher (<a href="https://github.com/iamericfletcher" target="_blank" class="external-link">iamericfletcher</a>)</li>
-</ul>
-<p>Feel free to join our great community at <a href="https://discord.gg/FuTSvkSCVj" target="_blank" class="external-link">discoRd channel</a>!</p>
+<p>This package is created by the ‘discoRd’ community. Feel free to join our <a href="https://discord.gg/FuTSvkSCVj" target="_blank" class="external-link">discoRd channel</a>!</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="license">

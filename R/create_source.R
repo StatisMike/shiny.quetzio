@@ -304,3 +304,27 @@ create_desc_source <- function(
 
 }
 
+#' Function to randomize order of source_list object
+#' 
+#' @param source_list list containing items to generate
+#' 
+#' @return List containing two objects:
+#' - 'source_list', with input in randomized order
+#' - 'order', with item indices
+#' 
+#' @keywords internal
+#' 
+.randomize_source <- function(source_list) {
+  
+  order <- sample(x = c(1:length(source_list)), 
+                  size = length(source_list))
+  
+  source_list <- source_list[order]
+  
+  return(
+    list(source_list = source_list,
+         order = order)
+  )
+  
+}
+

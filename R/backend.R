@@ -49,7 +49,17 @@
       # gather the form data into the right shape
       form_data <- reactive({
         data <- reactiveValuesToList(input)[names(self$source_list)]
-        data <- c(data, timestamp = as.character(Sys.time()))
+        # if item order should be randomized, save also the order into data
+        if (!is.null(self$order)) {
+          data <- c(data, 
+                    `.timestamp` = as.character(Sys.time()), 
+                    list(`.order`= self$order))
+        } else {
+          data <- c(data, 
+                    `.timestamp` = as.character(Sys.time()))
+        }
+        
+        return(data)
       })
 
       observe({

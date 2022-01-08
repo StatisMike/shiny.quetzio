@@ -18,10 +18,10 @@ It is all completely handled by `R6` shiny modules, so it is easy to
 include even multiple independent questionnaires in your ShinyApp and
 keep your code clean!
 
-You can preview the `pkgdown` generated website
-<a href="https://statismike.github.io/shiny.quetzio/" target="_blank">here</a>
-You can view interactive demo hosted on shinyapps
-<a href="https://statismik.shinyapps.io/quetzio-demo/" target="_blank">here</a>
+-   Preview the `pkgdown` generated website
+    <a href="https://statismike.github.io/shiny.quetzio/" target="_blank">here</a>
+-   View the interactive demo hosted on shinyapps
+    <a href="https://statismik.shinyapps.io/quetzio-demo/" target="_blank">here</a>
 
 ## Installation
 
@@ -33,7 +33,7 @@ with:
 devtools::install_github("StatisMike/shiny.quetzio")
 ```
 
-## Current features
+## Main features
 
 At the current stage of development the `shiny.quetzio` package consists
 of two exported `R6` classes used in server and corresponding functions
@@ -206,8 +206,21 @@ For every input you can specify:
 > *Italic* parameters are interchangeable. You can specify either
 > *choices* or both *choiceValues* and *choiceNames* for single input.
 
+## Other features
+
+For more information about these, check vignettes and documentation.
+
+-   add instructions and additional item descriptions (also with *html*
+    tags!)
+-   randomize order of items
+-   customize messages shown
+-   pre-fill questionnaire with list of values
+-   change labels depending on `reactive` expression value
+-   customize automatically generated messages
+-   add custom css rules for generated elements
+
 ## discoRd kudos
 
-Foundations for this package is in the ‘discoRd’ community. Feel free to
-join our
+This package is created by the ‘discoRd’ community. Feel free to join
+our
 <a href="https://discord.gg/FuTSvkSCVj" target="_blank">discoRd channel</a>!
