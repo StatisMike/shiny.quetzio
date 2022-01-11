@@ -241,6 +241,7 @@ Initializing the 'quetzio_server' object
   source_gsheet_id = NULL,
   source_gsheet_sheetname = NULL,
   source_object = NULL,
+  source_object_default = NULL,
   output_gsheet = FALSE,
   output_gsheet_id = NULL,
   output_gsheet_sheetname = NULL,
@@ -271,7 +272,8 @@ see 'details'}
 \item{\code{source_yaml}}{path to the source yaml file}
 
 \item{\code{source_yaml_default}}{path to the optional default options for items
-generated with 'source_yaml' file. Only when \code{source_method == 'yaml'}.}
+generated with source list. Only when \code{source_method == 'yaml'} or
+\code{source_method == 'raw'} and source object of class \code{list} is povided..}
 
 \item{\code{source_gsheet_id}}{id of the source googlesheet file}
 
@@ -281,6 +283,10 @@ generated with 'source_yaml' file. Only when \code{source_method == 'yaml'}.}
 'yaml' source) or \code{data.frame} (similiar in structure to 'googlesheet'
 source) to be the source of questions. You can create a sample data.frame
 with \code{create_survey_source()}. Needed when \code{source_method == 'raw'}}
+
+\item{\code{source_object_default}}{list containing optional default options for
+items generated with source list. Only when \code{source_method == 'yaml'} or
+\code{source_method == 'raw'} and source object of class \code{list} is povided.}
 
 \item{\code{output_gsheet}}{logical: do you wish to save the answers automatically
 to the googlesheet. If TRUE, the 'output_gsheet_id' and 'output_gsheet_sheetname'
@@ -332,7 +338,7 @@ rendered}
 
 \item{\code{link_id}}{character specifying the 'link_id' of the 'quetzio_link_server'
 object, modifying its namespace. Only used internally, if the questionnaire
-is part of linked server. Don't set it manually.}
+is part of linked server. Don't set it manually!}
 }
 \if{html}{\out{</div>}}
 }
