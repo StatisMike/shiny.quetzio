@@ -33,10 +33,7 @@ Imports:
    stringi
 Suggests:
     covr,
-<<<<<<< HEAD
     devtools,
-=======
->>>>>>> 09c7928ccfc217bc3a756c3f17ac070f9802accb
     googledrive,
     googlesheets4,
     knitr,
