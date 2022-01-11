@@ -34,7 +34,7 @@ test_that("Create question source to gsheets works", {
   
   questions_source <- googlesheets4::read_sheet(
     ss = questions_id,
-    sheet = "Descriptions"
+    sheet = "Questions"
   )
   
   expect_equal(nrow(questions_source), 1)
@@ -47,7 +47,7 @@ test_that("Create question source to gsheets works", {
   )
   
   suppressMessages({
-    googledrive::drive_trash(questions_source)
+    googledrive::drive_trash(questions_id)
   })
   
 })

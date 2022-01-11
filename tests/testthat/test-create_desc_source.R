@@ -17,16 +17,13 @@ test_that("Create description source to df works", {
 
 test_that("Create description source to gsheets works", {
   
-  suppressMessages({
     googlesheets4::gs4_auth(email = Sys.getenv("G_SERVICE_MAIL"),
                             path = Sys.getenv("G_SERVICE_ACCOUNT"),
                             cache = F)
     googledrive::drive_auth(email = Sys.getenv("G_SERVICE_MAIL"),
                             path = Sys.getenv("G_SERVICE_ACCOUNT"),
                             cache = F)
-  })
 
-  
   descriptions_id <- create_desc_source(
     method = "gsheet"
   )
