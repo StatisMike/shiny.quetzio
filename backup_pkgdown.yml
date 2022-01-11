@@ -1,0 +1,30 @@
+url: https://statismike.github.io/shiny.quetzio/
+development:
+  mode: unreleased
+template:
+  bootstrap: 5
+reference:
+- title: Generate single questionnaire
+- contents:
+  - quetzio_server
+  - quetzio_UI
+- title: Link multiple questionnaires together
+- contents:
+  - quetzio_link_server
+  - quetzio_link_UI
+- title: Source creation and examples
+  desc:  Create exemplary sources and see examples of sources
+- contents:
+  - starts_with("create_")
+  - quetzio_examples
+- title: Custom shinyInputs
+  desc: Customized inputs to be used in created questionnaires, though you can also use them externally
+- contents:
+  - numInput
+- title: Set or modify language for internally generated messages
+  desc: >-
+   Mostly used internally. Exported for better grasp on how to provide custom
+   texts ion the fly. If you want to add support for language, it would be best
+   to check our GitHub repo and contribute by changing 'lang.R' file.
+- contents:
+   - quetzio_txt

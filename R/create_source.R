@@ -289,7 +289,7 @@ create_desc_source <- function(
         # split multiple values on separators ';' and '\n'
         row_as_list$content <- stringi::stri_trim_both(unlist(
           stringi::stri_split(
-            string = row_as_list$content,
+            str = row_as_list$content,
             regex = ";|\n")))
 
       }
@@ -302,5 +302,29 @@ create_desc_source <- function(
 
   return(source_list)
 
+}
+
+#' Function to randomize order of source_list object
+#' 
+#' @param source_list list containing items to generate
+#' 
+#' @return List containing two objects:
+#' - 'source_list', with input in randomized order
+#' - 'order', with item indices
+#' 
+#' @keywords internal
+#' 
+.randomize_source <- function(source_list) {
+  
+  order <- sample(x = c(1:length(source_list)), 
+                  size = length(source_list))
+  
+  source_list <- source_list[order]
+  
+  return(
+    list(source_list = source_list,
+         order = order)
+  )
+  
 }
 

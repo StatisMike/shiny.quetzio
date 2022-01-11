@@ -67,6 +67,10 @@ quetzio_server <- R6::R6Class(
 
     #' @field answers reactiveVal object containing list with answers to questions
     answers = NULL,
+    
+    #' @field order Indices of questions in order of their appearance, if you
+    #' wished to randomize their order. Otherwise NULL
+    order = NULL,
 
     #' @description method to change the state of the UI
     #'
@@ -91,13 +95,17 @@ quetzio_server <- R6::R6Class(
     #' see 'details'
     #' @param source_yaml path to the source yaml file
     #' @param source_yaml_default path to the optional default options for items
-    #' generated with 'source_yaml' file. Only when `source_method == 'yaml'`.
+    #' generated with source list. Only when `source_method == 'yaml'` or
+    #' `source_method == 'raw'` and source object of class `list` is povided..
     #' @param source_gsheet_id id of the source googlesheet file
     #' @param source_gsheet_sheetname name of the source spreadsheet
     #' @param source_object object of class `list` (similiar in structure to
     #' 'yaml' source) or `data.frame` (similiar in structure to 'googlesheet'
     #' source) to be the source of questions. You can create a sample data.frame
     #' with \code{create_survey_source()}. Needed when `source_method == 'raw'`
+    #' @param source_object_default list containing optional default options for
+    #' items generated with source list. Only when `source_method == 'yaml'` or
+    #' `source_method == 'raw'` and source object of class `list` is povided.
     #' @param desc_yaml path to the optional instruction and item
     #' descriptions.
     #' @param desc_gsheet_id id of the googlesheet to provide optional instruction
@@ -106,6 +114,8 @@ quetzio_server <- R6::R6Class(
     #' item descriptions.
     #' @param desc_object object of class `list` or `data.frame` to be the source
     #' of optional instruction and item descriptions.
+    #' @param randomize_order logical: do you wish to randomize order in which the
+    #' items will appear? Defaults to FALSE
     #' @param output_gsheet logical: do you wish to save the answers automatically
     #' to the googlesheet. If TRUE, the 'output_gsheet_id' and 'output_gsheet_sheetname'
     #' arguments need to be specified. Defaults to FALSE
@@ -122,16 +132,16 @@ quetzio_server <- R6::R6Class(
     #' \item{invalid_input = "outline: red; outline-style: dashed; outline-offset: 10px;"}
     #' \item{mandatory_star = "color: red;"}
     #' }
-    #' @param render_ui logical indicating if the UI for questionnaire should be
-    #' rendered
-    #' @param link_id character specifying the 'link_id' of the 'quetzio_link_server'
-    #' object, modifying its namespace. Only used internally, if the questionnaire
-    #' is part of linked server. Don't set it manually.
     #' @param lang language to use. For now only 'en' and 'pl' are supported.
     #' @param custom_txts named list with custom labels for specified language.
     #' For more information look upon documentation for 'quetzio_txt'
     #' @param use_modal logical indicating if modalDialog for invalid inputs
     #' should be triggered. Defaults to TRUE
+    #' @param render_ui logical indicating if the UI for questionnaire should be
+    #' rendered
+    #' @param link_id character specifying the 'link_id' of the 'quetzio_link_server'
+    #' object, modifying its namespace. Only used internally, if the questionnaire
+    #' is part of linked server. Don't set it manually!
     #'
     #' @details
     #'
@@ -228,6 +238,7 @@ quetzio_server <- R6::R6Class(
       source_gsheet_id = NULL,
       source_gsheet_sheetname = NULL,
       source_object = NULL,
+      source_object_default = NULL,
       output_gsheet = FALSE,
       output_gsheet_id = NULL,
       output_gsheet_sheetname = NULL,
@@ -235,14 +246,15 @@ quetzio_server <- R6::R6Class(
       desc_gsheet_id = NULL,
       desc_gsheet_sheetname = NULL,
       desc_object = NULL,
+      randomize_order = FALSE,
       module_id = NULL,
       div_id = NULL,
       custom_css = NULL,
-      render_ui = TRUE,
-      link_id = NULL,
       lang = "en",
       custom_txts = NULL,
-      use_modal = TRUE
+      use_modal = TRUE,
+      render_ui = TRUE,
+      link_id = NULL
     ){
 
       # initialize checks
@@ -314,11 +326,17 @@ quetzio_server <- R6::R6Class(
         source_list <- .yaml_to_list(
           yaml_file = source_yaml)
 
-        # if default is provided, populate source list
+        # if yaml default is provided, populate source list
         if (!is.null(source_yaml_default)) {
           source_list <- .populate_from_default(
             source_list,
             yaml::read_yaml(source_yaml_default)
+          )
+          # if object default is provided, populate source list
+        } else if (!is.null(source_object_default)) {
+          source_list <- .populate_from_default(
+            source_list,
+            source_object_default
           )
         }
 
@@ -337,10 +355,27 @@ quetzio_server <- R6::R6Class(
           self$source_list <- .df_to_list(source_object)
 
         } else if (class(source_object) == "list") {
+          
+          # if yaml default is provided, populate source list
+          if (!is.null(source_yaml_default)) {
+            source_list <- .populate_from_default(
+              source_object,
+              yaml::read_yaml(source_yaml_default)
+            )
+            # if object default is provided, populate source list
+          } else if (!is.null(source_object_default)) {
+            source_list <- .populate_from_default(
+              source_object,
+              source_object_default
+            )
+          } else {
+            source_list <- source_object
+          }
 
           # checks if list is valid
-          .check_source_list(source_object)
-          self$source_list <- source_object
+          
+          .check_source_list(source_list)
+          self$source_list <- source_list
 
         } else {
           stop("Source object needs to be of class 'data.frame' or 'list'")
@@ -348,6 +383,16 @@ quetzio_server <- R6::R6Class(
 
       } else {
         stop("Error - problems with source")
+      }
+      
+      # optional randomization of source object
+      
+      if (isTRUE(randomize_order)) {
+        
+        randomized <- .randomize_source(self$source_list)
+        self$source_list <- randomized$source_list
+        self$order <- randomized$order
+        
       }
 
       # load description list
