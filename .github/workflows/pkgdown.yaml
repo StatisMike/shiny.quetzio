@@ -30,13 +30,9 @@ jobs:
           
       - name: "[Custom block] Add Gargle secrets"
         run: | 
-           'echo "G_SERVICE_ACCOUNT=$G_SERVICE_ACCOUNT" >> .Renviron'
-           'echo "G_SERVICE_MAIL=$G_SERVICE_MAIL" >> .Renviron'
-        shell: bash
-        env:
-          G_SERVICE_ACCOUNT: ${{ secrets.G_SERVICE_ACCOUNT }}
-          G_SERVICE_MAIL: ${{ secrets.G_SERVICE_MAIL }}
-          
+          echo "G_SERVICE_ACCOUNT = '${{ secrets.G_SERVICE_ACCOUNT }}'" >> .Renviron
+          echo "G_SERVICE_MAIL = '${{ secrets.G_SERVICE_MAIL }}'" >> .Renviron
+
       - name: Deploy package
         run: |
           git config --local user.name "$GITHUB_ACTOR"
