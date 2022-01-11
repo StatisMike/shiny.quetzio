@@ -55,9 +55,9 @@ server <- function(input, output, session) {
       use_modal = F
     ),
     with_default = quetzio_server$new(
-      source_method = "yaml",
-      source_yaml = "items_to_default.yaml",
-      source_yaml_default = "default_config.yaml",
+      source_method = "raw",
+      source_object = quetzio_examples$questions_lists$simple_default,
+      source_object_default = quetzio_examples$default_config$simple_default,
       module_id = "with_default",
       randomize_order = TRUE,
       use_modal = F
