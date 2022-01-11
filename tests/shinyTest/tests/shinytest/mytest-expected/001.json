@@ -1,11 +1,13 @@
 {
   "input": {
     "first_link-gender_item-gender_item": null,
-    "first_link-gender_item-submit": 1,
+    "first_link-gender_item-submit": 0,
+    "get_df_first": 0,
+    "get_df_second": 0,
     "second_link-seconnd_simple-other_langs": null,
     "second_link-seconnd_simple-questio_need": null,
     "second_link-seconnd_simple-shiny_positive_text": "",
-    "second_link-seconnd_simple-submit": 1,
+    "second_link-seconnd_simple-submit": 0,
     "second_link-seconnd_simple-years_of_experience": null,
     "update_values": 0
   },

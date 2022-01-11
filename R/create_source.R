@@ -289,7 +289,7 @@ create_desc_source <- function(
         # split multiple values on separators ';' and '\n'
         row_as_list$content <- stringi::stri_trim_both(unlist(
           stringi::stri_split(
-            string = row_as_list$content,
+            str = row_as_list$content,
             regex = ";|\n")))
 
       }

@@ -9,10 +9,22 @@ testthat_raw_app <- function() {
            quetzio_link_UI("first_link"),
            tags$hr(),
            actionButton("update_values",
-                        "Update the values")
+                        "Update the values"),
+           tags$hr(),
+           shinyjs::disabled(
+             actionButton("get_df_first",
+                          "Get values of one quetzio")),
+           tags$hr(),
+           verbatimTextOutput("df_first")
     ),
     column(6, 
-           quetzio_link_UI("second_link")
+           quetzio_link_UI("second_link"),
+           tags$hr(),
+           shinyjs::disabled(
+             actionButton("get_df_second",
+                          "Get values of second link")),
+           tags$hr(),
+           verbatimTextOutput("df_second")
     )
   )
   
@@ -69,7 +81,7 @@ testthat_raw_app <- function() {
         source_method = "raw",
         source_object = shiny.quetzio::quetzio_examples$questions_lists$gender_update,
         module_id = "gender_react",
-        use_modal = F
+        custom_txts = list(submit_enabled = "All is done!")
       ),
       link_id = "second_link"
     )
@@ -97,6 +109,36 @@ testthat_raw_app <- function() {
         quetzio_name = "simple_quetzio",
         values = quetzio_w_gender$answers()$simple_quetzio
       )
+    })
+    
+    # trigger buttons on completion
+    observe({
+      req(quetzio_w_gender$completion())
+      if(quetzio_w_gender$completion() == 1) {
+        shinyjs::enable(id = "get_df_first")
+      }
+    })
+    
+    observe({
+      req(quetzio_to_update$completion())
+      if(quetzio_to_update$completion() == 1) {
+        shinyjs::enable(id = "get_df_second")
+      }
+    })
+    
+    # generate answers as data.frame
+    observeEvent(input$get_df_first, {
+      output$df_first <- renderPrint(
+        dplyr::select(
+          quetzio_w_gender$quetzio_list$simple_quetzio$get_answers_df(),
+          -".timestamp"))
+    })
+    
+    observeEvent(input$get_df_second, {
+      output$df_second <- renderPrint(
+        dplyr::select(
+          quetzio_to_update$get_answers_df(),
+          -ends_with(".timestamp")))
     })
     
   }
