@@ -16,8 +16,10 @@ knitr::opts_chunk$set(
 
 ```{r setup, echo=F, message=F, warning=F}
 library(shiny.quetzio)
-googlesheets4::gs4_auth(email = "statismike@gmail.com")
-googledrive::drive_auth(email = "statismike@gmail.com")
+googlesheets4::gs4_auth(email = Sys.getenv("G_SERVICE_MAIL"),
+                        path = Sys.getenv("G_SERVICE_ACCOUNT"))
+googledrive::drive_auth(email = Sys.getenv("G_SERVICE_MAIL"),
+                        path = Sys.getenv("G_SERVICE_ACCOUNT"))
 ```
 
 Package **shiny.quetzio** provides a relatively simple but also highly

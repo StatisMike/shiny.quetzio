@@ -24,6 +24,11 @@ jobs:
       - uses: r-lib/actions/setup-r-dependencies@v1
         with:
           extra-packages: covr
+          
+      - name: "[Custom block] Add Gargle secrets"
+        run: | 
+          echo "G_SERVICE_ACCOUNT = '${{ secrets.G_SERVICE_ACCOUNT }}'" >> .Renviron
+          echo "G_SERVICE_MAIL = '${{ secrets.G_SERVICE_MAIL }}'" >> .Renviron
 
       - name: Test coverage
         run: covr::codecov()
