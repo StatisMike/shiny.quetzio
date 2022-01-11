@@ -1,6 +1,6 @@
 Package: shiny.quetzio
 Title: Create a questionnaire module in ShinyApp
-Version: 0.0.13.9001
+Version: 0.0.13.9002
 Authors@R: 
     c(person(given = "Michal",
              family = "Kosinski",
@@ -36,6 +36,7 @@ Suggests:
    googlesheets4,
    knitr,
    rmarkdown,
+   shinytest,
    yaml
 License: MIT + file LICENSE
 Encoding: UTF-8
