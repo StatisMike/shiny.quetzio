@@ -19,9 +19,11 @@ test_that("Create description source to gsheets works", {
   
   suppressMessages({
     googlesheets4::gs4_auth(email = Sys.getenv("G_SERVICE_MAIL"),
-                            path = Sys.getenv("G_SERVICE_ACCOUNT"))
+                            path = Sys.getenv("G_SERVICE_ACCOUNT"),
+                            cache = F)
     googledrive::drive_auth(email = Sys.getenv("G_SERVICE_MAIL"),
-                            path = Sys.getenv("G_SERVICE_ACCOUNT"))
+                            path = Sys.getenv("G_SERVICE_ACCOUNT"),
+                            cache = F)
   })
 
   
