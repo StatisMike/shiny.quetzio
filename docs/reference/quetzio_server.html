@@ -12,7 +12,7 @@ of your questionnaire"><!-- mathjax --><script src="https://cdnjs.cloudflare.com
     
     <a class="navbar-brand me-2" href="../index.html">shiny.quetzio</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.13</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.14</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -88,6 +88,11 @@ of your questionnaire</p>
 <dd><p>reactiveVal object containing list with answers to questions</p></dd>
 
 
+<dt><code>order</code></dt>
+<dd><p>Indices of questions in order of their appearance, if you
+wished to randomize their order. Otherwise NULL</p></dd>
+
+
 <dt><code>module_ui_id</code></dt>
 <dd><p>character string used to generate UI. It needs to
 be modified when linking the questionnaires</p></dd>
@@ -135,6 +140,7 @@ then the UI will be rendered.</p></dd>
   source_gsheet_id <span class="op">=</span> <span class="cn">NULL</span>,
   source_gsheet_sheetname <span class="op">=</span> <span class="cn">NULL</span>,
   source_object <span class="op">=</span> <span class="cn">NULL</span>,
+  source_object_default <span class="op">=</span> <span class="cn">NULL</span>,
   output_gsheet <span class="op">=</span> <span class="cn">FALSE</span>,
   output_gsheet_id <span class="op">=</span> <span class="cn">NULL</span>,
   output_gsheet_sheetname <span class="op">=</span> <span class="cn">NULL</span>,
@@ -142,14 +148,15 @@ then the UI will be rendered.</p></dd>
   desc_gsheet_id <span class="op">=</span> <span class="cn">NULL</span>,
   desc_gsheet_sheetname <span class="op">=</span> <span class="cn">NULL</span>,
   desc_object <span class="op">=</span> <span class="cn">NULL</span>,
+  randomize_order <span class="op">=</span> <span class="cn">FALSE</span>,
   module_id <span class="op">=</span> <span class="cn">NULL</span>,
   div_id <span class="op">=</span> <span class="cn">NULL</span>,
   custom_css <span class="op">=</span> <span class="cn">NULL</span>,
-  render_ui <span class="op">=</span> <span class="cn">TRUE</span>,
-  link_id <span class="op">=</span> <span class="cn">NULL</span>,
   lang <span class="op">=</span> <span class="st">"en"</span>,
   custom_txts <span class="op">=</span> <span class="cn">NULL</span>,
-  use_modal <span class="op">=</span> <span class="cn">TRUE</span>
+  use_modal <span class="op">=</span> <span class="cn">TRUE</span>,
+  render_ui <span class="op">=</span> <span class="cn">TRUE</span>,
+  link_id <span class="op">=</span> <span class="cn">NULL</span>
 <span class="op">)</span></code></pre></div><p></p></div>
 </div>
 
@@ -168,7 +175,8 @@ see 'details'</p></dd>
 
 <dt><code>source_yaml_default</code></dt>
 <dd><p>path to the optional default options for items
-generated with 'source_yaml' file. Only when <code>source_method == 'yaml'</code>.</p></dd>
+generated with source list. Only when <code>source_method == 'yaml'</code> or
+<code>source_method == 'raw'</code> and source object of class <code>list</code> is povided..</p></dd>
 
 
 <dt><code>source_gsheet_id</code></dt>
@@ -184,6 +192,12 @@ generated with 'source_yaml' file. Only when <code>source_method == 'yaml'</code
 'yaml' source) or <code>data.frame</code> (similiar in structure to 'googlesheet'
 source) to be the source of questions. You can create a sample data.frame
 with <code>create_survey_source()</code>. Needed when <code>source_method == 'raw'</code></p></dd>
+
+
+<dt><code>source_object_default</code></dt>
+<dd><p>list containing optional default options for
+items generated with source list. Only when <code>source_method == 'yaml'</code> or
+<code>source_method == 'raw'</code> and source object of class <code>list</code> is povided.</p></dd>
 
 
 <dt><code>output_gsheet</code></dt>
@@ -221,6 +235,11 @@ item descriptions.</p></dd>
 of optional instruction and item descriptions.</p></dd>
 
 
+<dt><code>randomize_order</code></dt>
+<dd><p>logical: do you wish to randomize order in which the
+items will appear? Defaults to FALSE</p></dd>
+
+
 <dt><code>module_id</code></dt>
 <dd><p>character string with unique id for the module. If not
 specified, it will be automatically generated</p></dd>
@@ -238,17 +257,6 @@ If not specified, default look will be used:</p><ul><li><p>invalid_input = "outl
 </ul></dd>
 
 
-<dt><code>render_ui</code></dt>
-<dd><p>logical indicating if the UI for questionnaire should be
-rendered</p></dd>
-
-
-<dt><code>link_id</code></dt>
-<dd><p>character specifying the 'link_id' of the 'quetzio_link_server'
-object, modifying its namespace. Only used internally, if the questionnaire
-is part of linked server. Don't set it manually.</p></dd>
-
-
 <dt><code>lang</code></dt>
 <dd><p>language to use. For now only 'en' and 'pl' are supported.</p></dd>
 
@@ -261,6 +269,17 @@ For more information look upon documentation for 'quetzio_txt'</p></dd>
 <dt><code>use_modal</code></dt>
 <dd><p>logical indicating if modalDialog for invalid inputs
 should be triggered. Defaults to TRUE</p></dd>
+
+
+<dt><code>render_ui</code></dt>
+<dd><p>logical indicating if the UI for questionnaire should be
+rendered</p></dd>
+
+
+<dt><code>link_id</code></dt>
+<dd><p>character specifying the 'link_id' of the 'quetzio_link_server'
+object, modifying its namespace. Only used internally, if the questionnaire
+is part of linked server. Don't set it manually!</p></dd>
 
 
 </dl><p></p></div>
@@ -299,7 +318,7 @@ Need to provide <code>source_yaml_default</code> - there are no other methods AT
 
  <span class="co"># load libraries</span>
  <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.rstudio.com/" class="external-link">shiny</a></span><span class="op">)</span>
- <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">shiny.quetzio</span><span class="op">)</span>
+ <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://statismike.github.io/shiny.quetzio/">shiny.quetzio</a></span><span class="op">)</span>
 
  <span class="co"># create ui</span>
  <span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html" class="external-link">fluidPage</a></span><span class="op">(</span>
@@ -421,7 +440,7 @@ with <code>create_survey_source()</code>. Needed when <code>source_method == 'ra
 <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
 
  <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.rstudio.com/" class="external-link">shiny</a></span><span class="op">)</span>
- <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">shiny.quetzio</span><span class="op">)</span>
+ <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://statismike.github.io/shiny.quetzio/">shiny.quetzio</a></span><span class="op">)</span>
 
  <span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html" class="external-link">fluidPage</a></span><span class="op">(</span>
    <span class="co"># some input to trigger label update</span>
@@ -482,7 +501,7 @@ as the names are going to be used to identify which inputId to update</p></dd>
 <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
 
  <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.rstudio.com/" class="external-link">shiny</a></span><span class="op">)</span>
- <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">shiny.quetzio</span><span class="op">)</span>
+ <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://statismike.github.io/shiny.quetzio/">shiny.quetzio</a></span><span class="op">)</span>
 
  <span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html" class="external-link">fluidPage</a></span><span class="op">(</span>
    <span class="co"># first questionnaire to get values from</span>
@@ -558,7 +577,7 @@ as the names are going to be used to identify which inputId to update</p></dd>
 <span class="r-in"></span>
 <span class="r-in"> <span class="co"># load libraries</span></span>
 <span class="r-in"> <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.rstudio.com/" class="external-link">shiny</a></span><span class="op">)</span></span>
-<span class="r-in"> <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">shiny.quetzio</span><span class="op">)</span></span>
+<span class="r-in"> <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://statismike.github.io/shiny.quetzio/">shiny.quetzio</a></span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"> <span class="co"># create ui</span></span>
 <span class="r-in"> <span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html" class="external-link">fluidPage</a></span><span class="op">(</span></span>
@@ -620,7 +639,7 @@ as the names are going to be used to identify which inputId to update</p></dd>
 <span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span class="r-in"></span>
 <span class="r-in"> <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.rstudio.com/" class="external-link">shiny</a></span><span class="op">)</span></span>
-<span class="r-in"> <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">shiny.quetzio</span><span class="op">)</span></span>
+<span class="r-in"> <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://statismike.github.io/shiny.quetzio/">shiny.quetzio</a></span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"> <span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html" class="external-link">fluidPage</a></span><span class="op">(</span></span>
 <span class="r-in">   <span class="co"># some input to trigger label update</span></span>
@@ -666,7 +685,7 @@ as the names are going to be used to identify which inputId to update</p></dd>
 <span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span class="r-in"></span>
 <span class="r-in"> <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.rstudio.com/" class="external-link">shiny</a></span><span class="op">)</span></span>
-<span class="r-in"> <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">shiny.quetzio</span><span class="op">)</span></span>
+<span class="r-in"> <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://statismike.github.io/shiny.quetzio/">shiny.quetzio</a></span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"> <span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html" class="external-link">fluidPage</a></span><span class="op">(</span></span>
 <span class="r-in">   <span class="co"># first questionnaire to get values from</span></span>

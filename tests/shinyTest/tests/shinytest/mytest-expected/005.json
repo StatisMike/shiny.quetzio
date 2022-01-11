@@ -1,0 +1,104 @@
+{
+  "input": {
+    "first_link-first_simple-other_langs": [
+      "5",
+      "16"
+    ],
+    "first_link-first_simple-questio_need": "Yes",
+    "first_link-first_simple-shiny_positive_text": "Easy of use",
+    "first_link-first_simple-submit": 1,
+    "first_link-first_simple-years_of_experience": 3,
+    "first_link-gender_item-gender_item": "F",
+    "first_link-gender_item-submit": 1,
+    "get_df_first": 1,
+    "get_df_second": 0,
+    "second_link-gender_react-submit": 1,
+    "second_link-gender_react-test1": "",
+    "second_link-gender_react-test2": null,
+    "second_link-gender_react-test3": null,
+    "second_link-seconnd_simple-other_langs": [
+      "5",
+      "16"
+    ],
+    "second_link-seconnd_simple-questio_need": "Maybe",
+    "second_link-seconnd_simple-shiny_positive_text": "Easy of use",
+    "second_link-seconnd_simple-submit": 1,
+    "second_link-seconnd_simple-years_of_experience": 3,
+    "second_link-with_default-submit": 2,
+    "second_link-with_default-test1": "mandatory",
+    "second_link-with_default-test2": "1",
+    "second_link-with_default-test3": "2",
+    "second_link-with_default-test4": [
+      "First choice",
+      "Third choice"
+    ],
+    "second_link-with_default-test5": "3",
+    "second_link-with_default-test6": 3,
+    "update_values": 1
+  },
+  "output": {
+    "df_first": "  shiny_positive_text other_langs years_of_experience questio_need\n1         Easy of use        5;16                   3          Yes",
+    "first_link-first_simple-quetzio_UI": {
+      "html": "<div id=\"first_link-first_simple_form\">\n  <!--SHINY.SINGLETON[add739c82ab207ed2c80be4b7e4b181525eb7a75]-->\n  <head>\n    <script>Shiny.addCustomMessageHandler('shinyjs-show', function(params) { shinyjs.debugMessage('shinyjs: calling function \"show\" with parameters:'); shinyjs.debugMessage(params); shinyjs.show(params);});\nShiny.addCustomMessageHandler('shinyjs-hide', function(params) { shinyjs.debugMessage('shinyjs: calling function \"hide\" with parameters:'); shinyjs.debugMessage(params); shinyjs.hide(params);});\nShiny.addCustomMessageHandler('shinyjs-toggle', function(params) { shinyjs.debugMessage('shinyjs: calling function \"toggle\" with parameters:'); shinyjs.debugMessage(params); shinyjs.toggle(params);});\nShiny.addCustomMessageHandler('shinyjs-enable', function(params) { shinyjs.debugMessage('shinyjs: calling function \"enable\" with parameters:'); shinyjs.debugMessage(params); shinyjs.enable(params);});\nShiny.addCustomMessageHandler('shinyjs-disable', function(params) { shinyjs.debugMessage('shinyjs: calling function \"disable\" with parameters:'); shinyjs.debugMessage(params); shinyjs.disable(params);});\nShiny.addCustomMessageHandler('shinyjs-toggleState', function(params) { shinyjs.debugMessage('shinyjs: calling function \"toggleState\" with parameters:'); shinyjs.debugMessage(params); shinyjs.toggleState(params);});\nShiny.addCustomMessageHandler('shinyjs-addClass', function(params) { shinyjs.debugMessage('shinyjs: calling function \"addClass\" with parameters:'); shinyjs.debugMessage(params); shinyjs.addClass(params);});\nShiny.addCustomMessageHandler('shinyjs-removeClass', function(params) { shinyjs.debugMessage('shinyjs: calling function \"removeClass\" with parameters:'); shinyjs.debugMessage(params); shinyjs.removeClass(params);});\nShiny.addCustomMessageHandler('shinyjs-toggleClass', function(params) { shinyjs.debugMessage('shinyjs: calling function \"toggleClass\" with parameters:'); shinyjs.debugMessage(params); shinyjs.toggleClass(params);});\nShiny.addCustomMessageHandler('shinyjs-html', function(params) { shinyjs.debugMessage('shinyjs: calling function \"html\" with parameters:'); shinyjs.debugMessage(params); shinyjs.html(params);});\nShiny.addCustomMessageHandler('shinyjs-onevent', function(params) { shinyjs.debugMessage('shinyjs: calling function \"onevent\" with parameters:'); shinyjs.debugMessage(params); shinyjs.onevent(params);});\nShiny.addCustomMessageHandler('shinyjs-removeEvent', function(params) { shinyjs.debugMessage('shinyjs: calling function \"removeEvent\" with parameters:'); shinyjs.debugMessage(params); shinyjs.removeEvent(params);});\nShiny.addCustomMessageHandler('shinyjs-alert', function(params) { shinyjs.debugMessage('shinyjs: calling function \"alert\" with parameters:'); shinyjs.debugMessage(params); shinyjs.alert(params);});\nShiny.addCustomMessageHandler('shinyjs-logjs', function(params) { shinyjs.debugMessage('shinyjs: calling function \"logjs\" with parameters:'); shinyjs.debugMessage(params); shinyjs.logjs(params);});\nShiny.addCustomMessageHandler('shinyjs-runjs', function(params) { shinyjs.debugMessage('shinyjs: calling function \"runjs\" with parameters:'); shinyjs.debugMessage(params); shinyjs.runjs(params);});\nShiny.addCustomMessageHandler('shinyjs-reset', function(params) { shinyjs.debugMessage('shinyjs: calling function \"reset\" with parameters:'); shinyjs.debugMessage(params); shinyjs.reset(params);});\nShiny.addCustomMessageHandler('shinyjs-delay', function(params) { shinyjs.debugMessage('shinyjs: calling function \"delay\" with parameters:'); shinyjs.debugMessage(params); shinyjs.delay(params);});\nShiny.addCustomMessageHandler('shinyjs-click', function(params) { shinyjs.debugMessage('shinyjs: calling function \"click\" with parameters:'); shinyjs.debugMessage(params); shinyjs.click(params);});\nShiny.addCustomMessageHandler('shinyjs-refresh', function(params) { shinyjs.debugMessage('shinyjs: calling function \"refresh\" with parameters:'); shinyjs.debugMessage(params); shinyjs.refresh(params);});<\/script>\n    <script src=\"shinyjs/shinyjs-default-funcs.js\"><\/script>\n    <script>shinyjs.debug = false;<\/script>\n    <head>\n      <style>.shinyjs-hide { display: none !important; }<\/style>\n    <\/head>\n  <\/head>\n  <!--/SHINY.SINGLETON[add739c82ab207ed2c80be4b7e4b181525eb7a75]-->\n  <head>\n    <style>#first_link-first_simple_form .invalid_input { color: red; font-style: italic; } #first_link-first_simple_form .mandatory_star { color: red; } #first_link-first_simple_form .quetzio_submit { color: #fff; background-color: #337ab7; border-color: #2e6da4; width: 200px; } #first_link-first_simple_form .quetzio_description { font-size: 0.9em; }<\/style>\n  <\/head>\n  <div class=\"form-group shiny-input-container\" style=\"width:500px;\">\n    <label class=\"control-label\" id=\"first_link-first_simple-shiny_positive_text-label\" for=\"first_link-first_simple-shiny_positive_text\">What do you like about Shiny?<\/label>\n    <input id=\"first_link-first_simple-shiny_positive_text\" type=\"text\" class=\"form-control\" value=\"\" placeholder=\"Write here\"/>\n  <\/div>\n  <div class=\"form-group shiny-input-container\" style=\"width:500px;\">\n    <label class=\"control-label\" id=\"first_link-first_simple-other_langs-label\" for=\"first_link-first_simple-other_langs\">\n      What programming languages besides R are you using most of the time?\n      <span class=\"mandatory_star\">*<\/span>\n    <\/label>\n    <div>\n      <select id=\"first_link-first_simple-other_langs\" class=\"form-control\" multiple=\"multiple\"><option value=\"1\">C/C++<\/option>\n<option value=\"2\">Scala<\/option>\n<option value=\"3\">JavaScript<\/option>\n<option value=\"4\">Matlab<\/option>\n<option value=\"5\">Python<\/option>\n<option value=\"6\">SPSS<\/option>\n<option value=\"7\">Swift<\/option>\n<option value=\"8\">Go<\/option>\n<option value=\"9\">C#<\/option>\n<option value=\"10\">Julia<\/option>\n<option value=\"11\">Stata<\/option>\n<option value=\"12\">Ruby<\/option>\n<option value=\"13\">PHP<\/option>\n<option value=\"14\">SAS<\/option>\n<option value=\"15\">Java<\/option>\n<option value=\"16\">Other<\/option><\/select>\n      <script type=\"application/json\" data-for=\"first_link-first_simple-other_langs\">{\"maxItems\":3,\"plugins\":[\"selectize-plugin-a11y\"]}<\/script>\n    <\/div>\n  <\/div>\n  <div class=\"form-group shiny-input-container\" style=\"width:500px;\">\n    <label class=\"control-label\" id=\"first_link-first_simple-years_of_experience-label\" for=\"first_link-first_simple-years_of_experience\">\n      How many years of experience in creating Shiny apps do you have?\n      <span class=\"mandatory_star\">*<\/span>\n    <\/label>\n    <input id=\"first_link-first_simple-years_of_experience\" type=\"number\" class=\"form-control\" value=\"NA\" placeholder=\"Choose a number\" min=\"0\" step=\"1\"/>\n  <\/div>\n  <div id=\"first_link-first_simple-questio_need\" style=\"width:500px;\" class=\"form-group shiny-input-radiogroup shiny-input-container\" role=\"radiogroup\" aria-labelledby=\"first_link-first_simple-questio_need-label\">\n    <label class=\"control-label\" id=\"first_link-first_simple-questio_need-label\" for=\"first_link-first_simple-questio_need\">\n      Do you see yourself using shiny.quetzio in your future projects?\n      <span class=\"mandatory_star\">*<\/span>\n    <\/label>\n    <div class=\"shiny-options-group\">\n      <div class=\"radio\">\n        <label>\n          <input type=\"radio\" name=\"first_link-first_simple-questio_need\" value=\"Yes\"/>\n          <span>Yes<\/span>\n        <\/label>\n      <\/div>\n      <div class=\"radio\">\n        <label>\n          <input type=\"radio\" name=\"first_link-first_simple-questio_need\" value=\"No\"/>\n          <span>No<\/span>\n        <\/label>\n      <\/div>\n      <div class=\"radio\">\n        <label>\n          <input type=\"radio\" name=\"first_link-first_simple-questio_need\" value=\"Maybe\"/>\n          <span>Maybe<\/span>\n        <\/label>\n      <\/div>\n    <\/div>\n  <\/div>\n  <button class=\"btn btn-default action-button quetzio_submit\" id=\"first_link-first_simple-submit\" type=\"button\">Submit<\/button>\n<\/div>",
+      "deps": [
+        {
+          "name": "selectize",
+          "version": "0.12.4",
+          "src": {
+            "href": "shared/selectize"
+          },
+          "meta": null,
+          "script": [
+            "js/selectize.min.js",
+            "accessibility/js/selectize-plugin-a11y.min.js"
+          ],
+          "stylesheet": "css/selectize.bootstrap3.css",
+          "head": null,
+          "attachment": null,
+          "package": null,
+          "all_files": true
+        }
+      ]
+    },
+    "first_link-gender_item-quetzio_UI": null,
+    "first_link-quetzio_link_UI": {
+      "html": "<div id=\"first_link-gender_item-quetzio_UI\" class=\"shiny-html-output\"><\/div>\n<div id=\"first_link-first_simple-quetzio_UI\" class=\"shiny-html-output\"><\/div>",
+      "deps": [
+
+      ]
+    },
+    "second_link-gender_react-quetzio_UI": {
+      "html": "<div id=\"second_link-gender_react_form\">\n  <!--SHINY.SINGLETON[add739c82ab207ed2c80be4b7e4b181525eb7a75]-->\n  <head>\n    <script>Shiny.addCustomMessageHandler('shinyjs-show', function(params) { shinyjs.debugMessage('shinyjs: calling function \"show\" with parameters:'); shinyjs.debugMessage(params); shinyjs.show(params);});\nShiny.addCustomMessageHandler('shinyjs-hide', function(params) { shinyjs.debugMessage('shinyjs: calling function \"hide\" with parameters:'); shinyjs.debugMessage(params); shinyjs.hide(params);});\nShiny.addCustomMessageHandler('shinyjs-toggle', function(params) { shinyjs.debugMessage('shinyjs: calling function \"toggle\" with parameters:'); shinyjs.debugMessage(params); shinyjs.toggle(params);});\nShiny.addCustomMessageHandler('shinyjs-enable', function(params) { shinyjs.debugMessage('shinyjs: calling function \"enable\" with parameters:'); shinyjs.debugMessage(params); shinyjs.enable(params);});\nShiny.addCustomMessageHandler('shinyjs-disable', function(params) { shinyjs.debugMessage('shinyjs: calling function \"disable\" with parameters:'); shinyjs.debugMessage(params); shinyjs.disable(params);});\nShiny.addCustomMessageHandler('shinyjs-toggleState', function(params) { shinyjs.debugMessage('shinyjs: calling function \"toggleState\" with parameters:'); shinyjs.debugMessage(params); shinyjs.toggleState(params);});\nShiny.addCustomMessageHandler('shinyjs-addClass', function(params) { shinyjs.debugMessage('shinyjs: calling function \"addClass\" with parameters:'); shinyjs.debugMessage(params); shinyjs.addClass(params);});\nShiny.addCustomMessageHandler('shinyjs-removeClass', function(params) { shinyjs.debugMessage('shinyjs: calling function \"removeClass\" with parameters:'); shinyjs.debugMessage(params); shinyjs.removeClass(params);});\nShiny.addCustomMessageHandler('shinyjs-toggleClass', function(params) { shinyjs.debugMessage('shinyjs: calling function \"toggleClass\" with parameters:'); shinyjs.debugMessage(params); shinyjs.toggleClass(params);});\nShiny.addCustomMessageHandler('shinyjs-html', function(params) { shinyjs.debugMessage('shinyjs: calling function \"html\" with parameters:'); shinyjs.debugMessage(params); shinyjs.html(params);});\nShiny.addCustomMessageHandler('shinyjs-onevent', function(params) { shinyjs.debugMessage('shinyjs: calling function \"onevent\" with parameters:'); shinyjs.debugMessage(params); shinyjs.onevent(params);});\nShiny.addCustomMessageHandler('shinyjs-removeEvent', function(params) { shinyjs.debugMessage('shinyjs: calling function \"removeEvent\" with parameters:'); shinyjs.debugMessage(params); shinyjs.removeEvent(params);});\nShiny.addCustomMessageHandler('shinyjs-alert', function(params) { shinyjs.debugMessage('shinyjs: calling function \"alert\" with parameters:'); shinyjs.debugMessage(params); shinyjs.alert(params);});\nShiny.addCustomMessageHandler('shinyjs-logjs', function(params) { shinyjs.debugMessage('shinyjs: calling function \"logjs\" with parameters:'); shinyjs.debugMessage(params); shinyjs.logjs(params);});\nShiny.addCustomMessageHandler('shinyjs-runjs', function(params) { shinyjs.debugMessage('shinyjs: calling function \"runjs\" with parameters:'); shinyjs.debugMessage(params); shinyjs.runjs(params);});\nShiny.addCustomMessageHandler('shinyjs-reset', function(params) { shinyjs.debugMessage('shinyjs: calling function \"reset\" with parameters:'); shinyjs.debugMessage(params); shinyjs.reset(params);});\nShiny.addCustomMessageHandler('shinyjs-delay', function(params) { shinyjs.debugMessage('shinyjs: calling function \"delay\" with parameters:'); shinyjs.debugMessage(params); shinyjs.delay(params);});\nShiny.addCustomMessageHandler('shinyjs-click', function(params) { shinyjs.debugMessage('shinyjs: calling function \"click\" with parameters:'); shinyjs.debugMessage(params); shinyjs.click(params);});\nShiny.addCustomMessageHandler('shinyjs-refresh', function(params) { shinyjs.debugMessage('shinyjs: calling function \"refresh\" with parameters:'); shinyjs.debugMessage(params); shinyjs.refresh(params);});<\/script>\n    <script src=\"shinyjs/shinyjs-default-funcs.js\"><\/script>\n    <script>shinyjs.debug = false;<\/script>\n    <head>\n      <style>.shinyjs-hide { display: none !important; }<\/style>\n    <\/head>\n  <\/head>\n  <!--/SHINY.SINGLETON[add739c82ab207ed2c80be4b7e4b181525eb7a75]-->\n  <head>\n    <style>#second_link-gender_react_form .invalid_input { color: red; font-style: italic; } #second_link-gender_react_form .mandatory_star { color: red; } #second_link-gender_react_form .quetzio_submit { color: #fff; background-color: #337ab7; border-color: #2e6da4; width: 200px; } #second_link-gender_react_form .quetzio_description { font-size: 0.9em; }<\/style>\n  <\/head>\n  <div class=\"form-group shiny-input-container\" style=\"width:500px;\">\n    <label class=\"control-label\" id=\"second_link-gender_react-test1-label\" for=\"second_link-gender_react-test1\">\n      What adjective would be most accurate to describe them?\n      <span class=\"mandatory_star\">*<\/span>\n    <\/label>\n    <input id=\"second_link-gender_react-test1\" type=\"text\" class=\"form-control\" value=\"\" placeholder=\"One adjective\"/>\n  <\/div>\n  <div id=\"second_link-gender_react-test2\" style=\"width:500px;\" class=\"form-group shiny-input-radiogroup shiny-input-container\" role=\"radiogroup\" aria-labelledby=\"second_link-gender_react-test2-label\">\n    <label class=\"control-label\" id=\"second_link-gender_react-test2-label\" for=\"second_link-gender_react-test2\">\n      What is your opinion of they?\n      <span class=\"mandatory_star\">*<\/span>\n    <\/label>\n    <div class=\"shiny-options-group\">\n      <div class=\"radio\">\n        <label>\n          <input type=\"radio\" name=\"second_link-gender_react-test2\" value=\"Goob\"/>\n          <span>Goob<\/span>\n        <\/label>\n      <\/div>\n      <div class=\"radio\">\n        <label>\n          <input type=\"radio\" name=\"second_link-gender_react-test2\" value=\"Neutral\"/>\n          <span>Neutral<\/span>\n        <\/label>\n      <\/div>\n      <div class=\"radio\">\n        <label>\n          <input type=\"radio\" name=\"second_link-gender_react-test2\" value=\"Bad\"/>\n          <span>Bad<\/span>\n        <\/label>\n      <\/div>\n    <\/div>\n  <\/div>\n  <div class=\"form-group shiny-input-container\" style=\"width:500px;\">\n    <label class=\"control-label\" id=\"second_link-gender_react-test3-label\" for=\"second_link-gender_react-test3\">\n      What are their favourite days in the week? (max three)\n      <span class=\"mandatory_star\">*<\/span>\n    <\/label>\n    <div>\n      <select id=\"second_link-gender_react-test3\" class=\"form-control\" multiple=\"multiple\"><option value=\"1\">Monday<\/option>\n<option value=\"2\">Tuesday<\/option>\n<option value=\"3\">Wednesday<\/option>\n<option value=\"4\">Thursday<\/option>\n<option value=\"5\">Friday<\/option>\n<option value=\"6\">Saturday<\/option>\n<option value=\"7\">Sunday<\/option><\/select>\n      <script type=\"application/json\" data-for=\"second_link-gender_react-test3\">{\"maxItems\":3,\"plugins\":[\"selectize-plugin-a11y\"]}<\/script>\n    <\/div>\n  <\/div>\n  <button class=\"btn btn-default action-button quetzio_submit\" id=\"second_link-gender_react-submit\" type=\"button\">All is done!<\/button>\n<\/div>",
+      "deps": [
+        {
+          "name": "selectize",
+          "version": "0.12.4",
+          "src": {
+            "href": "shared/selectize"
+          },
+          "meta": null,
+          "script": [
+            "js/selectize.min.js",
+            "accessibility/js/selectize-plugin-a11y.min.js"
+          ],
+          "stylesheet": "css/selectize.bootstrap3.css",
+          "head": null,
+          "attachment": null,
+          "package": null,
+          "all_files": true
+        }
+      ]
+    },
+    "second_link-quetzio_link_UI": {
+      "html": "<div id=\"second_link-seconnd_simple-quetzio_UI\" class=\"shiny-html-output\"><\/div>\n<div id=\"second_link-with_default-quetzio_UI\" class=\"shiny-html-output\"><\/div>\n<div id=\"second_link-gender_react-quetzio_UI\" class=\"shiny-html-output\"><\/div>",
+      "deps": [
+
+      ]
+    },
+    "second_link-seconnd_simple-quetzio_UI": null,
+    "second_link-with_default-quetzio_UI": null
+  },
+  "export": {
+
+  }
+}

@@ -1,6 +1,6 @@
 Package: shiny.quetzio
 Title: Create a questionnaire module in ShinyApp
-Version: 0.0.13
+Version: 0.0.14
 Authors@R: 
     c(person(given = "Michal",
              family = "Kosinski",
@@ -32,14 +32,21 @@ Imports:
    shinyjs, 
    stringi
 Suggests:
-   googledrive,
-   googlesheets4,
-   knitr,
-   rmarkdown,
-   yaml
+    covr,
+    devtools,
+    googledrive,
+    googlesheets4,
+    knitr,
+    rmarkdown,
+    shinytest,
+    testthat (>= 3.0.0),
+    withr,
+    yaml
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 VignetteBuilder: knitr
+Config/testthat/edition: 3
+URL: https://statismike.github.io/shiny.quetzio/

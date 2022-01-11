@@ -1,3 +1,14 @@
+# shiny.survey 0.0.14
+
+* added option to randomize item order with `randomize_order = T` argument
+during `quetzio_server` initialization
+* added possibility for default configuration in the form of raw `list` object, 
+mirroring the structure of defaults from *yaml* file. Also, if the source is 
+provided by feeding a `list` object in `raw_method`, both deault configuration
+method works also.
+* created tests powered by `shinytest` and `testthat`. Used example provided
+by [Ruben Fealens](https://github.com/rfaelens/exampleShinyTest) to record test coverage with `shinyTest`
+
 # shiny.survey 0.0.13
 
 * added multiple language support for messages generated internally and
