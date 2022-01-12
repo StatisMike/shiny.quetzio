@@ -1,6 +1,7 @@
 #' Check source df for correct columns
 #'
 #' @param source_df source of inputs
+#' @noRd
 #' @keywords internal
 
 .check_source_df <- function(source_df){
@@ -36,6 +37,7 @@
 #' Check source list for correct columns
 #'
 #' @param source_list source of inputs
+#' @noRd
 #' @keywords internal
 
 .check_source_list <- function(source_list){

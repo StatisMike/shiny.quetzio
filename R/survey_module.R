@@ -257,6 +257,7 @@ quetzio_server <- R6::R6Class(
       link_id = NULL
     ){
 
+      # nocov start
       # initialize checks
 
       # check if all needed arguments are provided for source methods
@@ -287,7 +288,8 @@ quetzio_server <- R6::R6Class(
           stop("When 'output_gsheet' == TRUE, you need to specify 'output_gsheet_id' (if other from 'source_gsheet_id') and 'output_gsheet_sheetname'")
         }
       }
-
+      
+      # nocov end
       # save the module id into environment
 
       self$module_id <- module_id
@@ -305,7 +307,9 @@ quetzio_server <- R6::R6Class(
       } else {
         self$div_id <- div_id
       }
+      
       # read the file and save resulting list in the environment
+      # nocov start
 
       if (source_method == "gsheet"){
 
@@ -318,7 +322,7 @@ quetzio_server <- R6::R6Class(
         # check df validity
         .check_source_df(source_df)
 
-        self$source_list <- .df_to_list(
+        source_list <- .df_to_list(
           source_df = source_df
         )
 
@@ -343,8 +347,6 @@ quetzio_server <- R6::R6Class(
         # check list validity
         .check_source_list(source_list)
 
-        self$source_list <- source_list
-
 
       } else if (source_method == "raw") {
 
@@ -352,7 +354,7 @@ quetzio_server <- R6::R6Class(
 
           # checks if df is valid
           .check_source_df(source_object)
-          self$source_list <- .df_to_list(source_object)
+          source_list <- .df_to_list(source_object)
 
         } else if (class(source_object) == "list") {
           
@@ -375,7 +377,6 @@ quetzio_server <- R6::R6Class(
           # checks if list is valid
           
           .check_source_list(source_list)
-          self$source_list <- source_list
 
         } else {
           stop("Source object needs to be of class 'data.frame' or 'list'")
@@ -384,6 +385,12 @@ quetzio_server <- R6::R6Class(
       } else {
         stop("Error - problems with source")
       }
+      
+      # nocov end
+      
+      # save source list into the environment
+      
+      self$source_list <- source_list
       
       # optional randomization of source object
       
@@ -414,7 +421,7 @@ quetzio_server <- R6::R6Class(
           self$description <- .df_to_list(desc_object, type = "quetzio_desc")
         else if (class(desc_object) == "list")
           self$description <- desc_object
-        else stop(call. = F, "'desc_object', if provided needs to be of classes 'data.frame' or 'list'")
+        else stop(call. = F, "'desc_object', if provided needs to be of classes 'data.frame' or 'list'") # nocov
       }
 
       # check for mandatory and numeric inputs
