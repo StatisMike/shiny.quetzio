@@ -149,14 +149,37 @@
     ## I want to dynamically coerce variable types. Otherwise,
     ## `full_join()`'s strict type safety raises an error
     to_upload_answers <- merge(old_answers, user_answers, all = TRUE, sort = FALSE)
-    dplyr::relocate(.data = to_upload_answers,
-                                         dplyr::ends_with("timestamp"),
+    to_upload_answers <- dplyr::relocate(.data = to_upload_answers,
+                                         dplyr::ends_with(".timestamp"),
                                          .after = dplyr::last_col())
+    
+    if (any(grepl(x = names(user_answers), pattern = "\\.order$"))) {
+      to_upload_answers <- dplyr::relocate(.data = to_upload_answers,
+                      dplyr::ends_with(".order"),
+                      .after = dplyr::last_col())
+    }
+    
+    to_upload_answers
 
   }, error = function(cond){
+    
+    ## error occurs when there is no sheetname of that name created
+    ## function will then create new sheet
+    
+    # nocov start
 
-    dplyr::relocate(.data = user_answers,
-                    dplyr::ends_with("timestamp"), .after = dplyr::last_col())
+    to_upload_answers <- dplyr::relocate(.data = user_answers,
+                                         dplyr::ends_with(".timestamp"), 
+                                         .after = dplyr::last_col())
+    if (any(grepl(x = names(user_answers), pattern = "\\.order$"))) {
+      to_upload_answers <- dplyr::relocate(.data = to_upload_answers,
+                                           dplyr::ends_with(".order"),
+                                           .after = dplyr::last_col())
+    }
+    
+    return(to_upload_answers)
+    
+    # nocov end
 
   })
 
