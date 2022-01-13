@@ -239,14 +239,6 @@
 
       # create the UI holding the UIs of all linked questionnaires
 
-      # output$quetzio_link_UI <- renderUI(
-      #   tagList(
-      #     lapply(seq_along(private$quetzio_names),
-      #            function(i) quetzio_UI(session$ns(
-      #              self$quetzio_list[[private$quetzio_names[i]]]$module_id)
-      #            )
-      #     ) ) )
-
       observe({
 
         output$quetzio_link_UI <- renderUI(
