@@ -283,15 +283,19 @@ create_desc_source <- function(
 
       # for every type get needed arguments
 
-      if (row_as_list$type == "instruction_list") {
+      if (row_as_list$type == "instructions_list") {
 
-        row_as_list$order <- .null_def(x$align, FALSE)
+        row_as_list$order <- .null_def(x$order, FALSE)
         # split multiple values on separators ';' and '\n'
         row_as_list$content <- stringi::stri_trim_both(unlist(
           stringi::stri_split(
             str = row_as_list$content,
             regex = ";|\n")))
 
+      } else if (row_as_list$type == "item_desc") {
+        
+        row_as_list$inputId <- x$inputId
+        
       }
 
       # return value from lapplied function

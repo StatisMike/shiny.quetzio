@@ -182,6 +182,8 @@ quetzio_link_server <- R6::R6Class(
         private$output_gsheet <- TRUE
         private$output_gsheet_id <- output_gsheet_id
         private$output_gsheet_sheetname <- output_gsheet_sheetname
+      } else {
+        private$output_gsheet <- FALSE
       }
 
       # call to the moduleServer handling all the logic

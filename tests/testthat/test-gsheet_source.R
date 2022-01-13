@@ -5,15 +5,15 @@ test_that("Creating items and their descriptions from googlesheet works", {
   googlesheets4::gs4_deauth()
   
   questions <- googlesheets4::read_sheet(
-    "1N4NQ_ixkOz4qPcyZgirnJN8RK-T_Qz-hwA8NU0MBjYA", "Questions")
+    Sys.getenv("QUETZIO_SS"), "Questions")
   descriptions <- googlesheets4::read_sheet(
-    "1N4NQ_ixkOz4qPcyZgirnJN8RK-T_Qz-hwA8NU0MBjYA", "Description")
+    Sys.getenv("QUETZIO_SS"), "Description")
   
   gsheet_server <- function(input, output, session) {
     
     gsheet_quetzio <- quetzio_server$new(
       source_method = "gsheet",
-      source_gsheet_id = "1N4NQ_ixkOz4qPcyZgirnJN8RK-T_Qz-hwA8NU0MBjYA",
+      source_gsheet_id = Sys.getenv("QUETZIO_SS"),
       source_gsheet_sheetname = "Questions",
       desc_gsheet_sheetname = "Description",
       module_id = "test_module"
