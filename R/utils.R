@@ -1,6 +1,7 @@
 #' Helper function to check namespace
 #'
 #' @param package Character string declaring which package to check for
+#' @noRd
 #' @keywords internal
 
 .check_package <- function(package) {
@@ -10,6 +11,15 @@
       stop(paste0("To use this method please install '",package,"' package: install.packages('",package,"')"),
            call. = F)
     }
+}
+
+#' Helper function to drop all nulls from list
+#' @noRd
+#' @keywords internal
+
+.dropNulls <- function (x) 
+{
+  x[!vapply(x, is.null, FUN.VALUE = logical(1))]
 }
 
 
