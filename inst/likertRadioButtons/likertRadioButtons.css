@@ -1,38 +1,36 @@
-/*.shiny-input-likert-radiobuttons {
-  padding: 0.5rem;
-} */
 .likert-input-radio-indicator {
   text-align: center;
   font-style: italic;
 }
+
 .likert-input-radio-control {
   text-align: center;
 }
+
 .likert-input-radio-label {
   text-align:center;
   font-size: 1rem;
 }
+
 .likert-input-radio {
   text-align: center;
+  position: relative;
+  z-index: 1;
 }
+
 .likert-input-radio-min, .likert-input-radio-max {
   vertical-align:middle;
   width:15%;
   font-size: 1.2rem;
   text-align: center;
-/*  padding-right: 3px; */
   background-color: #d3d3d35e;
   border-radius: 10px;
   }
-/*.likert-input-radio-min {
-  padding-right:3px;
-}
-.likert-input-radio-max {
-  padding-left:3px;
-}*/
+  
 .likert-radio-line{
   position: relative;
 }
+
 .likert-radio-line:after {
   content: '';
   border-bottom: 2px solid #cdcdcd;
@@ -42,5 +40,5 @@
   top: 50%;
   left: 50%;
   transform: translate(0, -100%);
-  z-index: -1;
+  z-index: 0;
 }

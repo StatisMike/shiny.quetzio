@@ -15,4 +15,7 @@ new values}
 \description{
 Server module handling value updates
 }
+\details{
+likertRadioButtons aren't currently supported!
+}
 \keyword{internal}

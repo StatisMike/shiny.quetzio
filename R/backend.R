@@ -441,6 +441,9 @@
 #' @param values named list containing values to update inputs with
 #' @param values reactive object that triggers the change and contains
 #' new values
+#' 
+#' @details 
+#' likertRadioButtons aren't currently supported!
 #'
 #' @import shiny
 #' @keywords internal

@@ -17,9 +17,14 @@
 #' @noRd
 #' @keywords internal
 
-.dropNulls <- function (x) 
+.dropNulls <- function (x, na.rm = F) 
 {
-  x[!vapply(x, is.null, FUN.VALUE = logical(1))]
+  if (na.rm) {
+    x[!vapply(x, \(x) is.null(x) || is.na(x), FUN.VALUE = logical(1))]
+  } else {
+    x[!vapply(x, is.null, FUN.VALUE = logical(1))]
+  }
+  
 }
 
 

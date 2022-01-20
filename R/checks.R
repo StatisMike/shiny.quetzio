@@ -17,7 +17,6 @@
   }
 
   # check for selectize and radio
-
   invisible(
     tryCatch({
       check_df <- source_df[source_df$type == "selectizeInput" || source_df$type == "radioButtons",]
@@ -29,6 +28,22 @@
     },
     error = function(e){
       stop("source: With at least one 'selectizeInput' or 'radioButtons' type, the columns 'mult_choices' or both 'mult_choiceValues' and 'mult_choiceNames' need to be specified.",
+           call. = F)
+    })
+  )
+  
+  # check for likertRadioButtons
+  invisible(
+    tryCatch({
+      check_df <- source_df[source_df$type == "likertRadioButtons",]
+      if (nrow(check_df) > 0){
+        if (!all(c("mult_choiceValues", "mult_choiceNames") %in% names(check_df))) {
+          stop(call. = F)
+        }
+      }
+    },
+    error = function(e){
+      stop("source: With at least one 'likertRadioButtons' type, the columns 'mult_choiceValues' and 'mult_choiceNames' both need to be specified.",
            call. = F)
     })
   )
@@ -68,6 +83,10 @@
       if (x$type == "selectizeInput" || x$type == "radioButtons") {
         if (is.null(x$choices) && all(is.null(x$choiceValues), is.null(x$choiceNames))) {
           stop("'choices' or both 'choiceNames' and 'choiceValues' are mandatory for 'selectizeInput' or 'radioButtons'")
+        }
+      } else if (x$type == "likertRadioButtons") {
+        if (all(is.null(x$choiceValues), is.null(x$choiceNames))) {
+          stop("Both 'choiceNames' and 'choiceValues' are mandatory for 'likertRadioButtons'")
         }
       }
 

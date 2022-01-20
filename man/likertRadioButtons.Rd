@@ -11,8 +11,7 @@ likertRadioButtons(
   choiceValues,
   choiceNames,
   placeholder = "Select value",
-  width = "100\%",
-  `max-width` = "500px"
+  width = "500px"
 )
 }
 \arguments{

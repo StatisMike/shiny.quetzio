@@ -74,6 +74,18 @@
              args[["choices"]] <- x$choices
            }
            bquote(radioButtons(..(args)), splice = TRUE)
+         },
+         likertRadioButtons = {
+           args <- list(
+             inputId = bquote(ns(.(inputId))),
+             label = if(isTRUE(x$mandatory)){bquote(.label_mandatory(.(x$label)))} else {x$label},
+             selected = .null_def(x$selected, character(0)),
+             width = .null_def(x$width, 500),
+             choiceNames = x$choiceNames,
+             choiceValues = x$choiceValues,
+             placeholder = .null_def(x$placeholder, "Select value")
+           )
+           bquote(likertRadioButtons(..(args)), splice = TRUE)
          }
          )
 }
@@ -147,12 +159,14 @@
   default_config
 ) {
 
+  # check options used by input type
   option_names <- list(
     uni = c("mandatory", "width"),
     textInput = c("placeholder"),
     numericInput = c("placeholder", "value", "min", "max", "step"),
     radioButtons = c("choices", "choiceValues", "choiceNames", "selected", "inline"),
-    selectizeInput = c("choices", "choiceValues", "choiceNames", "selected", "maxItems")
+    selectizeInput = c("choices", "choiceValues", "choiceNames", "selected", "maxItems"),
+    likertRadioButtons = c("placeholder", "choiceValues", "choiceNames", "selected")
   )
 
   output_source <- source_list

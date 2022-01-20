@@ -1,12 +1,3 @@
-$(document).ready(function() {
-  $('.likert-input-radio.indicator-updater').change(function(){
-    var text=$(this).attr('choice-name');
-    var id=$(this).attr('name');
-    document.getElementById(id).getElementsByClassName('likert-input-radio-indicator')[0].textContent=text;
-  });
-});
-
-
 // create a binding object
 var likertRadioButtonsBinding = new Shiny.InputBinding();
 
@@ -15,9 +6,28 @@ $.extend(likertRadioButtonsBinding, {
 
   find: function(scope) {
 
-    // find all instances of class FrissSwitch
+    // find all instances of class
     return $(scope).find(".shiny-input-likert-radiobuttons");
 
+  },
+  
+  initialize: function(el) {
+    
+    // bind function onchange to update indicator
+    
+    var indicators = document.getElementById(Shiny.$escape(el.id)).
+    getElementsByClassName('likert-input-radio indicator-updater')
+
+    // only if the indicator is there!
+       
+    if (indicators.length != 0) {
+      $(indicators).change(function(){
+         var text=$(this).attr('choice-name');
+         var id=$(this).attr('name');
+         document.getElementById(id).getElementsByClassName('likert-input-radio-indicator')[0].textContent=text;
+       });
+    };
+    
   },
   
   getValue(el) {
@@ -48,6 +58,8 @@ $.extend(likertRadioButtonsBinding, {
           '"]'
       ).prop("checked", true);
     }
+    
+    $(el).trigger("change");
   },
   
   
@@ -58,69 +70,6 @@ $.extend(likertRadioButtonsBinding, {
   },
   unsubscribe(el) {
     $(el).off(".likertRadioButtonsBinding");
-  },
-  
-  receiveMessage: function receiveMessage(el, data) {
-    
-    if (data.hasOwnProperty("label")) {
-      $(el)
-      .find('label[for="' + 
-        Shiny.$escape(el.id) + '"]')
-         .text(data.label);
-      }
-    
-    if (data.hasOwnProperty("minName")) {
-      $(el)
-       .find('.likert-input-radio-min').
-       text(data.minName);
-    }
-    
-    if (data.hasOwnProperty("maxName")) {
-      $(el)
-       .find('.likert-input-radio-max').
-       text(data.maxName);
-    }
-    
-    if (data.hasOwnProperty("choiceValues")) {
-      
-      var choiceInputs = $(el).find('.likert-input-radio');
-      
-      for (var i=0, item; item = choiceInputs[i]; i++) {
-        item.setAttribute('value', data.choiceValues[i]);
-        
-      };
-        
-      var choiceLabels = $(el).find('.likert-input-radio-label');  
-      
-      for (var i=0, item; item = choiceLabels[i]; i++) {
-        item.innerText = String(data.choiceValues[i]);
-      };
-    };
-    
-    if (data.hasOwnProperty("choiceNames")) {
-      
-      var choiceInputs = $(el).find('.likert-input-radio');
-      
-      for (var i=0, item; item = choiceInputs[i]; i++) {
-        item.setAttribute('choice-name', data.choiceNames[i]);
-      
-      };
-    };
-    
-    if(data.hasOwnProperty("selected")) {
-      
-      this.setValue(el, data.selected);
-      $(el).trigger("change");
-      
-/*      var choiceInputs = $(el).find('.likert-input-radio');
-      
-      for (var i=0, item; item = choiceInputs[i]; i++) {
-        if (item.value == data.selected) {
-          $(item).prop("checked", true);
-          
-        };
-      }; */
-    };
   }
 });
   
