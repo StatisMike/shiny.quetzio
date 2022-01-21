@@ -6,6 +6,7 @@
 #'
 #' @import shiny
 #' @importFrom stats setNames
+#' @noRd
 #' @keywords internal
 
 .question_ui <- function(x, inputId, module_ui_id) {
@@ -88,6 +89,7 @@
            bquote(likertRadioButtons(..(args)), splice = TRUE)
          }
          )
+
 }
 
 #' Generate all shinyInputs from yaml source file function
@@ -101,6 +103,7 @@
 #' @param module_ui_id character string declaring module id
 #' @import shiny
 #' @import htmltools
+#' @noRd
 #' @keywords internal
 
 .generate_ui <- function(
@@ -152,6 +155,7 @@
 #' per input type specified.
 #' If there were some values specified in the vanilla configuration, they won't
 #' be overwritten by configuration
+#' @noRd
 #' @keywords internal
 
 .populate_from_default <- function(

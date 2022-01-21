@@ -15,7 +15,7 @@ likertRadioButtons(
 )
 }
 \arguments{
-\item{inputId}{}
+\item{inputId}{The input slot that will be used to access the value.}
 
 \item{label}{Label that will be shown to the user}
 
@@ -34,10 +34,53 @@ Meaningful only if 'length(choiceNames) > 2' and 'selected = character(0)'.
 Defaults to 'Select value'}
 
 \item{width}{Width of the input in either relative (\%) or absolute (px) values.}
-
-\item{max-width}{Maximum width of the input. Absolute (px) values are recommended,
-and usage with unison of relative 'width'. Shouldn't be less than 'width'}
 }
 \description{
 Create input for Likert scale questions based on radioButtons
+}
+\details{
+Generated input can have choiceNames character correlated to every choiceValues
+number - if that is the case, then the indicator showing the character associated
+to currently checked value will be rendered.
+
+Alternatively, choiceNames can be a character vector of length 2, showing
+at all times the character associated to lowest (or the farthest to the left)
+and highest (or the farthest to the right) value.
+
+In that case, the character value provided to the 'placeholder' don't matter,
+as it won't be generated.
+}
+\examples{
+## Only run in interactive session
+
+if (interactive()) {
+  
+  ui <- fluidPage(
+    
+    likertRadioButtons(
+      inputId = "first", 
+      label = "First input", 
+      # you need to provide numeric value present among the choiceValues
+      selected = 4,
+      choiceValues = 1:7,
+      # only names for min and max (left and right)
+      choiceNames = c("Not much", "Many")),
+    verbatimTextOutput("first_output"),
+    
+    likertRadioButtons(
+      inputId = "second",
+      label = "Second input",
+      # default (character(0)) value will make no initial selection
+      # selected = character(0),
+      choiceValues = c(-2:2),
+      choiceNames = c("Very bad", "Slightly bad", "Not bad or good",
+                      "Slighty good", "Very good")),
+      verbatimTextOutput("second_output")
+  )
+  server <- function(input, output, session) {
+    output$first_output <- renderPrint(input$first)
+    output$second_output <- renderPrint(input$second)
+  }
+  shinyApp(ui, server)
+}
 }

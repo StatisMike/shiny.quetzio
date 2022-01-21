@@ -1,15 +1,11 @@
-#' function generating testing app with all possibilites from raw files
+#' function generating testing app with all possibilites from raw objects and
+#' deauthorized googlesheet. 
 #' @import shiny
 #' @noRd
 #' 
 testthat_raw_app <- function() {
   
-  googlesheets4::gs4_auth(email = Sys.getenv("G_SERVICE_MAIL"),
-                          path = Sys.getenv("G_SERVICE_ACCOUNT"),
-                          cache = F)
-  googledrive::drive_auth(email = Sys.getenv("G_SERVICE_MAIL"),
-                          path = Sys.getenv("G_SERVICE_ACCOUNT"),
-                          cache = F)
+  googlesheets4::gs4_deauth()
   
   ui <- fluidPage(
     column(6,
@@ -61,10 +57,7 @@ testthat_raw_app <- function() {
         source_object = shiny.quetzio::quetzio_examples$questions_lists$simple_quetzio,
         desc_object = shiny.quetzio::quetzio_examples$description_lists$simple_quetzio,
         module_id = "first_simple",
-        use_modal = F,
-        output_gsheet = TRUE,
-        output_gsheet_id = Sys.getenv("QUETZIO_SS"),
-        output_gsheet_sheetname = "Answers_testthat_quetzio"
+        use_modal = F
       ),
       link_id = "first_link"
     )
@@ -89,7 +82,7 @@ testthat_raw_app <- function() {
       ),
       from_googlesheet = quetzio_server$new(
         source_method = "gsheet",
-        source_gsheet_id = Sys.getenv("QUETZIO_SS"),
+        source_gsheet_id = "1N4NQ_ixkOz4qPcyZgirnJN8RK-T_Qz-hwA8NU0MBjYA",
         source_gsheet_sheetname = "Questions",
         desc_gsheet_sheetname = "Description",
         module_id = "from_gsheet",
@@ -101,10 +94,7 @@ testthat_raw_app <- function() {
         module_id = "gender_react",
         custom_txts = list(submit_enabled = "All is done!")
       ),
-      link_id = "second_link",
-      output_gsheet = TRUE,
-      output_gsheet_id = Sys.getenv("QUETZIO_SS"),
-      output_gsheet_sheetname = "Answers_testthat_link"
+      link_id = "second_link"
     )
     
     # label update trigger
@@ -165,5 +155,15 @@ testthat_raw_app <- function() {
   }
   
   shinyApp(ui, server)
+  
+}
+
+# function handling writing to googlesheet file. Use only on GitHub actions,
+# not on CRAN, as it needs variables from environment (secrets)
+
+testthat_gsheet_app <- function() {
+  
+  
+  
   
 }

@@ -7,11 +7,11 @@
 #' Name suffix helps to determine for which types of inputs these columns
 #' are used. Variables without suffix are used in creation of all types.
 #' \itemize{
-#' \item{\code{chrnum_}: textInput and numericInput}
+#' \item{\code{chrnum_}: textInput, numericInput and likertRadioButtons}
 #' \item{\code{num_}: numericInput}
 #' \item{\code{select_}: selectizeInput}
 #' \item{\code{radio_}: radioButtons}
-#' \item{\code{mult_}: selectizeInput and radioButtons}
+#' \item{\code{mult_}: selectizeInput, radioButtons and likertRadioButtons}
 #' }
 #'
 #' To use 'gsheet' method, the 'googlesheets4' package needs
@@ -193,7 +193,7 @@ create_desc_source <- function(
 #' Create source list from 'data.frame'
 #' @param source_df source `data.frame` object
 #' @param type character indicating which strategy to take
-#'
+#' @noRd
 #' @keywords internal
 
 .df_to_list <- function(source_df, type = "quetzio_source"){
@@ -331,7 +331,7 @@ create_desc_source <- function(
 #' @return List containing two objects:
 #' - 'source_list', with input in randomized order
 #' - 'order', with item indices
-#' 
+#' @noRd
 #' @keywords internal
 #' 
 .randomize_source <- function(source_list) {

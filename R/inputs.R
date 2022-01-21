@@ -66,7 +66,7 @@ numInput <- function(inputId, label, value = NA, placeholder = NULL,
 
 #' Create input for Likert scale questions based on radioButtons
 #' 
-#' @param inputId 
+#' @param inputId The input slot that will be used to access the value.
 #' @param label Label that will be shown to the user
 #' @param selected Initially selected value. Defaults to 'character(0)', which
 #' will make selection empty on init
@@ -79,11 +79,22 @@ numInput <- function(inputId, label, value = NA, placeholder = NULL,
 #' Meaningful only if 'length(choiceNames) > 2' and 'selected = character(0)'.
 #' Defaults to 'Select value'
 #' @param width Width of the input in either relative (%) or absolute (px) values.
-#' @param max-width Maximum width of the input. Absolute (px) values are recommended,
-#' and usage with unison of relative 'width'. Shouldn't be less than 'width'
-#'
-#'@import shiny
-#'@export
+#' 
+#' @details 
+#' Generated input can have choiceNames character correlated to every choiceValues
+#' number - if that is the case, then the indicator showing the character associated
+#' to currently checked value will be rendered. 
+#' 
+#' Alternatively, choiceNames can be a character vector of length 2, showing
+#' at all times the character associated to lowest (or the farthest to the left)
+#' and highest (or the farthest to the right) value.
+#' 
+#' In that case, the character value provided to the 'placeholder' don't matter,
+#' as it won't be generated.
+#' 
+#' @example inst/examples/likertRadioButtons.R
+#' @import shiny
+#' @export
 
 
 likertRadioButtons <- function(
@@ -116,6 +127,12 @@ likertRadioButtons <- function(
     stop("'choiceNames' need to contain either two labels (for 'min' and 'max')
          or a label for every 'choiceValue'")
   } 
+  
+  if (all(length(choiceNames) > 2, (length(choiceNames) != length(choiceValues)))) {
+    stop("If 'choiceNames' isn't of length 2, it should be the same length as
+         'choiceValues'")
+    
+  }
   
   selected <- restoreInput(id = inputId, default = selected)
   

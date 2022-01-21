@@ -39,11 +39,11 @@ placeholder input to help populating next ones.
 Name suffix helps to determine for which types of inputs these columns
 are used. Variables without suffix are used in creation of all types.
 \itemize{
-\item{\code{chrnum_}: textInput and numericInput}
+\item{\code{chrnum_}: textInput, numericInput and likertRadioButtons}
 \item{\code{num_}: numericInput}
 \item{\code{select_}: selectizeInput}
 \item{\code{radio_}: radioButtons}
-\item{\code{mult_}: selectizeInput and radioButtons}
+\item{\code{mult_}: selectizeInput, radioButtons and likertRadioButtons}
 }
 
 To use 'gsheet' method, the 'googlesheets4' package needs

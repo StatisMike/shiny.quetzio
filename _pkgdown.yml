@@ -21,6 +21,7 @@ reference:
   desc: Customized inputs to be used in created questionnaires, though you can also use them externally
 - contents:
   - numInput
+  - likertRadioButtons
 - title: Set or modify language for internally generated messages
   desc: >-
    Mostly used internally. Exported for better grasp on how to provide custom
