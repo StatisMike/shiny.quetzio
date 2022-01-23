@@ -17,6 +17,8 @@ test_that("Create description source to df works", {
 
 test_that("Create description source to gsheets works", {
   
+  skip_on_cran()
+  
     googlesheets4::gs4_auth(email = Sys.getenv("G_SERVICE_MAIL"),
                             path = Sys.getenv("G_SERVICE_ACCOUNT"),
                             cache = F)

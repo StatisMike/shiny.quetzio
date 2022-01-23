@@ -53,6 +53,7 @@ knitr::include_graphics("quetzio_server_logic.png")
 ## What is the structure of question source?
 
 As seen on the figure above, there are three possible sources for the questions:
+
 - googlesheets (needs **googlesheets4** package installed)
 - yaml (needs **yaml** package installed)
 - R object (*list* or *data.frame*)
@@ -73,22 +74,22 @@ In the source, for every *shinyInput* you can specify following parameters:
 Additionally, various supported shinyInput types support additional parameters.
 Table of the supported shinyInputs with all possible parameters is provided below:
 
-|    parameter   |  textInput |numericInput|selectizeInput|radioButtons|
-|    :----:      |   :----:   |   :----:   |    :----:    |   :----:   |
-|placeholder     |      x     |     x      |              |            |    
-|value           |            |     x      |              |            |    
-|min             |            |     x      |              |            |    
-|max             |            |     x      |              |            |    
-|step            |            |     x      |              |            |    
-|*choices*       |            |            |     **x**    |    **x**   |    
-|*choiceValues*  |            |            |     **x**    |    **x**   |    
-|*choiceNames*   |            |            |     **x**    |    **x**   |    
-|maxItems        |            |            |       x      |            |    
-|selected        |            |            |       x      |      x     |    
-|inline          |            |            |              |      x     |   
+|    parameter   |  textInput |numericInput|selectizeInput|radioButtons|likertRadioButtons|
+|    :----:      |   :----:   |   :----:   |    :----:    |   :----:   |      :----:      |
+|placeholder     |      x     |     x      |              |            |        x         |
+|value           |            |     x      |              |            |                  |
+|min             |            |     x      |              |            |                  |
+|max             |            |     x      |              |            |                  |
+|step            |            |     x      |              |            |                  |
+|choices         |            |            |     **x**    |    **x**   |                  |
+|choiceValues    |            |            |     **x**    |    **x**   |      **x**       |
+|choiceNames     |            |            |     **x**    |    **x**   |      **x**       |
+|maxItems        |            |            |       x      |            |                  |
+|selected        |            |            |       x      |      x     |        x         |
+|inline          |            |            |              |      x     |                  |
 
-> - *Italic* parameters are interchangeable. You can specify either *choices* or both *choiceValues* and *choiceNames* for single input. They are also multiple-value parameters.
-> - Bold **x** indicates that the parameter is mandatory and need to be specified for given *shinyInput*
+> Parameters with bolded **x** are mandatory. You can specify either *choices* 
+or both *choiceValues* and *choiceNames* for `selectizeInput` and `radioButtons`.
 
 ### YAML source method (`source_method == 'yaml'`)
 

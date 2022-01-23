@@ -1,6 +1,7 @@
 #' Helper function to check namespace
 #'
 #' @param package Character string declaring which package to check for
+#' @noRd
 #' @keywords internal
 
 .check_package <- function(package) {
@@ -12,11 +13,26 @@
     }
 }
 
+#' Helper function to drop all nulls from list
+#' @noRd
+#' @keywords internal
+
+.dropNulls <- function (x, na.rm = F) 
+{
+  if (na.rm) {
+    x[!vapply(x, \(x) is.null(x) || is.na(x), FUN.VALUE = logical(1))]
+  } else {
+    x[!vapply(x, is.null, FUN.VALUE = logical(1))]
+  }
+  
+}
+
 
 #' function used to add red asterisk to mandatory fields
 #'
 #' @param label Character string with item label
 #' @import shiny
+#' @noRd
 #' @keywords internal
 #'
 .label_mandatory <- function(label){
@@ -39,6 +55,7 @@
 #' }
 #' If any of these aren't provided in the list passed to `css`, the default values would be added.
 #' @param div_id character string indicating the div id to use this stylesheet
+#' @noRd
 #' @keywords internal
 
 .custom_css_handler <- function(css = NULL,
@@ -77,6 +94,7 @@
 #' @param x the value to check
 #' @param default the default value if null or NA
 #' @keywords internal
+#' @noRd
 
 .null_def <- function(x, default){
   ifelse(is.null(x) || is.na(x), default, x)
@@ -86,6 +104,7 @@
 #'
 #' @param source_list Source list of inputs
 #' @keywords internal
+#' @noRd
 
 .get_mandatory <- function(source_list){
 
@@ -105,6 +124,7 @@
 #'
 #' @param source_list Source list of inputs
 #' @keywords internal
+#' @noRd
 
 .get_type <- function(source_list, type){
 
@@ -127,6 +147,7 @@
 #'
 #' @import dplyr
 #' @keywords internal
+#' @noRd
 
 .save_new_answers <- function(
   user_answers,
@@ -195,6 +216,7 @@
 #' @param arg_name argument name
 #' @param arg_value argument value to set
 #' @keywords internal
+#' @noRd
 
 .modify_arg <- function(call, arg_name, arg_value) {
 
@@ -213,6 +235,7 @@
 #' @param ... dotdotdot passed from parent function
 #' @param link_id character string indicating what the value of the argument should be
 #' @keywords internal
+#' @noRd
 
 .modify_quetzio_arg <- function(..., link_id) {
 
@@ -247,6 +270,7 @@
 #' @param quetzio_names the names of the surveys in correct order from the
 #' 'self$quetzio_names' object from 'quetzio_link_server'
 #' @keywords internal
+#' @noRd
 
 .merge_linked_answers_to_df <- function(answers_object, quetzio_names) {
 
@@ -267,6 +291,7 @@
 #' @param answers list of answers from one questionnaire
 #' @param name name of the questionnaire
 #' @keywords internal
+#' @noRd
 
 .sanitize_answers <- function(answers, name = NULL) {
 
@@ -289,6 +314,7 @@
 #'
 #' @param list source to be converted into data.frame
 #' @keywords internal
+#' @noRd
 
 .list_to_df <- function(list) {
 
@@ -323,6 +349,7 @@
 #' supplementing labels with 'HTML' tags, as everything passed through them as
 #' label is coerced to character. `shinyjs::html()` remedies this problem.
 #' @keywords internal
+#' @noRd
 
 .update_label <- function (self, inputId, label,
                            is_mandatory)
@@ -346,6 +373,7 @@
 #'
 #' @param yaml_file path to the source yaml file
 #' @keywords internal
+#' @noRd
 
 
 .yaml_to_list <- function(yaml_file){
@@ -356,6 +384,7 @@
 #' @param output_ss character vector with output googlesheet ID
 #' @param output_sheet character vector with output spreadsheet name
 #' @keywords internal
+#' @noRd
 
 
 .read_all_answers <- function(

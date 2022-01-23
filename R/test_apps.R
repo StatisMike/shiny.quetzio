@@ -1,4 +1,8 @@
-#' function generating testing app with all possibilites from raw files
+#' function generating testing app with all possibilites from raw objects and
+#' deauthorized googlesheet. 
+#' 
+#' For now handles the googlesheets saving possibilities too
+#' 
 #' @import shiny
 #' @noRd
 #' 
@@ -165,5 +169,60 @@ testthat_raw_app <- function() {
   }
   
   shinyApp(ui, server)
+  
+}
+
+#' function creating app with likert inputs
+#' @import shiny
+#' @noRd
+
+testthat_likert_app <- function() {
+  
+  library(shiny)
+  library(shiny.quetzio)
+  
+  likert_sources <- 
+    list(defaults = list(likertRadioButtons = list(mandatory = TRUE, 
+                                                 choiceNames = c("strongly disagree", "disagree", "neutral (neither agree nor disagree)", 
+                                                                 "agree", "strongly agree"), choiceValues = 1:5)), 
+         source1 = list(HEX_1 = list(type = "likertRadioButtons", label = "I sometimes can't help worrying about little things."), 
+                        HEX_2 = list(type = "likertRadioButtons", label = "If I knew that I could never get caught, I would be willing to steal a million dollars."), 
+                        HEX_3 = list(type = "likertRadioButtons", label = "I would enjoy creating a work of art, such as a novel, a song, or a painting."), 
+                        HEX_4 = list(type = "likertRadioButtons", label = "When working on something, I don't pay much attention to small details."), 
+                        HEX_5 = list(type = "likertRadioButtons", label = "People sometimes tell me that I'm too stubborn.")), 
+       source2 = list(HEX_1 = list(type = "likertRadioButtons", 
+                                   label = "I would be quite bored by a visit to an art gallery."), 
+                      HEX_2 = list(type = "likertRadioButtons", label = "I plan ahead and organize things, to avoid scrambling at the last minute."), 
+                      HEX_3 = list(type = "likertRadioButtons", label = "I rarely hold a grudge, even against people who have badly wronged me."), 
+                      HEX_4 = list(type = "likertRadioButtons", label = "I feel reasonably satisfied with myself overall."), 
+                      HEX_5 = list(type = "likertRadioButtons", label = "I would feel afraid if I had to travel in bad weather conditions.")))
+  
+  ui <- fluidPage(
+    
+    quetzio_link_UI("HEXAll")
+    
+  )
+  
+  server <- function(input, output, session) {
+    
+    quetzio_link_server$new(
+      "toFive" = quetzio_server$new(
+        source_method = "raw",
+        source_object = likert_sources$source1,
+        source_object_default = likert_sources$defaults,
+        module_id = "HEXtoTen"
+      ),
+      "toTen" = quetzio_server$new(
+        source_method = "raw",
+        source_object = likert_sources$source2,
+        source_object_default = likert_sources$defaults,
+        module_id = "HEXtoTwenty"
+      ),
+      link_id = "HEXAll"
+    )
+  }
+  
+  shinyApp(ui, server)
+  
   
 }

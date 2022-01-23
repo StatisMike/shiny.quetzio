@@ -6,6 +6,7 @@
 #'
 #' @import shiny
 #' @importFrom stats setNames
+#' @noRd
 #' @keywords internal
 
 .question_ui <- function(x, inputId, module_ui_id) {
@@ -74,8 +75,21 @@
              args[["choices"]] <- x$choices
            }
            bquote(radioButtons(..(args)), splice = TRUE)
+         },
+         likertRadioButtons = {
+           args <- list(
+             inputId = bquote(ns(.(inputId))),
+             label = if(isTRUE(x$mandatory)){bquote(.label_mandatory(.(x$label)))} else {x$label},
+             selected = .null_def(x$selected, character(0)),
+             width = .null_def(x$width, 500),
+             choiceNames = x$choiceNames,
+             choiceValues = x$choiceValues,
+             placeholder = .null_def(x$placeholder, "Select value")
+           )
+           bquote(likertRadioButtons(..(args)), splice = TRUE)
          }
          )
+
 }
 
 #' Generate all shinyInputs from yaml source file function
@@ -89,6 +103,7 @@
 #' @param module_ui_id character string declaring module id
 #' @import shiny
 #' @import htmltools
+#' @noRd
 #' @keywords internal
 
 .generate_ui <- function(
@@ -140,6 +155,7 @@
 #' per input type specified.
 #' If there were some values specified in the vanilla configuration, they won't
 #' be overwritten by configuration
+#' @noRd
 #' @keywords internal
 
 .populate_from_default <- function(
@@ -147,12 +163,14 @@
   default_config
 ) {
 
+  # check options used by input type
   option_names <- list(
     uni = c("mandatory", "width"),
     textInput = c("placeholder"),
     numericInput = c("placeholder", "value", "min", "max", "step"),
     radioButtons = c("choices", "choiceValues", "choiceNames", "selected", "inline"),
-    selectizeInput = c("choices", "choiceValues", "choiceNames", "selected", "maxItems")
+    selectizeInput = c("choices", "choiceValues", "choiceNames", "selected", "maxItems"),
+    likertRadioButtons = c("placeholder", "choiceValues", "choiceNames", "selected")
   )
 
   output_source <- source_list

@@ -4,6 +4,7 @@
 #'
 #' @import shiny
 #' @keywords internal
+#' @noRd
 
 .survey_backend <- function(
   self,
@@ -228,6 +229,7 @@
 #'
 #' @import shiny
 #' @keywords internal
+#' @noRd
 
 .link_backend <- function(self, private, uneval){
   moduleServer(
@@ -314,6 +316,7 @@
 #'
 #' @import shiny
 #' @keywords internal
+#' @noRd
 
 .quetzio_label_update <- function(
   self,
@@ -441,9 +444,13 @@
 #' @param values named list containing values to update inputs with
 #' @param values reactive object that triggers the change and contains
 #' new values
+#' 
+#' @details 
+#' likertRadioButtons aren't currently supported!
 #'
 #' @import shiny
 #' @keywords internal
+#' @noRd
 
 .quetzio_value_update <- function(
   self,

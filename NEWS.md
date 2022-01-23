@@ -1,16 +1,24 @@
-# shiny.survey 0.0.14
+# shiny.quetzio 0.1.0
+
+* adding custom shiny input: `likertRadioButtons`, which is fully supported by
+questionnaires created within `shiny.quetzio`, but can also be used outside of this context.
+* stability guaranteed by high coverage by `testthat` and `shinytest` packages
+* trio of vignettes decribing questionnaire creation with `quetzio_server`, 
+updating by its class methods and linking with `quetzio_link_server`.
+
+# shiny.quetzio 0.0.14
 
 * added option to randomize item order with `randomize_order = T` argument
 during `quetzio_server` initialization
 * added possibility for default configuration in the form of raw `list` object, 
 mirroring the structure of defaults from *yaml* file. Also, if the source is 
-provided by feeding a `list` object in `raw_method`, both deault configuration
+provided by feeding a `list` object in `raw_method`, both default configuration
 method works also.
 * created tests powered by `shinytest` and `testthat`. Used example provided
 by [Ruben Fealens](https://github.com/rfaelens/exampleShinyTest) to record test coverage with `shinyTest`
 with codecov workflow.
 
-# shiny.survey 0.0.13
+# shiny.quetzio 0.0.13
 
 * added multiple language support for messages generated internally and
 default submit button options - `lang` argument in `quetzio_server`. Currently
@@ -28,7 +36,7 @@ during submit
 * fixed bug that caused item labels to not update when the value provided in
 `trigger` was set before the questionnaire UI were rendered
 
-# shiny.survey 0.0.12
+# shiny.quetzio 0.0.12
 
 * created `numInput` shiny widget - slightly modified `numericInput` to allow
 no initial value and placeholder text. All `quetzio`s use it in place of vanilla
@@ -38,25 +46,25 @@ one.
 * provided exemplary sources built-in to the package. Check `quetzio_examples`!
 * fixed wrong internal function call while during usage of `update_values` method.
 
-# shiny.survey 0.0.11
+# shiny.quetzio 0.0.11
 
 * R6 methods `update_values` supports updating chosen values with external source
 * support for adding instructions for questionnaire from YAML, googlesheet or R
 object source has been added
 
-# shiny.survey 0.0.10
+# shiny.quetzio 0.0.10
 
 * support for populating data with default values have been added, with
 `source_yaml_default` argument to the `quetzio_server` class initialization
 
-# shiny.survey 0.0.9
+# shiny.quetzio 0.0.9
 
 * added `update_labels` method to `quetzio_link_server` class
 * polished the documentation and code for the `update_labels` methods
 * fixed the bug with 'mandatory star' disappearing on mandatory items
 when their label gets updated
 
-# shiny.survey 0.0.8
+# shiny.quetzio 0.0.8
 
 * moved `quetzio_list` of `quetzio_link_server` from private to public. It is now
 easier to access separate questionnaires from there
@@ -67,7 +75,7 @@ of questionnaire items based on some external `reactive()`.
   `observe(quetzio_link_object$quetzio_list[['quetzio_name']]$update_labels(...))`
   + the wrapper function for this functionality is considered
   
-# shiny.survey 0.0.7
+# shiny.quetzio 0.0.7
 
 * `selectizeInputs` works better: by default they are using selectize.js and `multiple = TRUE`,
 which allows for empty initial value. Instead of specifying `multiple`, user can now
@@ -77,7 +85,7 @@ it allows for selecting all of the options.
 problem with selectizeInputs, which main div isn't showing in the rendered state.
   + the default *invalid_input* css style is changed to `color: red; font-style: italic;`
   
-# shiny.survey 0.0.6
+# shiny.quetzio 0.0.6
 
 * Made the `link_id` and `render_ui` arguments of linked `quetzio_server` modules set automatically:
 no need to specify it automatically any more!
@@ -92,13 +100,13 @@ easier to implement and allows for independent looks (based on the `div_id` of t
   - `googlesheets4` needed only when taking source from gsheet or putting output into gsheet
   - `yaml` needed only when taking source from YAML file
   
-# shiny.survey 0.0.4
+# shiny.quetzio 0.0.4
 
 * Rebuilding of the whole system for modules
 * Begin rebranding to shiny.quetzio
 * Removal of `survey_module` object and creating `quetzio_server` R6 object and `quetzio_UI` function
 
-# shiny.survey 0.0.3
+# shiny.quetzio 0.0.3
 
 * First production-ready version.
 * Added a `NEWS.md` file to track changes to the package.

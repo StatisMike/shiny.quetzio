@@ -3,6 +3,7 @@
 #'
 #' @param self R6 'self' object
 #' @import shiny
+#' @noRd
 #' @keywords internal
 
 .generate_description <- function(

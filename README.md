@@ -37,9 +37,9 @@ devtools::install_github("StatisMike/shiny.quetzio")
 
 ## Main features
 
-At the current stage of development the `shiny.quetzio` package consists
-of two exported `R6` classes used in server and corresponding functions
-to bind the UI in your shinyApp:
+At the current stage of development the `shiny.quetzio` survey
+generation is handled mainly by tow `R6` classes used in server and
+corresponding functions to bind the UI in your shinyApp:
 
 -   `quetzio_server` to create single questionnaire and `quetzio_UI` to
     input the UI of the questionnaire. Questionnaires at the moment
@@ -48,6 +48,8 @@ to bind the UI in your shinyApp:
     -   `numericInput`
     -   `selectizeInput`
     -   `radioButtons`
+    -   `likertRadioButtons` (custom input type - for more information
+        read the corresponding subsection of “Other features” section)
 -   `quetzio_link_server` to link multiple semi-independent
     questionnaires and `quetzio_link_UI` to bind the connected UI.
 
@@ -191,22 +193,23 @@ For every input you can specify:
 
 #### Type-specific parameters:
 
-|   parameter    | textInput | numericInput | selectizeInput | radioButtons |
-|:--------------:|:---------:|:------------:|:--------------:|:------------:|
-|  placeholder   |     x     |      x       |                |              |
-|     value      |           |      x       |                |              |
-|      min       |           |      x       |                |              |
-|      max       |           |      x       |                |              |
-|      step      |           |      x       |                |              |
-|   *choices*    |           |              |       x        |      x       |
-| *choiceValues* |           |              |       x        |      x       |
-| *choiceNames*  |           |              |       x        |      x       |
-|    maxItems    |           |              |       x        |              |
-|    selected    |           |              |       x        |      x       |
-|     inline     |           |              |                |      x       |
+|  parameter   | textInput | numericInput | selectizeInput | radioButtons | likertRadioButtons |
+|:------------:|:---------:|:------------:|:--------------:|:------------:|:------------------:|
+| placeholder  |     x     |      x       |                |              |         x          |
+|    value     |           |      x       |                |              |                    |
+|     min      |           |      x       |                |              |                    |
+|     max      |           |      x       |                |              |                    |
+|     step     |           |      x       |                |              |                    |
+|   choices    |           |              |     **x**      |    **x**     |                    |
+| choiceValues |           |              |     **x**      |    **x**     |       **x**        |
+| choiceNames  |           |              |     **x**      |    **x**     |       **x**        |
+|   maxItems   |           |              |       x        |              |                    |
+|   selected   |           |              |       x        |      x       |         x          |
+|    inline    |           |              |                |      x       |                    |
 
-> *Italic* parameters are interchangeable. You can specify either
-> *choices* or both *choiceValues* and *choiceNames* for single input.
+> Parameters with bolded **x** are mandatory. You can specify either
+> *choices* or both *choiceValues* and *choiceNames* for
+> `selectizeInput` and `radioButtons`.
 
 ## Other features
 
@@ -220,6 +223,44 @@ For more information about these, check vignettes and documentation.
 -   change labels depending on `reactive` expression value
 -   customize automatically generated messages
 -   add custom css rules for generated elements
+
+### Input to handle questions with Likert scoring scale
+
+`likertRadioButtons` is new input type created to accomodate the lack of
+input that is meeting all requirements to create good looking and
+functional input for questions with Likert-like scoring scale
+
+-   supports no initial selected value - which is essential to make sure
+    that the questionee selected the value themmselves. It is based on
+    *radio* HTML input.
+
+-   displays semantic meaning of each value, or just *min* and *max*
+
+    -   meaning of every value is displayed only if the user selects to
+        make the UI clean and presentable
+    -   meaning of *min* and *max* values are displayed on left and
+        right side of the scoring scales
+
+-   sends the selected value to the server in its numeric form
+
+-   *UI presentation*:
+
+    -   **with indicator** of the meaning of currently selected value
+        (appears in place of placeholder *Select value* - placeholder
+        text also customizable!)
+
+    <img src="reference/figures/likertRadioButtons_w_ind.png" width="518px" style="display: block; margin: auto;" />
+
+    -   **without indicator** - only meaning of *min* and *max*
+
+    <img src="reference/figures/likertRadioButtons_wo_ind.png" width="522px" style="display: block; margin: auto;" />
+
+> Currently the usability of `likertRadioButtons` is limited - there is
+> no way to update the value after rendering with
+> `updateLikertRadioButtons` function. It is planned to implement this
+> sometime in the future. For the time being, if you plan to use it
+> outside of `quetzio_server` and update its value reactively, it is
+> advised to do it using `renderUI`.
 
 ## discoRd kudos
 
