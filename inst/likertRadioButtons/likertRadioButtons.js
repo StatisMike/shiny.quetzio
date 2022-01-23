@@ -40,9 +40,11 @@ $.extend(likertRadioButtonsBinding, {
       // If none are checked, the input will return null (it's the default on load,
       // but it wasn't emptied when calling updateRadioButtons with character(0)
       return null;
+    } else {
+      
+      return Number(checkedItems.val());
+     
     }
-
-    return Number(checkedItems.val());
   },
   
   setValue(el, value) {
@@ -65,7 +67,7 @@ $.extend(likertRadioButtonsBinding, {
   
   subscribe(el, callback) {
     $(el).on("change.likertRadioButtonsBinding", function () {
-      callback(false);
+      callback();
     });
   },
   unsubscribe(el) {
@@ -74,4 +76,4 @@ $.extend(likertRadioButtonsBinding, {
 });
   
 
-Shiny.inputBindings.register(likertRadioButtonsBinding);
+Shiny.inputBindings.register(likertRadioButtonsBinding, "shinyquetzio.likertRadioButtons");

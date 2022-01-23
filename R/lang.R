@@ -74,7 +74,7 @@ quetzio_txt <- function(
 
   # check if the lang is in registered languages
   if (!lang %in% quetzio_texts$.languages_registered) {
-    stop(quetzio_texts$.lang_error_call, call.= F)
+    stop(quetzio_texts$.lang_error_call, call.= F)   # nocov
   }
 
   # if x is null, print all labels in specified language

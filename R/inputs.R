@@ -68,13 +68,13 @@ numInput <- function(inputId, label, value = NA, placeholder = NULL,
 #' 
 #' @param inputId The input slot that will be used to access the value.
 #' @param label Label that will be shown to the user
-#' @param selected Initially selected value. Defaults to 'character(0)', which
-#' will make selection empty on init
 #' @param choiceValues Vector with numeric values to use. Minimal length is 3. Too
 #' long scale may cause the widget to look not as intended.
 #' @param choiceNames Character vector, indicating meaning of each choiceValue
 #' after user selects it. If you don't wish to show meaning for every value,
 #' provide character vector of length 2 with meaning of min and max
+#' @param selected Initially selected value. Defaults to 'character(0)', which
+#' will make selection empty on init
 #' @param placeholder Initial text in showing meaning of selected choiceValue.
 #' Meaningful only if 'length(choiceNames) > 2' and 'selected = character(0)'.
 #' Defaults to 'Select value'
@@ -100,13 +100,14 @@ numInput <- function(inputId, label, value = NA, placeholder = NULL,
 likertRadioButtons <- function(
   inputId,
   label,
-  selected = character(0),
   choiceValues,
   choiceNames,
+  selected = character(0),
   placeholder = "Select value",
   width = "500px"
 ) {
   
+  # nocov start
   # type checkup
   
   if (!is.numeric(choiceValues)) {
@@ -134,6 +135,8 @@ likertRadioButtons <- function(
     
   }
   
+  # nocov end
+  
   selected <- restoreInput(id = inputId, default = selected)
   
   selected <- if (is.null(selected)) 
@@ -146,7 +149,7 @@ likertRadioButtons <- function(
   tagList(
     # add necessary html dependencies
     htmltools::htmlDependency(
-      name = "likertRadioButtons",
+      name = "shiny.quetzio",
       version = utils::packageVersion("shiny.quetzio"),
       package = "shiny.quetzio",
       src = "likertRadioButtons",

@@ -27,6 +27,7 @@ if (interactive()) {
   server <- function(input, output, session) {
     output$first_output <- renderPrint(input$first)
     output$second_output <- renderPrint(input$second)
+    
   }
   shinyApp(ui, server)
 }

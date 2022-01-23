@@ -18,6 +18,8 @@ test_that("Create question source to df works", {
 
 test_that("Create question source to gsheets works", {
   
+  skip_on_cran()
+  
   suppressMessages({
     googlesheets4::gs4_auth(email = Sys.getenv("G_SERVICE_MAIL"),
                             path = Sys.getenv("G_SERVICE_ACCOUNT"),

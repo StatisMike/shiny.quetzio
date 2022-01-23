@@ -1,0 +1,23 @@
+---
+title: "Update created questionnaire"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Update created questionnaire}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, include=FALSE}
+library(shiny.quetzio)
+```
+
+
+
+

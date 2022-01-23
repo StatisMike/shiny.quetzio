@@ -7,9 +7,9 @@
 likertRadioButtons(
   inputId,
   label,
-  selected = character(0),
   choiceValues,
   choiceNames,
+  selected = character(0),
   placeholder = "Select value",
   width = "500px"
 )
@@ -19,15 +19,15 @@ likertRadioButtons(
 
 \item{label}{Label that will be shown to the user}
 
-\item{selected}{Initially selected value. Defaults to 'character(0)', which
-will make selection empty on init}
-
 \item{choiceValues}{Vector with numeric values to use. Minimal length is 3. Too
 long scale may cause the widget to look not as intended.}
 
 \item{choiceNames}{Character vector, indicating meaning of each choiceValue
 after user selects it. If you don't wish to show meaning for every value,
 provide character vector of length 2 with meaning of min and max}
+
+\item{selected}{Initially selected value. Defaults to 'character(0)', which
+will make selection empty on init}
 
 \item{placeholder}{Initial text in showing meaning of selected choiceValue.
 Meaningful only if 'length(choiceNames) > 2' and 'selected = character(0)'.
@@ -80,6 +80,7 @@ if (interactive()) {
   server <- function(input, output, session) {
     output$first_output <- renderPrint(input$first)
     output$second_output <- renderPrint(input$second)
+    
   }
   shinyApp(ui, server)
 }

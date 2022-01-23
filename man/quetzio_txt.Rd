@@ -34,6 +34,14 @@ is valid for submission and not, the list should look like that:
 \verb{custom_txts = list(submit_enabled = "Do it!", submit_disabled = "Can't do!)}
 }
 \examples{
+#### Usage during development  ####
+# Get all values for given language
+quetzio_txt("en")
+
+# Get specific text
+quetzio_txt("en", "submit_done")
+
+#### How to use 'custom_txts' during initialization of quetzio ####
 ## Only run example in interactive R sessions
 
 if (interactive()) {
@@ -60,11 +68,8 @@ if (interactive()) {
         submit_disabled = "Can't do!"
       )
     )
-
   }
-
   shinyApp(ui, server)
-
 }
 }
 \seealso{
