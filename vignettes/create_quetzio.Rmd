@@ -53,6 +53,7 @@ knitr::include_graphics("quetzio_server_logic.png")
 ## What is the structure of question source?
 
 As seen on the figure above, there are three possible sources for the questions:
+
 - googlesheets (needs **googlesheets4** package installed)
 - yaml (needs **yaml** package installed)
 - R object (*list* or *data.frame*)

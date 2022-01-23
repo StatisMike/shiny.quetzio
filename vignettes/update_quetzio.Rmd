@@ -18,6 +18,226 @@ knitr::opts_chunk$set(
 library(shiny.quetzio)
 ```
 
+There may be some conditions under which you would like to update rendered
+questionnaire. Currently *shiny.quetzio* supports two of these updates:
 
+- update of selected values
+- update of item labels
 
+In this vignette the usage of these features in `quetzio_server` will be
+described in further detail.
 
+>This vignette assumes that the reader already knows how to create a questionnaire
+with **shiny.quetzio**. Otherwise, please get this information from 'Create
+a questionnaire' vignette.
+
+## Update of selected values
+
+I think this feature can be most beneficial in two distinct situations and 
+provide option to make your questionnaire more user-friendly:
+
+- You have one questionnaire available standalone, but it is also a part
+of some linked questionnaires. User should be allowed to update the values
+of linked one on the base of the standalone.
+- Your shinyApp allows users to store some of their data in the external
+database, and it can be retrieved in another session by them (eg. after
+logging in in some matter). In this case user should be allowed to update some
+of the values of the questionnaire with these.
+
+Let's assume the values used in update are gathered from some questionnaire
+made with *shiny.quetzio*, eg. some demographic data:
+
+- using the source yaml:
+
+    ```{yaml demographic_source, eval = F}
+    gender:
+      label: Which gender are you identyfing as?
+      type: selectizeInput
+      mandatory: true
+      choiceNames:
+        - Male
+        - Female
+        - I identify as neither of above
+        - Prefer not to say
+      choiceValues:
+        - M
+        - F
+        - O
+        - NI
+    age:
+      label: What is your age?
+      type: numericInput
+      mandatory: true
+      min: 15
+      step: 1
+      placeholder: Provide integer number of years
+    ```
+
+- and code for questionnaire generation:
+
+    ```{r demographic_questionnaire_init, eval = F}
+    demo_quetzio <- quetzio_server$new(
+      source_method = "yaml",
+      source_yaml = "path/to/yaml/file.yaml",
+      module_id = "demographic_quetzio"
+    )
+    ```
+    
+- If you create afterwards a more complicated questionnaire, which will contain
+items **gender** and **age** too, you can allow user to update this items with
+value provided in *demo_quetzio*.
+In the example below, if the user completed questionnaire assigned to **demo_quetzio**,
+which contained items named the same as some items in **complex_quetzio**,
+after triggering the *observeEvent* the values will be filled.
+
+    ```{r update_from_demo, eval = F}
+    # input$update is some kind of 'actionButton' to trigger the update
+    
+    observeEvent(input$update, {
+      # call the method in your more complicated questionnaire,
+      # in this example it is assigned to 'complex_quetzio'
+      complex_quetzio$update_values(
+        # 'values' need to be static list, therefore parenthesis are needed
+        # as the 'demo_quetzio$answers' is reactiveVal object
+        values = demo_quetzio$answers()
+        )
+    })
+    ```
+    
+- You can also use the list populated externally of questionnaire created by
+*shiny.quetzio*
+
+    ```{r update_from_list, eval = F}
+    values_to_update <- list(gender = "M",
+                             age = 28)
+    
+    observeEvent(input$update, {
+      complex_quetzio$update_values(
+        values = values_to_update
+      )
+    })
+    ```
+
+## Update of item labels
+
+There are some situations, when you would like to have different item labels
+shown to different questionee based on some prior behaviour inside the app. 
+
+- One of more frequent reasons for that - especially in languages with distinct
+grammatical genders - is to present questionee a version of item aligned to the
+gender that the questionee identifies with. 
+- Reactive label updating can also be handy if the questionnaire is a part of 
+experiment, and you want them to be different between varying experimental groups.
+
+- Let's suppose, that we want to create a questionnaire, in which the questionee
+is asked to describe themselves from the perspective of the third person. In the
+source file for created questionnaires we will then include the 'default', 
+gender-neutral noun *them*.
+
+    ```{yaml gender_source, eval = F}
+    test1:
+      type: textInput
+      mandatory: true
+      label: What adjective would be most accurate to describe them?
+      placeholder: One adjective
+      width: 500px
+    test2:
+      type: radioButtons
+      label: What is your opinion of they?
+      mandatory: true
+      choices:
+        - Goob
+        - Neutral
+        - Bad
+      maxItems: 1
+    test3:
+      type: selectizeInput
+      label: What are their favourite days in the week? (max three)
+      mandatory: true
+      choices:
+        - Monday
+        - Tuesday
+        - Wednesday
+        - Thursday
+        - Friday
+        - Saturday
+        - Sunday
+      maxItems: 3
+    ```
+
+- We can create a select input somewhere in our shinyApps UI, that will be asking
+questionee about the gender they are identifying with:
+
+    ```{r gender_input, eval = F}
+    selectizeInput(
+      "gender",
+      "Which gender are you identyfing as?",
+      choiceNames = c("Male", "Female", 
+                      "I identify as neither of above", "Prefer not to say"),
+      choiceValues = c("M", "F", "O", "NI"),
+      # to make no initial selection
+      selected = character(0),
+      multiple = T,
+      options = list(maxItems = 1)
+    )
+    ```
+    
+- We need to create additional source file telling the *quetzio_server* which
+label should be presented for every value of the variable it should be reacting
+to. Source file can be created as a R object (*data.frame* or *list*), *YAML* 
+file or a *googlesheet* sheet. For clarity in this vignette YAML will be presented:
+
+    ```{yaml gender_update_source, eval = F}
+    test1:
+       M: What adjective would be most accurate to describe him?
+       F: What adjective would be most accurate to describe her?
+    test2:
+       M: What is your opinion of him?
+       F: What is your opinion of her?
+    test3:
+       M: What are his favourite days in the week? (max three)
+       F: What are her favourite days in the week? (max three)
+    ```
+    
+>If the value is not represented in this label update source, then when reactive
+passed to the 'trigger' contains that value, the default labels will be shown.
+
+- When everything is set, we can then create our questionnaire and its
+reactivity within the server. It can be done by utilizing the *update_labels*
+method of *quetzio_server*
+
+    ```{r gender_update_input, eval=F}
+    # define the questionnaire which will have reactive labels
+    quetzio <- quetzio_server$new(
+      source_method = "yaml",
+      source_yaml = "path/to/main/source.yaml",
+      module_id = "quetzio_to_react"
+    )
+    
+    # update_labels() method takes a reactive as a trigger, so we need to
+    # pass the input value accordingly
+    gender_react <- reactive(input$gender)
+    
+    # call the method passing the reactive as a trigger
+    quetzio$update_labels(
+      trigger = gender_react, # reactive need to be passed without parentheses!
+      source_method = "yaml",
+      source_yaml = "path/to/label/source.yaml"
+    )
+    ```
+    
+- You can also use answer from another questionnaire - we can utilize the 
+demographic questionnaire created above. Be aware, that the answers are present
+within the *quetzio_server$answers()* only after the questionnaire submission!
+
+    ```{r gender_update_quetzio, eval = F}
+    gender_react <- reactive(
+      demo_quetzio$answers()$gender
+    )
+    
+    quetzio$update_labels(
+      trigger = gender_react, # reactive need to be passed without parentheses!
+      source_method = "yaml",
+      source_yaml = "path/to/label/source.yaml"
+    )
+    ```
