@@ -3,6 +3,17 @@ development:
   mode: unreleased
 template:
   bootstrap: 5
+navbar:
+  components:
+    articles:
+    text: Vignettes
+    menu:
+    - text: Create a questionnaire
+      href: articles/create_quetzio.html
+    - text: Update created questionnaire
+      href: articles/update_quetzio.html
+    - text: Link multiple questionnaires together
+      href: articles/link_quetzio.html
 reference:
 - title: Generate single questionnaire
 - contents:

@@ -245,13 +245,13 @@ input for questions with Likert-like scoring scale
     placeholder *Select value* - placeholder text also customizable!)
     
     ```{r likertRadioButtons_w_ind, echo = F, out.width = '518px', fig.align = "center"}
-    knitr::include_graphics("vignettes/likertRadioButtons_w_ind.png")
+    knitr::include_graphics("reference/figures/likertRadioButtons_w_ind.png")
     ```
     
     - **without indicator** - only meaning of *min* and *max*
     
     ```{r likertRadioButtons_wo_ind, echo = F, out.width = '522px', fig.align = "center"}
-    knitr::include_graphics("vignettes/likertRadioButtons_wo_ind.png")
+    knitr::include_graphics("reference/figures/likertRadioButtons_wo_ind.png")
     ```
 
 >Currently the usability of `likertRadioButtons` is limited - there is no way

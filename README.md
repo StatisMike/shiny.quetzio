@@ -249,11 +249,11 @@ functional input for questions with Likert-like scoring scale
         (appears in place of placeholder *Select value* - placeholder
         text also customizable!)
 
-    <img src="vignettes/likertRadioButtons_w_ind.png" width="518px" style="display: block; margin: auto;" />
+    <img src="reference/figures/likertRadioButtons_w_ind.png" width="518px" style="display: block; margin: auto;" />
 
     -   **without indicator** - only meaning of *min* and *max*
 
-    <img src="vignettes/likertRadioButtons_wo_ind.png" width="522px" style="display: block; margin: auto;" />
+    <img src="reference/figures/likertRadioButtons_wo_ind.png" width="522px" style="display: block; margin: auto;" />
 
 > Currently the usability of `likertRadioButtons` is limited - there is
 > no way to update the value after rendering with

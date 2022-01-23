@@ -1,10 +1,20 @@
+# shiny.quetzio 0.1.0
+
+First minor release
+- rebranding from `shiny.survey` to `shiny.quetzio`
+- adding custom shiny input: `likertRadioButtons`, which is fully supported by
+questionnaires created within *shiny.quetzio*, but can also be used outside of this context.
+- stability guaranted by high coverage by `testthat` and `shinytest` packages
+- trio of vignettes decribing questionnaire creation with *quetzio_server*, 
+updating by its class methods and linking with *quetzio_link_server*.
+
 # shiny.survey 0.0.14
 
 * added option to randomize item order with `randomize_order = T` argument
 during `quetzio_server` initialization
 * added possibility for default configuration in the form of raw `list` object, 
 mirroring the structure of defaults from *yaml* file. Also, if the source is 
-provided by feeding a `list` object in `raw_method`, both deault configuration
+provided by feeding a `list` object in `raw_method`, both default configuration
 method works also.
 * created tests powered by `shinytest` and `testthat`. Used example provided
 by [Ruben Fealens](https://github.com/rfaelens/exampleShinyTest) to record test coverage with `shinyTest`
