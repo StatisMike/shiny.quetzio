@@ -131,7 +131,7 @@ quetzio_server <- R6::R6Class(
     #' \itemize{
     #' \item{invalid_input = "outline: red; outline-style: dashed; outline-offset: 10px;"}
     #' \item{mandatory_star = "color: red;"}
-    #' \item(quetzio_submit = "color: #fff; background-color: #337ab7; border-color: #2e6da4; width: 200px;"}
+    #' \item{quetzio_submit = "color: #fff; background-color: #337ab7; border-color: #2e6da4; width: 200px;"}
     #' \item{quetzio_description = "font-size: 0.9em;"}
     #' }
     #' You can also add styles for different classes contained within the div
