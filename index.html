@@ -32,14 +32,14 @@
     
     <a class="navbar-brand me-2" href="index.html">shiny.quetzio</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.14</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.1.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div id="navbar" class="collapse navbar-collapse ms-2">
+    <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
 <li class="nav-item">
   <a class="nav-link" href="reference/index.html">Reference</a>
@@ -48,6 +48,7 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="articles/create_quetzio.html">Create a questionnaire</a>
+    <a class="dropdown-item" href="articles/update_quetzio.html">Update created questionnaire</a>
     <a class="dropdown-item" href="articles/link_quetzio.html">Link multiple questionnaires together</a>
   </div>
 </li>
@@ -90,7 +91,7 @@
 <div class="section level2">
 <h2 id="main-features">Main features<a class="anchor" aria-label="anchor" href="#main-features"></a>
 </h2>
-<p>At the current stage of development the <code>shiny.quetzio</code> package consists of two exported <code>R6</code> classes used in server and corresponding functions to bind the UI in your shinyApp:</p>
+<p>At the current stage of development the <code>shiny.quetzio</code> survey generation is handled mainly by tow <code>R6</code> classes used in server and corresponding functions to bind the UI in your shinyApp:</p>
 <ul>
 <li>
 <code>quetzio_server</code> to create single questionnaire and <code>quetzio_UI</code> to input the UI of the questionnaire. Questionnaires at the moment handles these type of inputs:
@@ -99,6 +100,8 @@
 <li><code>numericInput</code></li>
 <li><code>selectizeInput</code></li>
 <li><code>radioButtons</code></li>
+<li>
+<code>likertRadioButtons</code> (custom input type - for more information read the corresponding subsection of “Other features” section)</li>
 </ul>
 </li>
 <li>
@@ -239,13 +242,22 @@
 <div class="section level4">
 <h4 id="type-specific-parameters">Type-specific parameters:<a class="anchor" aria-label="anchor" href="#type-specific-parameters"></a>
 </h4>
-<table class="table">
+<table style="width:100%;" class="table">
+<colgroup>
+<col width="15%">
+<col width="12%">
+<col width="15%">
+<col width="17%">
+<col width="15%">
+<col width="22%">
+</colgroup>
 <thead><tr class="header">
 <th align="center">parameter</th>
 <th align="center">textInput</th>
 <th align="center">numericInput</th>
 <th align="center">selectizeInput</th>
 <th align="center">radioButtons</th>
+<th align="center">likertRadioButtons</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
@@ -254,11 +266,13 @@
 <td align="center">x</td>
 <td align="center"></td>
 <td align="center"></td>
+<td align="center">x</td>
 </tr>
 <tr class="even">
 <td align="center">value</td>
 <td align="center"></td>
 <td align="center">x</td>
+<td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
 </tr>
@@ -268,11 +282,13 @@
 <td align="center">x</td>
 <td align="center"></td>
 <td align="center"></td>
+<td align="center"></td>
 </tr>
 <tr class="even">
 <td align="center">max</td>
 <td align="center"></td>
 <td align="center">x</td>
+<td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
 </tr>
@@ -282,27 +298,31 @@
 <td align="center">x</td>
 <td align="center"></td>
 <td align="center"></td>
+<td align="center"></td>
 </tr>
 <tr class="even">
-<td align="center"><em>choices</em></td>
+<td align="center">choices</td>
 <td align="center"></td>
 <td align="center"></td>
-<td align="center">x</td>
-<td align="center">x</td>
+<td align="center"><strong>x</strong></td>
+<td align="center"><strong>x</strong></td>
+<td align="center"></td>
 </tr>
 <tr class="odd">
-<td align="center"><em>choiceValues</em></td>
+<td align="center">choiceValues</td>
 <td align="center"></td>
 <td align="center"></td>
-<td align="center">x</td>
-<td align="center">x</td>
+<td align="center"><strong>x</strong></td>
+<td align="center"><strong>x</strong></td>
+<td align="center"><strong>x</strong></td>
 </tr>
 <tr class="even">
-<td align="center"><em>choiceNames</em></td>
+<td align="center">choiceNames</td>
 <td align="center"></td>
 <td align="center"></td>
-<td align="center">x</td>
-<td align="center">x</td>
+<td align="center"><strong>x</strong></td>
+<td align="center"><strong>x</strong></td>
+<td align="center"><strong>x</strong></td>
 </tr>
 <tr class="odd">
 <td align="center">maxItems</td>
@@ -310,11 +330,13 @@
 <td align="center"></td>
 <td align="center">x</td>
 <td align="center"></td>
+<td align="center"></td>
 </tr>
 <tr class="even">
 <td align="center">selected</td>
 <td align="center"></td>
 <td align="center"></td>
+<td align="center">x</td>
 <td align="center">x</td>
 <td align="center">x</td>
 </tr>
@@ -324,11 +346,12 @@
 <td align="center"></td>
 <td align="center"></td>
 <td align="center">x</td>
+<td align="center"></td>
 </tr>
 </tbody>
 </table>
 <blockquote>
-<p><em>Italic</em> parameters are interchangeable. You can specify either <em>choices</em> or both <em>choiceValues</em> and <em>choiceNames</em> for single input.</p>
+<p>Parameters with bolded <strong>x</strong> are mandatory. You can specify either <em>choices</em> or both <em>choiceValues</em> and <em>choiceNames</em> for <code>selectizeInput</code> and <code>radioButtons</code>.</p>
 </blockquote>
 </div>
 </div>
@@ -346,6 +369,39 @@
 <li>customize automatically generated messages</li>
 <li>add custom css rules for generated elements</li>
 </ul>
+<div class="section level3">
+<h3 id="input-to-handle-questions-with-likert-scoring-scale">Input to handle questions with Likert scoring scale<a class="anchor" aria-label="anchor" href="#input-to-handle-questions-with-likert-scoring-scale"></a>
+</h3>
+<p><code>likertRadioButtons</code> is new input type created to accomodate the lack of input that is meeting all requirements to create good looking and functional input for questions with Likert-like scoring scale</p>
+<ul>
+<li><p>supports no initial selected value - which is essential to make sure that the questionee selected the value themmselves. It is based on <em>radio</em> HTML input.</p></li>
+<li>
+<p>displays semantic meaning of each value, or just <em>min</em> and <em>max</em></p>
+<ul>
+<li>meaning of every value is displayed only if the user selects to make the UI clean and presentable</li>
+<li>meaning of <em>min</em> and <em>max</em> values are displayed on left and right side of the scoring scales</li>
+</ul>
+</li>
+<li><p>sends the selected value to the server in its numeric form</p></li>
+<li>
+<p><em>UI presentation</em>:</p>
+<ul>
+<li>
+<strong>with indicator</strong> of the meaning of currently selected value (appears in place of placeholder <em>Select value</em> - placeholder text also customizable!)</li>
+</ul>
+<p><img src="reference/figures/likertRadioButtons_w_ind.png" width="518px" style="display: block; margin: auto;"></p>
+<ul>
+<li>
+<strong>without indicator</strong> - only meaning of <em>min</em> and <em>max</em>
+</li>
+</ul>
+<p><img src="reference/figures/likertRadioButtons_wo_ind.png" width="522px" style="display: block; margin: auto;"></p>
+</li>
+</ul>
+<blockquote>
+<p>Currently the usability of <code>likertRadioButtons</code> is limited - there is no way to update the value after rendering with <code>updateLikertRadioButtons</code> function. It is planned to implement this sometime in the future. For the time being, if you plan to use it outside of <code>quetzio_server</code> and update its value reactively, it is advised to do it using <code>renderUI</code>.</p>
+</blockquote>
+</div>
 </div>
 <div class="section level2">
 <h2 id="discord-kudos">discoRd kudos<a class="anchor" aria-label="anchor" href="#discord-kudos"></a>
@@ -398,7 +454,7 @@
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
     </footer>

@@ -19,6 +19,9 @@
     <loc>https://statismike.github.io/shiny.quetzio/articles/link_quetzio.html</loc>
   </url>
   <url>
+    <loc>https://statismike.github.io/shiny.quetzio/articles/update_quetzio.html</loc>
+  </url>
+  <url>
     <loc>https://statismike.github.io/shiny.quetzio/authors.html</loc>
   </url>
   <url>
@@ -34,82 +37,10 @@
     <loc>https://statismike.github.io/shiny.quetzio/reference/create_quetzio_source.html</loc>
   </url>
   <url>
-    <loc>https://statismike.github.io/shiny.quetzio/reference/dot-check_package.html</loc>
-  </url>
-  <url>
-    <loc>https://statismike.github.io/shiny.quetzio/reference/dot-custom_css_handler.html</loc>
-  </url>
-  <url>
-    <loc>https://statismike.github.io/shiny.quetzio/reference/dot-df_to_list.html</loc>
-  </url>
-  <url>
-    <loc>https://statismike.github.io/shiny.quetzio/reference/dot-generate_description.html</loc>
-  </url>
-  <url>
-    <loc>https://statismike.github.io/shiny.quetzio/reference/dot-generate_ui.html</loc>
-  </url>
-  <url>
-    <loc>https://statismike.github.io/shiny.quetzio/reference/dot-get_mandatory.html</loc>
-  </url>
-  <url>
-    <loc>https://statismike.github.io/shiny.quetzio/reference/dot-get_type.html</loc>
-  </url>
-  <url>
-    <loc>https://statismike.github.io/shiny.quetzio/reference/dot-label_mandatory.html</loc>
-  </url>
-  <url>
-    <loc>https://statismike.github.io/shiny.quetzio/reference/dot-link_backend.html</loc>
-  </url>
-  <url>
-    <loc>https://statismike.github.io/shiny.quetzio/reference/dot-list_to_df.html</loc>
-  </url>
-  <url>
-    <loc>https://statismike.github.io/shiny.quetzio/reference/dot-merge_linked_answers_to_df.html</loc>
-  </url>
-  <url>
-    <loc>https://statismike.github.io/shiny.quetzio/reference/dot-modify_arg.html</loc>
-  </url>
-  <url>
-    <loc>https://statismike.github.io/shiny.quetzio/reference/dot-modify_quetzio_arg.html</loc>
-  </url>
-  <url>
-    <loc>https://statismike.github.io/shiny.quetzio/reference/dot-null_def.html</loc>
-  </url>
-  <url>
-    <loc>https://statismike.github.io/shiny.quetzio/reference/dot-populate_from_default.html</loc>
-  </url>
-  <url>
-    <loc>https://statismike.github.io/shiny.quetzio/reference/dot-question_ui.html</loc>
-  </url>
-  <url>
-    <loc>https://statismike.github.io/shiny.quetzio/reference/dot-quetzio_label_update.html</loc>
-  </url>
-  <url>
-    <loc>https://statismike.github.io/shiny.quetzio/reference/dot-quetzio_value_update.html</loc>
-  </url>
-  <url>
-    <loc>https://statismike.github.io/shiny.quetzio/reference/dot-randomize_source.html</loc>
-  </url>
-  <url>
-    <loc>https://statismike.github.io/shiny.quetzio/reference/dot-read_all_answers.html</loc>
-  </url>
-  <url>
-    <loc>https://statismike.github.io/shiny.quetzio/reference/dot-sanitize_answers.html</loc>
-  </url>
-  <url>
-    <loc>https://statismike.github.io/shiny.quetzio/reference/dot-save_new_answers.html</loc>
-  </url>
-  <url>
-    <loc>https://statismike.github.io/shiny.quetzio/reference/dot-survey_backend.html</loc>
-  </url>
-  <url>
-    <loc>https://statismike.github.io/shiny.quetzio/reference/dot-update_label.html</loc>
-  </url>
-  <url>
-    <loc>https://statismike.github.io/shiny.quetzio/reference/dot-yaml_to_list.html</loc>
-  </url>
-  <url>
     <loc>https://statismike.github.io/shiny.quetzio/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>https://statismike.github.io/shiny.quetzio/reference/likertRadioButtons.html</loc>
   </url>
   <url>
     <loc>https://statismike.github.io/shiny.quetzio/reference/numInput.html</loc>

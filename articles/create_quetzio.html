@@ -26,14 +26,14 @@
     
     <a class="navbar-brand me-2" href="../index.html">shiny.quetzio</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.14</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.1.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div id="navbar" class="collapse navbar-collapse ms-2">
+    <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
 <li class="nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
@@ -42,6 +42,7 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/create_quetzio.html">Create a questionnaire</a>
+    <a class="dropdown-item" href="../articles/update_quetzio.html">Update created questionnaire</a>
     <a class="dropdown-item" href="../articles/link_quetzio.html">Link multiple questionnaires together</a>
   </div>
 </li>
@@ -59,6 +60,9 @@
     
   </div>
 </nav><div class="container template-article">
+
+
+
 <script src="create_quetzio_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <main id="main"><div class="page-header">
       <img src="" class="logo" alt=""><h1>Create a questionnaire</h1>
@@ -87,7 +91,12 @@ Logic of quetzio_server object
 <div class="section level2">
 <h2 id="what-is-the-structure-of-question-source">What is the structure of question source?<a class="anchor" aria-label="anchor" href="#what-is-the-structure-of-question-source"></a>
 </h2>
-<p>As seen on the figure above, there are three possible sources for the questions: - googlesheets (needs <strong>googlesheets4</strong> package installed) - yaml (needs <strong>yaml</strong> package installed) - R object (<em>list</em> or <em>data.frame</em>)</p>
+<p>As seen on the figure above, there are three possible sources for the questions:</p>
+<ul>
+<li>googlesheets (needs <strong>googlesheets4</strong> package installed)</li>
+<li>yaml (needs <strong>yaml</strong> package installed)</li>
+<li>R object (<em>list</em> or <em>data.frame</em>)</li>
+</ul>
 <p>Only one source method can be used. It needs to be defined during initialization by specifying <code>source_method</code> argument in the call of <code>quetzio_server$new()</code></p>
 <p>In the source, for every <em>shinyInput</em> you can specify following parameters:</p>
 <ul>
@@ -101,13 +110,22 @@ Logic of quetzio_server object
 <p><strong>Bold</strong> ones are mandatory!</p>
 </blockquote>
 <p>Additionally, various supported shinyInput types support additional parameters. Table of the supported shinyInputs with all possible parameters is provided below:</p>
-<table class="table">
+<table style="width:100%;" class="table">
+<colgroup>
+<col width="16%">
+<col width="16%">
+<col width="16%">
+<col width="16%">
+<col width="16%">
+<col width="16%">
+</colgroup>
 <thead><tr class="header">
 <th align="center">parameter</th>
 <th align="center">textInput</th>
 <th align="center">numericInput</th>
 <th align="center">selectizeInput</th>
 <th align="center">radioButtons</th>
+<th align="center">likertRadioButtons</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
@@ -116,11 +134,13 @@ Logic of quetzio_server object
 <td align="center">x</td>
 <td align="center"></td>
 <td align="center"></td>
+<td align="center">x</td>
 </tr>
 <tr class="even">
 <td align="center">value</td>
 <td align="center"></td>
 <td align="center">x</td>
+<td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
 </tr>
@@ -130,11 +150,13 @@ Logic of quetzio_server object
 <td align="center">x</td>
 <td align="center"></td>
 <td align="center"></td>
+<td align="center"></td>
 </tr>
 <tr class="even">
 <td align="center">max</td>
 <td align="center"></td>
 <td align="center">x</td>
+<td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
 </tr>
@@ -144,25 +166,29 @@ Logic of quetzio_server object
 <td align="center">x</td>
 <td align="center"></td>
 <td align="center"></td>
+<td align="center"></td>
 </tr>
 <tr class="even">
-<td align="center"><em>choices</em></td>
+<td align="center">choices</td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"><strong>x</strong></td>
 <td align="center"><strong>x</strong></td>
+<td align="center"></td>
 </tr>
 <tr class="odd">
-<td align="center"><em>choiceValues</em></td>
+<td align="center">choiceValues</td>
 <td align="center"></td>
 <td align="center"></td>
+<td align="center"><strong>x</strong></td>
 <td align="center"><strong>x</strong></td>
 <td align="center"><strong>x</strong></td>
 </tr>
 <tr class="even">
-<td align="center"><em>choiceNames</em></td>
+<td align="center">choiceNames</td>
 <td align="center"></td>
 <td align="center"></td>
+<td align="center"><strong>x</strong></td>
 <td align="center"><strong>x</strong></td>
 <td align="center"><strong>x</strong></td>
 </tr>
@@ -172,11 +198,13 @@ Logic of quetzio_server object
 <td align="center"></td>
 <td align="center">x</td>
 <td align="center"></td>
+<td align="center"></td>
 </tr>
 <tr class="even">
 <td align="center">selected</td>
 <td align="center"></td>
 <td align="center"></td>
+<td align="center">x</td>
 <td align="center">x</td>
 <td align="center">x</td>
 </tr>
@@ -186,16 +214,12 @@ Logic of quetzio_server object
 <td align="center"></td>
 <td align="center"></td>
 <td align="center">x</td>
+<td align="center"></td>
 </tr>
 </tbody>
 </table>
 <blockquote>
-<ul>
-<li>
-<em>Italic</em> parameters are interchangeable. You can specify either <em>choices</em> or both <em>choiceValues</em> and <em>choiceNames</em> for single input. They are also multiple-value parameters.</li>
-<li>Bold <strong>x</strong> indicates that the parameter is mandatory and need to be specified for given <em>shinyInput</em>
-</li>
-</ul>
+<p>Parameters with bolded <strong>x</strong> are mandatory. You can specify either <em>choices</em> or both <em>choiceValues</em> and <em>choiceNames</em> for <code>selectizeInput</code> and <code>radioButtons</code>.</p>
 </blockquote>
 <div class="section level3">
 <h3 id="yaml-source-method-source_method-yaml">YAML source method (<code>source_method == 'yaml'</code>)<a class="anchor" aria-label="anchor" href="#yaml-source-method-source_method-yaml"></a>
@@ -592,7 +616,7 @@ Logic of quetzio_server object
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
     </footer>

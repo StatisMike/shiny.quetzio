@@ -10,14 +10,14 @@
     
     <a class="navbar-brand me-2" href="../index.html">shiny.quetzio</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.14</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.1.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div id="navbar" class="collapse navbar-collapse ms-2">
+    <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
@@ -25,6 +25,7 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/create_quetzio.html">Create a questionnaire</a>
+    <a class="dropdown-item" href="../articles/update_quetzio.html">Update created questionnaire</a>
     <a class="dropdown-item" href="../articles/link_quetzio.html">Link multiple questionnaires together</a>
   </div>
 </li>
@@ -83,11 +84,11 @@ if <code>method == 'gsheet'</code></p></dd>
 It should contain specific columns, which are created here alongside one
 placeholder input to help populating next ones.</p>
 <p>Name suffix helps to determine for which types of inputs these columns
-are used. Variables without suffix are used in creation of all types.</p><ul><li><p><code>chrnum_</code>: textInput and numericInput</p></li>
+are used. Variables without suffix are used in creation of all types.</p><ul><li><p><code>chrnum_</code>: textInput, numericInput and likertRadioButtons</p></li>
 <li><p><code>num_</code>: numericInput</p></li>
 <li><p><code>select_</code>: selectizeInput</p></li>
 <li><p><code>radio_</code>: radioButtons</p></li>
-<li><p><code>mult_</code>: selectizeInput and radioButtons</p></li>
+<li><p><code>mult_</code>: selectizeInput, radioButtons and likertRadioButtons</p></li>
 </ul><p>To use 'gsheet' method, the 'googlesheets4' package needs
 to be installed.</p>
 <p>You can create the source 'data.frame' yourself, keeping only the columns that
@@ -107,7 +108,7 @@ their order to ensure correct import.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
     </footer></div>

@@ -1,10 +1,11 @@
 pandoc: 2.7.3
-pkgdown: 2.0.1
+pkgdown: 2.0.2
 pkgdown_sha: ~
 articles:
   create_quetzio: create_quetzio.html
   link_quetzio: link_quetzio.html
-last_built: 2022-01-13T19:20Z
+  update_quetzio: update_quetzio.html
+last_built: 2022-01-23T18:51Z
 urls:
   reference: https://statismike.github.io/shiny.quetzio/reference
   article: https://statismike.github.io/shiny.quetzio/articles

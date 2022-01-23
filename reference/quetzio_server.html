@@ -12,14 +12,14 @@ of your questionnaire"><!-- mathjax --><script src="https://cdnjs.cloudflare.com
     
     <a class="navbar-brand me-2" href="../index.html">shiny.quetzio</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.14</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.1.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div id="navbar" class="collapse navbar-collapse ms-2">
+    <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
@@ -27,6 +27,7 @@ of your questionnaire"><!-- mathjax --><script src="https://cdnjs.cloudflare.com
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/create_quetzio.html">Create a questionnaire</a>
+    <a class="dropdown-item" href="../articles/update_quetzio.html">Update created questionnaire</a>
     <a class="dropdown-item" href="../articles/link_quetzio.html">Link multiple questionnaires together</a>
   </div>
 </li>
@@ -254,7 +255,11 @@ specified, it will be set to 'form'</p></dd>
 <dd><p>custom css for classes 'mandatory star' and 'invalid_input'.
 If not specified, default look will be used:</p><ul><li><p>invalid_input = "outline: red; outline-style: dashed; outline-offset: 10px;"</p></li>
 <li><p>mandatory_star = "color: red;"</p></li>
-</ul></dd>
+<li><p>quetzio_submit = "color: #fff; background-color: #337ab7; border-color: #2e6da4; width: 200px;"</p></li>
+<li><p>quetzio_description = "font-size: 0.9em;"</p></li>
+</ul><p>You can also add styles for different classes contained within the div
+of the questionnaire - styles will be affecting only elements within
+this specific questionnaire.</p></dd>
 
 
 <dt><code>lang</code></dt>
@@ -737,7 +742,7 @@ as the names are going to be used to identify which inputId to update</p></dd>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
     </footer></div>
