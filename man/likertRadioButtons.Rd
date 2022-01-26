@@ -27,7 +27,8 @@ after user selects it. If you don't wish to show meaning for every value,
 provide character vector of length 2 with meaning of min and max}
 
 \item{selected}{Initially selected value. Defaults to 'character(0)', which
-will make selection empty on init}
+will make selection empty on init. Otherwise provide one of the values
+in 'choiceValues'}
 
 \item{placeholder}{Initial text in showing meaning of selected choiceValue.
 Meaningful only if 'length(choiceNames) > 2' and 'selected = character(0)'.

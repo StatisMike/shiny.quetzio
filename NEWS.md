@@ -1,3 +1,8 @@
+# shiny.quetzio 0.1.1
+
+* fixed bug in likertRadioButtons, which made initial selection regardless
+of user choice in widget without placeholder
+
 # shiny.quetzio 0.1.0
 
 * adding custom shiny input: `likertRadioButtons`, which is fully supported by

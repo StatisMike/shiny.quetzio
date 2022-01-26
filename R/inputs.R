@@ -74,7 +74,8 @@ numInput <- function(inputId, label, value = NA, placeholder = NULL,
 #' after user selects it. If you don't wish to show meaning for every value,
 #' provide character vector of length 2 with meaning of min and max
 #' @param selected Initially selected value. Defaults to 'character(0)', which
-#' will make selection empty on init
+#' will make selection empty on init. Otherwise provide one of the values
+#' in 'choiceValues'
 #' @param placeholder Initial text in showing meaning of selected choiceValue.
 #' Meaningful only if 'length(choiceNames) > 2' and 'selected = character(0)'.
 #' Defaults to 'Select value'
@@ -217,7 +218,7 @@ generateLikertRadioButtonsUI <- function(
       }
       
       # check the 'selected' value on start
-      if ((choiceValues[i] %in% selected) || (choiceNames[i] %in% selected)) {
+      if (choiceValues[i] %in% selected) {
         inputTag$attribs$checked <- "checked"
       }
       
