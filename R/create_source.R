@@ -8,6 +8,7 @@
 #' are used. Variables without suffix are used in creation of which input types.
 #' 
 #' \itemize{
+#' \item{\code{chr_}: textInput}
 #' \item{\code{num_}: numericInput}
 #' \item{\code{select_}: selectizeInput}
 #' \item{\code{radio_}: radioButtons}
@@ -47,6 +48,7 @@
 #' - textInput:
 #'   - placeholder: *character* Text that will be displayed before user provides
 #'   their answer
+#'   - (chr_)regex: *character* regex pattern to check validity
 #' - numericInput:
 #'   - placeholder: *character* Text that will be displayed before user provides
 #'   their answer
@@ -129,6 +131,7 @@ create_quetzio_source <- function(
       label = "Remove before production",
       width = "500px",
       placeholder = "some text",
+      chr_regex = "^pattern$",
       num_value = 1,
       num_min = 0,
       num_max = 2,

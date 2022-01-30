@@ -68,6 +68,7 @@
         req(!is.null(input$submit))
         valid$mandatory_ids <- names(self$source_list)[private$mandatory_items]
         valid$numeric_ids <- names(self$source_list)[private$numeric_items]
+        valid$text_ids <- names(self$source_list)[private$text_items]
 
         # check if all fields are valid
         valid$items_validity <-
@@ -75,21 +76,35 @@
 
                  function(x) {
 
-                   state <- list()
+                   state <- list(
+                     mandatory = NULL,
+                     numeric = NULL,
+                     text = NULL
+                   )
                    # if the item is mandatory, check if its not null
-                   if(x %in% valid$mandatory_ids){
-                     state[[1]] <- !is.null(input[[x]]) && input[[x]] != "" && !is.na(input[[x]])
+                   if(x %in% valid$mandatory_ids) {
+                     state[["mandatory"]] <- !is.null(input[[x]]) && input[[x]] != "" && !is.na(input[[x]])
                    }
                    # if the item is numeric, check if its in correct min-max range
-                   if(x %in% valid$numeric_ids){
-                     state[[2]] <- (input[[x]] >= self$source_list[[x]]$min &&
+                   if(x %in% valid$numeric_ids) {
+                     state[["numeric"]] <- (input[[x]] >= self$source_list[[x]]$min &&
                         input[[x]] <= self$source_list[[x]]$max) || is.null(input[[x]]) ||
                        is.na(input[[x]])
 
-                     # last condition for inputs which aren't mandatory (can be null),
-                     # but need to be in correct min-max range!
-
                    }
+                   # if the item is text, check if it matches regex condition
+                   if(x %in% valid$text_ids && !is.null(input[[x]])) {
+                     if (!is.null(self$source_list[[x]]$regex)) {
+                       state[["text"]] <- 
+                         grepl(x = input[[x]], pattern = self$source_list[[x]]$regex) || 
+                         nchar(input[[x]]) == 0
+                     }
+                     
+                   }
+                   
+                   state <- .dropNulls(state, na.rm = T)
+                   # last condition for inputs which aren't mandatory (can be null),
+                   # but need to be in correct min-max range!
                    !any(sapply(state, isFALSE))
                  },
                  logical(1))

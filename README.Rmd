@@ -199,7 +199,8 @@ to 500px
 
 |    parameter   |  textInput |numericInput|selectizeInput|radioButtons|likertRadioButtons|
 |    :----:      |   :----:   |   :----:   |    :----:    |   :----:   |      :----:      |
-|placeholder     |      x     |     x      |              |            |        x         |
+|placeholder     |      x     |     x      |       x      |            |        x         |
+|regex           |      x     |            |              |            |                  |
 |value           |            |     x      |              |            |                  |
 |min             |            |     x      |              |            |                  |
 |max             |            |     x      |              |            |                  |
@@ -208,6 +209,7 @@ to 500px
 |choiceValues    |            |            |     **x**    |    **x**   |      **x**       |
 |choiceNames     |            |            |     **x**    |    **x**   |      **x**       |
 |maxItems        |            |            |       x      |            |                  |
+|create          |            |            |       x      |            |                  |
 |maxOptions      |            |            |       x      |            |                  |
 |selected        |            |            |       x      |      x     |        x         |
 |inline          |            |            |              |      x     |                  |

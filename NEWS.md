@@ -1,3 +1,14 @@
+# shiny.quetzio 0.1.2
+
+* added new question parameters for input types:
+   - textInput: 
+     - regex: allows for conditional checking the validity of questionee
+     input. If matches the provided regex string: the input is valid
+   - selectizeInput:
+     - placeholder: character string to be shown before questionee inputs value
+     - create: *boolean* - should the questionee be allowed to provide their own
+     answer.
+
 # shiny.quetzio 0.1.1
 
 * fixed bug in likertRadioButtons, which made initial selection regardless

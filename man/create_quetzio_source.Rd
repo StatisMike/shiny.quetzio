@@ -40,6 +40,7 @@ Name suffix helps to determine for which types of inputs these columns
 are used. Variables without suffix are used in creation of which input types.
 
 \itemize{
+\item{\code{chr_}: textInput}
 \item{\code{num_}: numericInput}
 \item{\code{select_}: selectizeInput}
 \item{\code{radio_}: radioButtons}
@@ -84,6 +85,7 @@ or \emph{list} source, provide the names without suffix.
 \itemize{
 \item placeholder: \emph{character} Text that will be displayed before user provides
 their answer
+\item (chr_)regex: \emph{character} regex pattern to check validity
 }
 \item numericInput:
 \itemize{
