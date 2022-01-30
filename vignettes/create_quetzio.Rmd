@@ -76,7 +76,8 @@ Table of the supported shinyInputs with all possible parameters is provided belo
 
 |    parameter   |  textInput |numericInput|selectizeInput|radioButtons|likertRadioButtons|
 |    :----:      |   :----:   |   :----:   |    :----:    |   :----:   |      :----:      |
-|placeholder     |      x     |     x      |              |            |        x         |
+|placeholder     |      x     |     x      |       x      |            |        x         |
+|regex           |      x     |            |              |            |                  |
 |value           |            |     x      |              |            |                  |
 |min             |            |     x      |              |            |                  |
 |max             |            |     x      |              |            |                  |
@@ -85,6 +86,8 @@ Table of the supported shinyInputs with all possible parameters is provided belo
 |choiceValues    |            |            |     **x**    |    **x**   |      **x**       |
 |choiceNames     |            |            |     **x**    |    **x**   |      **x**       |
 |maxItems        |            |            |       x      |            |                  |
+|create          |            |            |       x      |            |                  |
+|maxOptions      |            |            |       x      |            |                  |
 |selected        |            |            |       x      |      x     |        x         |
 |inline          |            |            |              |      x     |                  |
 
@@ -183,7 +186,7 @@ df_source <- data.frame(
   type = c("textInput", "selectizeInput"),
   mandatory = c(NA, TRUE),
   label = c("First input", "Choose up to two"),
-  chrnum_placeholder = c("Write inside of me, please!", NA),
+  placeholder = c("Write inside of me, please!", NA),
   mult_choices = c(NA, "I am first;I am second;I am third;Who am I?"),
   select_maxItems = c(NA, 2)
 )

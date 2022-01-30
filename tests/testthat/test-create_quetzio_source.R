@@ -10,9 +10,9 @@ test_that("Create question source to df works", {
   
   expect_equal(
     names(questions_source),
-    c("inputId", "type", "mandatory", "label", "width", "chrnum_placeholder",
+    c("inputId", "type", "mandatory", "label", "width", "placeholder", "chr_regex",
       "num_value", "num_min", "num_max", "num_step", "mult_choices", "mult_choiceValues",
-      "mult_choiceNames", "mult_selected", "select_maxItems", "radio_inline")
+      "mult_choiceNames", "mult_selected", "select_maxItems", "select_create", "radio_inline")
   )
 })
 
@@ -43,9 +43,9 @@ test_that("Create question source to gsheets works", {
   
   expect_equal(
     names(questions_source),
-    c("inputId", "type", "mandatory", "label", "width", "chrnum_placeholder",
+    c("inputId", "type", "mandatory", "label", "width", "placeholder", "chr_regex",
       "num_value", "num_min", "num_max", "num_step", "mult_choices", "mult_choiceValues",
-      "mult_choiceNames", "mult_selected", "select_maxItems", "radio_inline")
+      "mult_choiceNames", "mult_selected", "select_maxItems", "select_create", "radio_inline")
   )
   
   suppressMessages({

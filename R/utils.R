@@ -289,7 +289,7 @@
 #' sanitize answers from questionnaire
 #'
 #' @param answers list of answers from one questionnaire
-#' @param name name of the questionnaire
+#' @param name name of the questionnaire, if a part of linked
 #' @keywords internal
 #' @noRd
 

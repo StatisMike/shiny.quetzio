@@ -37,13 +37,22 @@ It should contain specific columns, which are created here alongside one
 placeholder input to help populating next ones.
 
 Name suffix helps to determine for which types of inputs these columns
-are used. Variables without suffix are used in creation of all types.
+are used. Variables without suffix are used in creation of which input types.
+
 \itemize{
-\item{\code{chrnum_}: textInput, numericInput and likertRadioButtons}
+\item{\code{chr_}: textInput}
 \item{\code{num_}: numericInput}
 \item{\code{select_}: selectizeInput}
 \item{\code{radio_}: radioButtons}
 \item{\code{mult_}: selectizeInput, radioButtons and likertRadioButtons}
+}
+
+For more details about specific variables and their meaning check
+\strong{Question parameters} section. For intricacies of every input type check
+their help pages.
+\itemize{
+\item 'numericInput' uses actually custom 'numInput' function
+\item 'likertRadioButtons' is custom new shinyInput introduced with the package
 }
 
 To use 'gsheet' method, the 'googlesheets4' package needs
@@ -57,3 +66,84 @@ column classes should be kept.
 When using 'googlesheet' as a source, all columns should be kept alongside
 their order to ensure correct import.
 }
+\section{Question parameters}{
+
+
+Bolded are mandatory. Parentheses contains the suffix that need to be provided
+during \emph{data.frame} or \emph{googlesheets} source creation. If you are creating a \emph{YAML}
+or \emph{list} source, provide the names without suffix.
+\itemize{
+\item All input types:
+\itemize{
+\item \strong{InputId}: \emph{character} Id for input
+\item \strong{type}: \emph{character} Input type. One of 'textInput', 'numericInput', 'selectizeInput',
+'radioButtons' or 'likertRadioButtons'
+\item mandatory: \emph{boolean} Is the question is mandatory
+\item width: \emph{character} CSS-valid width value
+}
+\item textInput:
+\itemize{
+\item placeholder: \emph{character} Text that will be displayed before user provides
+their answer
+\item (chr_)regex: \emph{character} regex pattern to check validity
+}
+\item numericInput:
+\itemize{
+\item placeholder: \emph{character} Text that will be displayed before user provides
+their answer
+\item (num_)value: \emph{numeric} Pre-filled value that will be placed. Leave empty or
+NA to no pre-fill.
+\item (num_)min: \emph{numeric} Minimal possible value
+\item (num_)max: \emph{numeric} Maximal possible value
+\item (num_)step: \emph{numeric} Step to increase/decrease value
+}
+\item selectizeInput:
+\itemize{
+\item placeholder: \emph{character} Text that will be displayed before user provides
+their answer
+\item \strong{(mult_)choices}: \emph{character} Options that will be presented to the user
+and will be saved as values. You can separate them with either \verb{;} or \verb{\\n}
+\item \strong{(mult_)choiceValues}: \emph{character} Values that will be saved per option.
+Need to be provided alongside \emph{choiceNames}. You can separate them with
+either \verb{;} or \verb{\\n}
+\item \strong{(mult_)choiceNames}: \emph{character} Names of the options that will be
+displayed to the user. Need to be provided alongside \emph{choiceValues}.
+You can separate them with either \verb{;} or \verb{\\n}
+\item (mult_)selected: \emph{character} Value of the option to be preselect. No selection
+if left empty / NA
+\item (select_)maxItems: \emph{numeric} Number of items which the user will be able
+to select. Levae empty or NA to let the user choose all.
+\item (select_)create: \emph{boolean} Should the questionee be able to create their
+own value? Defaults to FALSE.
+}
+\item radioButtons:
+\itemize{
+\item \strong{(mult_)choices}: \emph{character} Options that will be presented to the user
+and will be saved as values. You can separate them with either \verb{;} or \verb{\\n}
+\item \strong{(mult_)choiceValues}: \emph{character} Values that will be saved per option.
+Need to be provided alongside \emph{choiceNames}. You can separate them with
+either \verb{;} or \verb{\\n}
+\item \strong{(mult_)choiceNames}: \emph{character} Names of the options that will be
+displayed to the user. Need to be provided alongside \emph{choiceValues}.
+You can separate them with either \verb{;} or \verb{\\n}
+\item (mult_)selected: \emph{character} Value of the option to be preselect. No selection
+if left empty / NA
+\item (radio_)inline: \emph{boolean} Should the buttons be placed inline? Defaults
+to FALSE
+}
+\item likertRadioButtons:
+\itemize{
+\item placeholder: \emph{character} Text that will be displayed before user provides
+their answer.
+\item \strong{(mult_)choiceValues}: \emph{character} Values that will be saved per option.
+Need to be provided alongside \emph{choiceNames}. You can separate them with
+either \verb{;} or \verb{\\n}
+\item \strong{(mult_)choiceNames}: \emph{character} Names of the options that will be
+displayed to the user. Need to be provided alongside \emph{choiceValues}.
+You can separate them with either \verb{;} or \verb{\\n}
+\item (mult_)selected: \emph{character} Value of the option to be preselect. No selection
+if left empty / NA
+}
+}
+}
+
