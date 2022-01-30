@@ -21,7 +21,7 @@ quetzio_texts$en = list(
   submit_error = "Error!",
   # modal texts
   modal_title = "Answers can't be saved",
-  modal_content = "Some mandatory inputs aren't filled and/or numeric inputs aren't withing correct range:",
+  modal_content = "Some mandatory inputs aren't filled and/or filled inputs aren't valid:",
   modal_button = "Close the window"
 )
 
@@ -33,7 +33,7 @@ quetzio_texts$pl = list(
   submit_error = "B\u0142\u0105d!",
   # modal texts
   modal_title = "Odpowiedzi nie mog\u0105 by\u0107 zapisane",
-  modal_content = "Niekt\u00f3re pola wymagane nie s\u0105 wype\u0142nione i/lub pola liczbowe s\u0105 poza dozwolonymi granicami:",
+  modal_content = "Niekt\u00f3re pola wymagane nie s\u0105 wype\u0142nione i/lub pola s\u0105 nieprawid\u0142owo wype\u0142nione:",
   modal_button = "Zamknij okno"
 )
 

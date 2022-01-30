@@ -33,6 +33,7 @@ quetzio_server <- R6::R6Class(
 
     mandatory_items = NULL,
     numeric_items = NULL,
+    text_items = NULL,
     selectize_items = NULL,
     output_gsheet = NULL,
     output_ss = NULL,
@@ -321,7 +322,7 @@ quetzio_server <- R6::R6Class(
         source_df <- googlesheets4::read_sheet(
           ss = source_gsheet_id,
           sheet = source_gsheet_sheetname,
-          col_types = "cclccnnnnccclclc"
+          col_types = "cclccccnnnnccclcll"
         )
 
         # check df validity
@@ -433,6 +434,7 @@ quetzio_server <- R6::R6Class(
 
       private$mandatory_items <- .get_mandatory(self$source_list)
       private$numeric_items <- .get_type(self$source_list, "numericInput")
+      private$text_items <- .get_type(self$source_list, "textInput")
 
       # save other information in private
 

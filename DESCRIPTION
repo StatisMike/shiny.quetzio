@@ -1,6 +1,6 @@
 Package: shiny.quetzio
 Title: Create a questionnaire module in ShinyApp
-Version: 0.1.1
+Version: 0.1.2
 Authors@R: 
     c(person(given = "Michal",
              family = "Kosinski",

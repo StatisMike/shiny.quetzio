@@ -44,7 +44,9 @@
              multiple = TRUE,
              width = .null_def(x$width, 500),
              options = list(
-               maxItems = x$maxItems
+               maxItems = x$maxItems,
+               placeholder = .null_def(x$placeholder, "Make a choice"),
+               create = .null_def(x$create, FALSE)
              )
            )
            if ((!is.null(x$choiceNames)&&!is.na(x$choiceNames)) &&

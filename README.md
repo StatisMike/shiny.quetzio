@@ -195,7 +195,8 @@ For every input you can specify:
 
 |  parameter   | textInput | numericInput | selectizeInput | radioButtons | likertRadioButtons |
 |:------------:|:---------:|:------------:|:--------------:|:------------:|:------------------:|
-| placeholder  |     x     |      x       |                |              |         x          |
+| placeholder  |     x     |      x       |       x        |              |         x          |
+|    regex     |     x     |              |                |              |                    |
 |    value     |           |      x       |                |              |                    |
 |     min      |           |      x       |                |              |                    |
 |     max      |           |      x       |                |              |                    |
@@ -204,6 +205,8 @@ For every input you can specify:
 | choiceValues |           |              |     **x**      |    **x**     |       **x**        |
 | choiceNames  |           |              |     **x**      |    **x**     |       **x**        |
 |   maxItems   |           |              |       x        |              |                    |
+|    create    |           |              |       x        |              |                    |
+|  maxOptions  |           |              |       x        |              |                    |
 |   selected   |           |              |       x        |      x       |         x          |
 |    inline    |           |              |                |      x       |                    |
 
