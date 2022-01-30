@@ -5,14 +5,21 @@
 #' placeholder input to help populating next ones.
 #'
 #' Name suffix helps to determine for which types of inputs these columns
-#' are used. Variables without suffix are used in creation of all types.
+#' are used. Variables without suffix are used in creation of which input types.
+#' 
 #' \itemize{
-#' \item{\code{chrnum_}: textInput, numericInput and likertRadioButtons}
 #' \item{\code{num_}: numericInput}
 #' \item{\code{select_}: selectizeInput}
 #' \item{\code{radio_}: radioButtons}
 #' \item{\code{mult_}: selectizeInput, radioButtons and likertRadioButtons}
 #' }
+#' 
+#' For more details about specific variables and their meaning check 
+#' **Question parameters** section. For intricacies of every input type check
+#' their help pages.
+#' 
+#' - 'numericInput' uses actually custom 'numInput' function
+#' - 'likertRadioButtons' is custom new shinyInput introduced with the package
 #'
 #' To use 'gsheet' method, the 'googlesheets4' package needs
 #' to be installed.
@@ -24,6 +31,71 @@
 #'
 #' When using 'googlesheet' as a source, all columns should be kept alongside
 #' their order to ensure correct import.
+#' 
+#' @section Question parameters:
+#' 
+#' Bolded are mandatory. Parentheses contains the suffix that need to be provided
+#' during *data.frame* or *googlesheets* source creation. If you are creating a *YAML*
+#' or *list* source, provide the names without suffix.
+#' 
+#' - All input types:
+#'   - **InputId**: *character* Id for input
+#'   - **type**: *character* Input type. One of 'textInput', 'numericInput', 'selectizeInput',
+#'   'radioButtons' or 'likertRadioButtons'
+#'   - mandatory: *boolean* Is the question is mandatory
+#'   - width: *character* CSS-valid width value
+#' - textInput:
+#'   - placeholder: *character* Text that will be displayed before user provides
+#'   their answer
+#' - numericInput:
+#'   - placeholder: *character* Text that will be displayed before user provides
+#'   their answer
+#'   - (num_)value: *numeric* Pre-filled value that will be placed. Leave empty or
+#'   NA to no pre-fill.
+#'   - (num_)min: *numeric* Minimal possible value
+#'   - (num_)max: *numeric* Maximal possible value
+#'   - (num_)step: *numeric* Step to increase/decrease value
+#' - selectizeInput:
+#'   - placeholder: *character* Text that will be displayed before user provides
+#'   their answer
+#'   - **(mult_)choices**: *character* Options that will be presented to the user
+#'   and will be saved as values. You can separate them with either `;` or `\n`
+#'   - **(mult_)choiceValues**: *character* Values that will be saved per option. 
+#'   Need to be provided alongside *choiceNames*. You can separate them with 
+#'   either `;` or `\n`
+#'   - **(mult_)choiceNames**: *character* Names of the options that will be
+#'   displayed to the user. Need to be provided alongside *choiceValues*. 
+#'   You can separate them with either `;` or `\n`
+#'   - (mult_)selected: *character* Value of the option to be preselect. No selection
+#'   if left empty / NA
+#'   - (select_)maxItems: *numeric* Number of items which the user will be able
+#'   to select. Levae empty or NA to let the user choose all.
+#'   - (select_)create: *boolean* Should the questionee be able to create their
+#'   own value? Defaults to FALSE.
+#' - radioButtons:
+#'   - **(mult_)choices**: *character* Options that will be presented to the user
+#'   and will be saved as values. You can separate them with either `;` or `\n`
+#'   - **(mult_)choiceValues**: *character* Values that will be saved per option. 
+#'   Need to be provided alongside *choiceNames*. You can separate them with 
+#'   either `;` or `\n`
+#'   - **(mult_)choiceNames**: *character* Names of the options that will be
+#'   displayed to the user. Need to be provided alongside *choiceValues*. 
+#'   You can separate them with either `;` or `\n`
+#'   - (mult_)selected: *character* Value of the option to be preselect. No selection
+#'   if left empty / NA
+#'   - (radio_)inline: *boolean* Should the buttons be placed inline? Defaults
+#'   to FALSE
+#' - likertRadioButtons:
+#'   - placeholder: *character* Text that will be displayed before user provides
+#'   their answer. 
+#'   - **(mult_)choiceValues**: *character* Values that will be saved per option. 
+#'   Need to be provided alongside *choiceNames*. You can separate them with 
+#'   either `;` or `\n`
+#'   - **(mult_)choiceNames**: *character* Names of the options that will be
+#'   displayed to the user. Need to be provided alongside *choiceValues*. 
+#'   You can separate them with either `;` or `\n`
+#'   - (mult_)selected: *character* Value of the option to be preselect. No selection
+#'   if left empty / NA
 #'
 #' @param method Which method to use. One of 'df' (default) and 'gsheet'.
 #' @param gsheet_id id if you want to append the sheet to existing googlesheet
@@ -56,7 +128,7 @@ create_quetzio_source <- function(
       mandatory = TRUE,
       label = "Remove before production",
       width = "500px",
-      chrnum_placeholder = "some text",
+      placeholder = "some text",
       num_value = 1,
       num_min = 0,
       num_max = 2,
@@ -64,8 +136,9 @@ create_quetzio_source <- function(
       mult_choices = "Something\nElse\nMore",
       mult_choiceValues = "1\n2\n3",
       mult_choiceNames = "One\nTwo\nThree",
-      mult_selected = "NULL",
+      mult_selected = as.character(NA),
       select_maxItems = 1,
+      select_create = TRUE,
       radio_inline = TRUE
   )
 
@@ -215,26 +288,24 @@ create_desc_source <- function(
              label = as.character(data_row$label),
              mandatory = as.logical(data_row$mandatory),
              width = as.character(data_row$width))
+      
+      # get also placeholder if present
+      
+      if (!is.null(data_row$placeholder) || !is.na(data_row$placeholder)) {
+        row_as_list$placeholder <- as.character(data_row$placeholder)  
+      }
 
       # detect the type and set the pattern accordingly
-      if (row_as_list$type == "textInput") {
-        pat <- "^chrnum_"
-
-      } else if (row_as_list$type == "numericInput") {
-        pat <- "^num_|^chrnum_"
-
-      } else if (row_as_list$type == "selectizeInput") {
-        pat <- "^mult_|^select_"
-
-      } else if (row_as_list$type == "radioButtons") {
-        pat <- "^mult_|^radio_"
-        
-      } else if (row_as_list$type == "likertRadioButtons") {
-        pat <- "^mult_|^chrnum_"
-
-      } else {
+      
+      pat <- switch(
+        row_as_list$type,
+        textInput = "^chr_",
+        numericInput = "^num_",
+        selectizeInput = "^mult_|^select_",
+        radioButtons = "^mult_|^radio_",
+        likertRadioButtons = "^mult_",
         stop("Type of the question needs to be one of 'textInput', 'numericInput', 'selectizeInput', 'radioButtons', 'likertRadioButtons")
-      }
+      )
 
       # select only correctly named columns
       data_row <- data_row[, grepl(x = names(data_row), pattern = pat)]
@@ -276,7 +347,7 @@ create_desc_source <- function(
       }
 
       # save the list element with correct inputId name
-      source_list[[as.character(inputId)]] <- row_as_list
+      source_list[[as.character(inputId)]] <- .dropNulls(row_as_list, na.rm = T)
 
     }
 

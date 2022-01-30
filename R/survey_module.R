@@ -321,7 +321,7 @@ quetzio_server <- R6::R6Class(
         source_df <- googlesheets4::read_sheet(
           ss = source_gsheet_id,
           sheet = source_gsheet_sheetname,
-          col_types = "cclccnnnnccclclc"
+          col_types = "cclcccnnnnccclcll"
         )
 
         # check df validity
