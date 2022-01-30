@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">shiny.quetzio</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.1.1</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.1.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -84,11 +84,16 @@ if <code>method == 'gsheet'</code></p></dd>
 It should contain specific columns, which are created here alongside one
 placeholder input to help populating next ones.</p>
 <p>Name suffix helps to determine for which types of inputs these columns
-are used. Variables without suffix are used in creation of all types.</p><ul><li><p><code>chrnum_</code>: textInput, numericInput and likertRadioButtons</p></li>
+are used. Variables without suffix are used in creation of which input types.</p>
+<ul><li><p><code>chr_</code>: textInput</p></li>
 <li><p><code>num_</code>: numericInput</p></li>
 <li><p><code>select_</code>: selectizeInput</p></li>
 <li><p><code>radio_</code>: radioButtons</p></li>
 <li><p><code>mult_</code>: selectizeInput, radioButtons and likertRadioButtons</p></li>
+</ul><p>For more details about specific variables and their meaning check
+<strong>Question parameters</strong> section. For intricacies of every input type check
+their help pages.</p><ul><li><p>'numericInput' uses actually custom 'numInput' function</p></li>
+<li><p>'likertRadioButtons' is custom new shinyInput introduced with the package</p></li>
 </ul><p>To use 'gsheet' method, the 'googlesheets4' package needs
 to be installed.</p>
 <p>You can create the source 'data.frame' yourself, keeping only the columns that
@@ -98,6 +103,73 @@ column classes should be kept.</p>
 <p>When using 'googlesheet' as a source, all columns should be kept alongside
 their order to ensure correct import.</p>
     </div>
+    <div class="section level2">
+    <h2 id="question-parameters">Question parameters<a class="anchor" aria-label="anchor" href="#question-parameters"></a></h2>
+    
+
+
+<p>Bolded are mandatory. Parentheses contains the suffix that need to be provided
+during <em>data.frame</em> or <em>googlesheets</em> source creation. If you are creating a <em>YAML</em>
+or <em>list</em> source, provide the names without suffix.</p><ul><li><p>All input types:</p><ul><li><p><strong>InputId</strong>: <em>character</em> Id for input</p></li>
+<li><p><strong>type</strong>: <em>character</em> Input type. One of 'textInput', 'numericInput', 'selectizeInput',
+'radioButtons' or 'likertRadioButtons'</p></li>
+<li><p>mandatory: <em>boolean</em> Is the question is mandatory</p></li>
+<li><p>width: <em>character</em> CSS-valid width value</p></li>
+</ul></li>
+<li><p>textInput:</p><ul><li><p>placeholder: <em>character</em> Text that will be displayed before user provides
+their answer</p></li>
+<li><p>(chr_)regex: <em>character</em> regex pattern to check validity</p></li>
+</ul></li>
+<li><p>numericInput:</p><ul><li><p>placeholder: <em>character</em> Text that will be displayed before user provides
+their answer</p></li>
+<li><p>(num_)value: <em>numeric</em> Pre-filled value that will be placed. Leave empty or
+NA to no pre-fill.</p></li>
+<li><p>(num_)min: <em>numeric</em> Minimal possible value</p></li>
+<li><p>(num_)max: <em>numeric</em> Maximal possible value</p></li>
+<li><p>(num_)step: <em>numeric</em> Step to increase/decrease value</p></li>
+</ul></li>
+<li><p>selectizeInput:</p><ul><li><p>placeholder: <em>character</em> Text that will be displayed before user provides
+their answer</p></li>
+<li><p><strong>(mult_)choices</strong>: <em>character</em> Options that will be presented to the user
+and will be saved as values. You can separate them with either <code>;</code> or <code>\n</code></p></li>
+<li><p><strong>(mult_)choiceValues</strong>: <em>character</em> Values that will be saved per option.
+Need to be provided alongside <em>choiceNames</em>. You can separate them with
+either <code>;</code> or <code>\n</code></p></li>
+<li><p><strong>(mult_)choiceNames</strong>: <em>character</em> Names of the options that will be
+displayed to the user. Need to be provided alongside <em>choiceValues</em>.
+You can separate them with either <code>;</code> or <code>\n</code></p></li>
+<li><p>(mult_)selected: <em>character</em> Value of the option to be preselect. No selection
+if left empty / NA</p></li>
+<li><p>(select_)maxItems: <em>numeric</em> Number of items which the user will be able
+to select. Levae empty or NA to let the user choose all.</p></li>
+<li><p>(select_)create: <em>boolean</em> Should the questionee be able to create their
+own value? Defaults to FALSE.</p></li>
+</ul></li>
+<li><p>radioButtons:</p><ul><li><p><strong>(mult_)choices</strong>: <em>character</em> Options that will be presented to the user
+and will be saved as values. You can separate them with either <code>;</code> or <code>\n</code></p></li>
+<li><p><strong>(mult_)choiceValues</strong>: <em>character</em> Values that will be saved per option.
+Need to be provided alongside <em>choiceNames</em>. You can separate them with
+either <code>;</code> or <code>\n</code></p></li>
+<li><p><strong>(mult_)choiceNames</strong>: <em>character</em> Names of the options that will be
+displayed to the user. Need to be provided alongside <em>choiceValues</em>.
+You can separate them with either <code>;</code> or <code>\n</code></p></li>
+<li><p>(mult_)selected: <em>character</em> Value of the option to be preselect. No selection
+if left empty / NA</p></li>
+<li><p>(radio_)inline: <em>boolean</em> Should the buttons be placed inline? Defaults
+to FALSE</p></li>
+</ul></li>
+<li><p>likertRadioButtons:</p><ul><li><p>placeholder: <em>character</em> Text that will be displayed before user provides
+their answer.</p></li>
+<li><p><strong>(mult_)choiceValues</strong>: <em>character</em> Values that will be saved per option.
+Need to be provided alongside <em>choiceNames</em>. You can separate them with
+either <code>;</code> or <code>\n</code></p></li>
+<li><p><strong>(mult_)choiceNames</strong>: <em>character</em> Names of the options that will be
+displayed to the user. Need to be provided alongside <em>choiceValues</em>.
+You can separate them with either <code>;</code> or <code>\n</code></p></li>
+<li><p>(mult_)selected: <em>character</em> Value of the option to be preselect. No selection
+if left empty / NA</p></li>
+</ul></li>
+</ul></div>
 
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
