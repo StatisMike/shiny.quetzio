@@ -26,7 +26,7 @@
 
       observeEvent(private$render_ui(), {
 
-        output$quetzio_UI <- renderUI(
+        output$Quetzio_UI <- renderUI(
           if (private$render_ui())
           .generate_ui(source_list = self$source_list,
                        div_id = self$div_id,
@@ -35,7 +35,7 @@
                        module_ui_id = self$module_ui_id)
         )
 
-        outputOptions(output, "quetzio_UI", suspendWhenHidden = F)
+        outputOptions(output, "Quetzio_UI", suspendWhenHidden = F)
 
         if (private$render_ui() && !is.null(self$description))
           .generate_description(self)
@@ -258,15 +258,15 @@
 
       observe({
 
-        output$quetzio_link_UI <- renderUI(
+        output$QuetzioLink_UI <- renderUI(
           tagList(
             lapply(seq_along(private$quetzio_names),
-                   function(i) quetzio_UI(session$ns(
+                   function(i) Quetzio_UI(session$ns(
                      self$quetzio_list[[private$quetzio_names[i]]]$module_id)
                    )
             ) ) )
 
-        outputOptions(output, "quetzio_link_UI", suspendWhenHidden = F)
+        outputOptions(output, "QuetzioLink_UI", suspendWhenHidden = F)
 
         self$quetzio_list[[private$quetzio_names[1]]]$toggle_ui(TRUE)
 

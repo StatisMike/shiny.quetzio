@@ -51,12 +51,12 @@ if (interactive()) {
   library(shiny.quetzio)
 
   # create ui
-  ui <- fluidPage(quetzio_UI("my_quetzio"))
+  ui <- fluidPage(Quetzio_UI("my_quetzio"))
 
   server <- function(input, output, session) {
 
     # initialize new quetzio
-    questionnaire <- quetzio_server$new(
+    questionnaire <- Quetzio_create(
       source_method = "raw",
       source_object = quetzio_examples$questions_lists$simple_quetzio,
       module_id = "my_quetzio",

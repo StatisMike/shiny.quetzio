@@ -21,10 +21,10 @@ library(shiny.quetzio)
 There may be some conditions under which you would like to update rendered
 questionnaire. Currently *shiny.quetzio* supports two of these updates:
 
-- update of selected values
-- update of item labels
+- update of selected values (**Quetzio_value_update**)
+- update of item labels (**Quetzio_label_update**)
 
-In this vignette the usage of these features in `quetzio_server` will be
+In this vignette the usage of these features for *Quetzio* objects will be
 described in further detail.
 
 >This vignette assumes that the reader already knows how to create a questionnaire
@@ -76,7 +76,7 @@ made with *shiny.quetzio*, eg. some demographic data:
 - and code for questionnaire generation:
 
     ```{r demographic_questionnaire_init, eval = F}
-    demo_quetzio <- quetzio_server$new(
+    demo_quetzio <- Quetzio_create(
       source_method = "yaml",
       source_yaml = "path/to/yaml/file.yaml",
       module_id = "demographic_quetzio"
@@ -94,9 +94,10 @@ after triggering the *observeEvent* the values will be filled.
     # input$update is some kind of 'actionButton' to trigger the update
     
     observeEvent(input$update, {
-      # call the method in your more complicated questionnaire,
+      # call the function specifying  more complicated questionnaire,
       # in this example it is assigned to 'complex_quetzio'
-      complex_quetzio$update_values(
+      Quetzio_value_update(
+        Quetzio = complex_quetzio,
         # 'values' need to be static list, therefore parenthesis are needed
         # as the 'demo_quetzio$answers' is reactiveVal object
         values = demo_quetzio$answers()
@@ -112,7 +113,8 @@ after triggering the *observeEvent* the values will be filled.
                              age = 28)
     
     observeEvent(input$update, {
-      complex_quetzio$update_values(
+      Quetzio_value_update(
+        Quetzio = complex_quetzio,
         values = values_to_update
       )
     })
@@ -182,7 +184,7 @@ questionee about the gender they are identifying with:
     )
     ```
     
-- We need to create additional source file telling the *quetzio_server* which
+- We need to create additional source file telling the *Quetzio* which
 label should be presented for every value of the variable it should be reacting
 to. Source file can be created as a R object (*data.frame* or *list*), *YAML* 
 file or a *googlesheet* sheet. For clarity in this vignette YAML will be presented:
@@ -199,16 +201,16 @@ file or a *googlesheet* sheet. For clarity in this vignette YAML will be present
        F: What are her favourite days in the week? (max three)
     ```
     
->If the value is not represented in this label update source, then when reactive
-passed to the 'trigger' contains that value, the default labels will be shown.
+>If the reactive passed as a trigger contains value not represented in the label 
+update source, then the default labels will be shown.
 
 - When everything is set, we can then create our questionnaire and its
-reactivity within the server. It can be done by utilizing the *update_labels*
-method of *quetzio_server*
+reactivity within the server. It can be done by utilizing the function
+*Quetzio_label_update()*
 
     ```{r gender_update_input, eval=F}
     # define the questionnaire which will have reactive labels
-    quetzio <- quetzio_server$new(
+    questionnaire <- Quetzio_create(
       source_method = "yaml",
       source_yaml = "path/to/main/source.yaml",
       module_id = "quetzio_to_react"
@@ -218,9 +220,10 @@ method of *quetzio_server*
     # pass the input value accordingly
     gender_react <- reactive(input$gender)
     
-    # call the method passing the reactive as a trigger
-    quetzio$update_labels(
-      trigger = gender_react, # reactive need to be passed without parentheses!
+    # call the function passing your Quetzio object and reactive as a trigger
+    Quetzio_label_update(
+      Quetzio = questionnaire,
+      trigger = gender_react, # reactive needs to be passed without parentheses!
       source_method = "yaml",
       source_yaml = "path/to/label/source.yaml"
     )
@@ -228,14 +231,15 @@ method of *quetzio_server*
     
 - You can also use answer from another questionnaire - we can utilize the 
 demographic questionnaire created above. Be aware, that the answers are present
-within the *quetzio_server$answers()* only after the questionnaire submission!
+within the *Quetzio$answers()* only after the questionnaire submission!
 
     ```{r gender_update_quetzio, eval = F}
     gender_react <- reactive(
       demo_quetzio$answers()$gender
     )
     
-    quetzio$update_labels(
+    Quetzio_label_update(
+      Quetzio = questionnaire,
       trigger = gender_react, # reactive need to be passed without parentheses!
       source_method = "yaml",
       source_yaml = "path/to/label/source.yaml"

@@ -10,7 +10,7 @@ if (interactive()) {
   ui <- fluidPage(
     column(6, align = "center",
            # bind the UI with correct module_id
-           quetzio_UI("my_quetzio")
+           Quetzio_UI("my_quetzio")
     ),
     column(6,
            h2("State of", tags$i("quetzio_server")),
@@ -19,16 +19,14 @@ if (interactive()) {
            h3("Error messages?"),
            verbatimTextOutput("quetzio_message"),
            h3("Answers"),
-           verbatimTextOutput("quetzio_answers"),
-           h3("Order of items"),
-           verbatimTextOutput("quetzio_order")
+           verbatimTextOutput("quetzio_answers")
     )
   )
   
   server <- function(input, output, session) {
     
     # initialize new quetzio
-    questionnaire <- quetzio_server$new(
+    questionnaire <- Quetzio_create(
       # load questions from R object
       source_method = "raw",
       source_object = quetzio_examples$questions_lists$simple_quetzio,
@@ -42,9 +40,7 @@ if (interactive()) {
         "shiny-options-group" = "text-align: left; margin-left: 45%"
       ),
       # you can also optionally give div unique id - useful for external css styling
-      div_id = "my_questio_div_id",
-      # randomize order of items
-      randomize_order = TRUE
+      div_id = "my_questio_div_id"
     )
     
     # render objects to show your questionnaire status
@@ -54,8 +50,6 @@ if (interactive()) {
       renderPrint(questionnaire$message())
     output$quetzio_answers <-
       renderPrint(questionnaire$answers())
-    output$quetzio_order <-
-      renderPrint(questionnaire$order)
   }
   
   shinyApp(ui, server)

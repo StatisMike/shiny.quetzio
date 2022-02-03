@@ -7,11 +7,11 @@ reference:
 - title: Generate single questionnaire
 - contents:
   - quetzio_server
-  - quetzio_UI
+  - Quetzio_UI
 - title: Link multiple questionnaires together
 - contents:
   - quetzio_link_server
-  - quetzio_link_UI
+  - QuetzioLink_UI
 - title: Source creation and examples
   desc:  Create exemplary sources and see examples of sources
 - contents:

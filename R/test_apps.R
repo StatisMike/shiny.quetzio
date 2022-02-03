@@ -17,7 +17,7 @@ testthat_raw_app <- function() {
   
   ui <- fluidPage(
     column(6,
-           quetzio_link_UI("first_link"),
+           QuetzioLink_UI("first_link"),
            tags$hr(),
            actionButton("update_values",
                         "Update the values"),
@@ -29,7 +29,7 @@ testthat_raw_app <- function() {
            verbatimTextOutput("df_first")
     ),
     column(6, 
-           quetzio_link_UI("second_link"),
+           QuetzioLink_UI("second_link"),
            tags$hr(),
            shinyjs::disabled(
              actionButton("get_df_second",
@@ -53,14 +53,14 @@ testthat_raw_app <- function() {
     # also the simple_quetzio can update values of the questionnaire on
     # second questionnaire
     
-    quetzio_w_gender <- quetzio_link_server$new(
-      gender_item = quetzio_server$new(
+    quetzio_w_gender <- QuetzioLink_create(
+      gender_item = Quetzio_create(
         source_method = "raw",
         source_object = shiny.quetzio::quetzio_examples$questions_lists$gender_1_item,
         module_id = "gender_item",
         use_modal = F
       ),
-      simple_quetzio = quetzio_server$new(
+      simple_quetzio = Quetzio_create(
         source_method = "raw",
         source_object = shiny.quetzio::quetzio_examples$questions_lists$simple_quetzio,
         desc_object = shiny.quetzio::quetzio_examples$description_lists$simple_quetzio,
@@ -75,15 +75,15 @@ testthat_raw_app <- function() {
     
     # second questionnaire to react on changes of first questionnaire
     
-    quetzio_to_update <- quetzio_link_server$new(
-      simple_quetzio = quetzio_server$new(
+    quetzio_to_update <- QuetzioLink_create(
+      simple_quetzio = Quetzio_create(
         source_method = "raw",
         source_object = shiny.quetzio::quetzio_examples$questions_lists$simple_quetzio,
         desc_object = shiny.quetzio::quetzio_examples$description_lists$simple_quetzio,
         module_id = "seconnd_simple",
         use_modal = F
       ),
-      with_default = quetzio_server$new(
+      with_default = Quetzio_create(
         source_method = "raw",
         source_object = shiny.quetzio::quetzio_examples$questions_lists$simple_default,
         source_object_default = shiny.quetzio::quetzio_examples$default_config$simple_default,
@@ -91,7 +91,7 @@ testthat_raw_app <- function() {
         randomize_order = TRUE,
         use_modal = F
       ),
-      from_googlesheet = quetzio_server$new(
+      from_googlesheet = Quetzio_create(
         source_method = "gsheet",
         source_gsheet_id = Sys.getenv("QUETZIO_SS"),
         source_gsheet_sheetname = "Questions",
@@ -99,7 +99,7 @@ testthat_raw_app <- function() {
         module_id = "from_gsheet",
         use_modal = F
       ),
-      gender_react = quetzio_server$new(
+      gender_react = Quetzio_create(
         source_method = "raw",
         source_object = shiny.quetzio::quetzio_examples$questions_lists$gender_update,
         module_id = "gender_react",
@@ -119,8 +119,9 @@ testthat_raw_app <- function() {
     
     # label update method
     
-    quetzio_to_update$update_labels(
-      quetzio_name = "gender_react",
+    Quetzio_label_update(
+      Quetzio = quetzio_to_update,
+      name = "gender_react",
       trigger = gender_trigger,
       source_method = "raw",
       source_object = shiny.quetzio::quetzio_examples$label_update$gender_update
@@ -130,8 +131,9 @@ testthat_raw_app <- function() {
     
     observeEvent(input$update_values, {
       req(quetzio_w_gender$completion() == 1)
-      quetzio_to_update$update_values(
-        quetzio_name = "simple_quetzio",
+      Quetzio_value_update(
+        Quetzio = quetzio_to_update,
+        name = "simple_quetzio",
         values = quetzio_w_gender$answers()$simple_quetzio
       )
     })
@@ -155,15 +157,17 @@ testthat_raw_app <- function() {
     observeEvent(input$get_df_first, {
       output$df_first <- renderPrint(
         dplyr::select(
-          quetzio_w_gender$quetzio_list$simple_quetzio$get_answers_df(),
-          -".timestamp"))
+          Quetzio_get_df(
+            quetzio_w_gender$quetzio_list$simple_quetzio
+          ), -".timestamp"))
     })
     
     observeEvent(input$get_df_second, {
       output$df_second <- renderPrint(
         dplyr::select(
-          quetzio_to_update$get_answers_df(),
-          -ends_with(".timestamp")))
+          Quetzio_get_df(
+            quetzio_to_update
+          ), -ends_with(".timestamp")))
     })
     
   }
@@ -199,20 +203,20 @@ testthat_likert_app <- function() {
   
   ui <- fluidPage(
     
-    quetzio_link_UI("HEXAll")
+    QuetzioLink_UI("HEXAll")
     
   )
   
   server <- function(input, output, session) {
     
-    quetzio_link_server$new(
-      "toFive" = quetzio_server$new(
+    QuetzioLink_create(
+      "toFive" = Quetzio_create(
         source_method = "raw",
         source_object = likert_sources$source1,
         source_object_default = likert_sources$defaults,
         module_id = "HEXtoTen"
       ),
-      "toTen" = quetzio_server$new(
+      "toTen" = Quetzio_create(
         source_method = "raw",
         source_object = likert_sources$source2,
         source_object_default = likert_sources$defaults,
@@ -223,6 +227,5 @@ testthat_likert_app <- function() {
   }
   
   shinyApp(ui, server)
-  
   
 }

@@ -1,3 +1,20 @@
+# shiny.quetzio 0.1.3
+
+* Provided functions to help in creation and handling underlying R6 classes
+  - `Quetzio_create` and `QuetzioLink_create` to create objects
+  - handy generics:
+    * `Quetzio_label_update` for updating labels of *Quetzio* and *QuetzioLink*
+    classes objects
+    * `Quetzio_value_update` for updating selected values of *Quetzio* and 
+    *QuetzioLink* classes objects
+    * `Quetzio_get_df` for getting the answers in form of data.frame from
+    *Quetzio* and *QuetzioLink* classes objects
+* potential breaking changes with renaming classes and functions:
+  - `Quetzio` R6 class in place of `quetzio_server` 
+  - `QuetzioLink` R6 class in place of `quetzio_link_server` 
+  - `Quetzio_UI` and `QuetzioLink_UI` functions to bind the UI of modules, instead
+  of `quetzio_UI` and `quetzio_link_UI`
+
 # shiny.quetzio 0.1.2
 
 * added new question parameters for input types:
@@ -109,7 +126,7 @@ no need to specify it automatically any more!
 # shiny,survey 0.0.5
 
 * Added working R6 object to link multiple questionnaires created with `quetzio_server` and corresponding
-UI function `quetzio_link_UI`
+UI function `QuetzioLink_UI`
 * Logic behing parsing css for '.invalid_input' and '.mandatory_star' has been also redone. It is now
 easier to implement and allows for independent looks (based on the `div_id` of the given questionnaire)
 * Removed `googlesheets4` and `yaml` dependency:
@@ -120,7 +137,7 @@ easier to implement and allows for independent looks (based on the `div_id` of t
 
 * Rebuilding of the whole system for modules
 * Begin rebranding to shiny.quetzio
-* Removal of `survey_module` object and creating `quetzio_server` R6 object and `quetzio_UI` function
+* Removal of `survey_module` object and creating `quetzio_server` R6 object and `Quetzio_UI` function
 
 # shiny.quetzio 0.0.3
 

@@ -27,15 +27,15 @@ customizable framework for creation and deploying questionnaire as a part
 of your *shinyApp*.
 
 Every questionnaire created in this framework takes a form of object of class
-**quetzio_server**, and needs to be called inside the *server* of your application.
+**Quetzio**, and needs to be created inside the *server* of your application.
 
 This vignette is going to take you on all basic things you should know about using
 this package to include a questionnaire within your application - how to
-build your configuration file, what are the core possibilities of **quetzio_server**
+build your configuration file, what are the core possibilities of **Quetzio**
 both as an semi-independent object and as a part of more complex logic in
 your application.
 
-## What is the **quetzio_server**?
+## What is the **Quetzio**?
 
 It is main element of the whole functionality of **shiny.quetzio**. Its the 
 *R6* class definition used to create objects creating Shiny modules upon
@@ -46,8 +46,8 @@ Within the created module the entire backend for the reactivity is contained
 
 Generally, the basic dataflow within this process is shown in figure below.
 
-```{r quetzio_server_logic, echo=F, fig.cap="Logic of quetzio_server object", out.width='600px'}
-knitr::include_graphics("quetzio_server_logic.png")
+```{r Quetzio_logic, echo=F, fig.cap="Logic of Quetzio object", out.width='600px'}
+knitr::include_graphics("Quetzio_logic.png")
 ```
 
 ## What is the structure of question source?
@@ -59,7 +59,7 @@ As seen on the figure above, there are three possible sources for the questions:
 - R object (*list* or *data.frame*)
 
 Only one source method can be used. It needs to be defined during initialization
-by specifying `source_method` argument in the call of `quetzio_server$new()`
+by specifying `source_method` argument in the call of `Quetzio_create()`
 
 In the source, for every *shinyInput* you can specify following parameters:
 
@@ -135,7 +135,7 @@ correct classes.
 
 ```{r create_googlesheets_source, message=F}
 # assignement to hold the ID of created googlesheet
-id <- create_quetzio_source(
+id <- create_Quetzio_source(
   method = "gsheet")
 
 # see the data structure:
@@ -158,7 +158,7 @@ either a semicolon or newline
 
 If, for any reason you can't or won't install *yaml* or *googlesheets4* packages
 or just prefer assigning the created R object as a source, you can provide
-either a list or data.frame during initialization of new *quetzio_server* object.
+either a list or data.frame during initialization of new *Quetzio* object.
 
 They are analogous to the structure of *yaml* (list) or *googlesheet* (data.frame)
 source file. You can check the correct structure for the same two-item example 
@@ -195,7 +195,7 @@ df_source <- data.frame(
 # example data.frame with placeholder row, though you need to modify it
 # afterwards
 
-df_source2 <- create_quetzio_source(method = "df")
+df_source2 <- create_Quetzio_source(method = "df")
 str(df_source2)
 ```
 
@@ -209,10 +209,12 @@ If you have your source created correctly, it is the time to embed the
 questionnaire in your Shiny application. You need to make some calls
 both in the *server* and in the *ui* parts of your application.
 
-### Generation of the quetzio_server object
+### Generation of the Quetzio object
 
-You need to create the **quetzio_server** object inside of your *server* code.
-There are following mandatory arguments for the `quetzio_server$new()`
+You need to create the **Quetzio** object inside of your *server* code. It is
+done using **Quetzio_create** function and it is recommended, though
+you can also create new object explicitly: **Quetzio_create()**
+There are following mandatory arguments for the **Quetzio_create**
 
 - source_method: to choose the source method ('yaml', 'gsheet', 'raw')
   - for `source_method == 'yaml'`: **source_yaml**
@@ -222,8 +224,8 @@ There are following mandatory arguments for the `quetzio_server$new()`
 
 So to create the questionnaire based on the source created above:
 
-```{r quetzio_server_code, eval=F}
-quetzio_from_list <- quetzio_server$new(
+```{r Quetzio_code, eval=F}
+quetzio_from_list <- Quetzio_create(
   source_method = "raw",
   source_object = list_source,
   module_id = "my_questionnaire"
@@ -236,7 +238,7 @@ The questionnaire isn't seen anywhere in the UI yet! You can show it by
 adding in your UI the following call:
 
 ```{r quetzio_ui_code, eval = F}
-quetzio_UI(module_id = "my_questionnaire")
+Quetzio_UI(module_id = "my_questionnaire")
 ```
 
 Yes - this is all!
@@ -247,11 +249,11 @@ environement!
 ### Using the built-in googlesheets output method
 
 If you wish to send the results of the survey automatically to some *googlesheet*
-file, you can specify additional arguments in the **quetzio_server$new()**.
+file, you can specify additional arguments in the **Quetzio_create()**.
 
 ```{r quetzio_gsheet_output_server, eval = F}
 # the same questionnaire as above
-quetzio_server$new(
+Quetzio_create(
   source_method = "raw",
   source_object = list_source,
   module_id = "my_questionnaire",
@@ -262,35 +264,42 @@ quetzio_server$new(
 )
 ```
 
-> As you can see above, the assignement of the object isn't necessary. It don't
-allow for reading the state of the questionnaire or getting the asnwers in the
-application. In the example above, the answers will be saved in the external
+> As you can see above, the assignement of the object isn't necessary. Lack of assignement
+don't allow for reading the state of the questionnaire or using any other methods
+on it.  In the example above, the answers will be saved in the external
 *googlesheet*, so the answer reading won't be necessary.
 
-### Reading the state of the created quetzio_server object within the application.
+### Reading the state of the created Quetzio object within the application.
 
 You can get some information from your questionnaire by calling the following
 calls on your object:
 
 ```{r, eval=F}
+# if you assigned your Quetzio object as `quetzio_from_list`
+quetzio_from_list <- Quetzio_create(
+  source_method = "raw",
+  source_object = list_source,
+  module_id = "my_questionnaire"
+)
+
 # All of the above are 'reactiveVal' object, so they need to be 
 # accessed in the observe() or reactive() context
 observe({
   
   # is the questionnaire done: TRUE or FALSE
-  my_questionnaire$is_done()
+  quetzio_from_list$is_done()
 
   # check if there are any warning messages: if none, then NULL
-  my_questionnaire$message()
+  quetzio_from_list$message()
 
   # get the list of answers. If questionnaire isn't done, then NULL
-  my_questionnaire$answers()
+  quetzio_from_list$answers()
 })
 ```
 
 ## Adding instructions and/or item descriptions (optional)
 
-One of the optional features of the **quetzio_server** is the ability to generate
+One of the optional features of the **Quetzio** is the ability to generate
 multi-paragraph instructions and item descriptions for you questionnaire.
 
 For elements of instruction and/or item description you need to provide correct
@@ -327,7 +336,7 @@ Following parameters can be provided to these element (with some mandatory!):
 ### YAML source
 
 Needs the *yaml* R package to be installed, and should be passed to *desc_yaml*
-argument during initialization of *quetzio_server* object.
+argument during initialization of *Quetzio* object.
 
 Its form is similiar to the one of the YAML question source, but the sequences don't
 need to be named:
@@ -348,7 +357,7 @@ need to be named:
 
 Needs the *googlesheet4* R package to be installed. The googlesheet id
 need to be passed to *desc_gsheet_id*, and sheetname to *desc_gsheet_sheetname*
-arguments during initialization of *quetzio_server* object.
+arguments during initialization of *Quetzio* object.
 
 Its form is very similar to the one of the googlesheet question source. It can
 also be created with helper function.
@@ -371,7 +380,7 @@ googledrive::drive_trash(id)
 
 Analogous to R object as the source of questions, you can provide them in the
 form of list or dataframe. You should then pass that object to *desc_object*
-argument during *quetzio_server* initialization:
+argument during *Quetzio* initialization:
 
 ```{r raw_descs}
 # nested list don't need to be named!
@@ -412,13 +421,14 @@ There are even more features that are out of the scope of this vignette. For mor
 information check other vignettes and help files.
 
 - Functional features
-  - get answers in form of data.frame with **get_answers_df** method
-  - update item labels based on some *reactiveVal* with **update_labels** method
-  - link multiple **quetzio_server** objects with **quetzio_link_server** object
+  - use **Quetzio_get_df()** function to get answers in form of the data.frame
+  - update item labels based on some *reactive* with **Quetzio_label_update()** function
+  - update item selected values based on named list with **Quetzio_value_update()** function
+  - link multiple **Quetzio** objects using **QuetzioLink** object 
 - Customizable features
-  - add your own submit button labels
-  - add custom css to alternate the look of invalid input label highlight and
-  mandatory stars
+  - add your own labels and texts by utilizing *custom_txts* argument (check `?quetzio_txt` for more info)
+  - add custom css to alternate the look of your **Quetzio** by adding the
+  styles for specific classes using *custom_css* argument
   - use specific div id to customize css styles more easily
 
 ## Alternatives to shiny.quetzio

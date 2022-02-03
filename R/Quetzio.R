@@ -1,33 +1,37 @@
 #' Create UI of your questionnaire
 #'
 #' @param module_id Character string holding ID for the module. Needs to be the
-#' same as one provided for 'quetzio_server'
+#' same as one provided for 'Quetzio'
 #' @import shiny
 #' @export
-#' @seealso quetzio_server
+#' @seealso Quetzio
 
-quetzio_UI <- function(module_id) {
+Quetzio_UI <- function(module_id) {
   ns <- NS(module_id)
 
-  uiOutput(ns("quetzio_UI"))
+  uiOutput(ns("Quetzio_UI"))
 
 }
 
-#' @title Quetzio Server class
+#' @title Quetzio server class
 #' @docType class
 #'
 #' @description Create R6-based server module to generate and hold the state
 #' of your questionnaire
+#' 
+#' It is recommended to use handler functions to use the Quetzio class most
+#' efficiently, though if you have experience using R6 - using it that
+#' way is also valid.
 #'
-#' @seealso quetzio_UI
+#' @seealso Quetzio_UI
 #'
 #' @import R6
 #' @import shiny
 #' @export
 #'
 
-quetzio_server <- R6::R6Class(
-  "quetzio_server",
+Quetzio <- R6::R6Class(
+  "Quetzio",
 
   private = list(
 
@@ -88,7 +92,7 @@ quetzio_server <- R6::R6Class(
 
     module_ui_id = NULL,
 
-    #' @description Initializing the 'quetzio_server' object
+    #' @description Initializing the 'Quetzio' object
     #'
     #' @param source_method character string specifying in what form the source
     #' config file will be provided. Can be either 'gsheet', 'yaml' or 'raw'.
@@ -172,8 +176,8 @@ quetzio_server <- R6::R6Class(
     #'    isn't `gsheet` or the 'googlesheet_id' containing description is different
     #'    from source, the `desc_gsheet_id` need to be provided too
     #'    - `desc_object`: rendering from R object of classes 'data.frame' or 'list'
-    #' - optional default configuration - it is used for a type of shinyInput.
-    #' Need to provide `source_yaml_default` - there are no other methods ATM.
+    #' - optional default configuration - it is used per shinyInput type.
+    #' Need to provide either `source_yaml_default` or `source_object_default`.
     #'
     #' @examples
     #'
@@ -189,10 +193,10 @@ quetzio_server <- R6::R6Class(
     #'  ui <- fluidPage(
     #'    column(6, align = "center",
     #'           # bind the UI with correct module_id
-    #'           quetzio_UI("my_quetzio")
+    #'           Quetzio_UI("my_quetzio")
     #'    ),
     #'    column(6,
-    #'           h2("State of", tags$i("quetzio_server")),
+    #'           h2("State of", tags$i("Quetzio")),
     #'           h3("Is it done?"),
     #'           verbatimTextOutput("quetzio_is_done"),
     #'           h3("Error messages?"),
@@ -205,7 +209,7 @@ quetzio_server <- R6::R6Class(
     #'  server <- function(input, output, session) {
     #'
     #'    # initialize new quetzio
-    #'    questionnaire <- quetzio_server$new(
+    #'    questionnaire <- Quetzio$new(
     #'      # load questions from R object
     #'      source_method = "raw",
     #'      source_object = quetzio_examples$questions_lists$simple_quetzio,
@@ -235,7 +239,7 @@ quetzio_server <- R6::R6Class(
     #'
     #'}
     #'
-    #' @return the 'quetzio_server' serverModule
+    #' @return the 'Quetzio' serverModule
 
     initialize = function(
       source_method,
@@ -515,12 +519,12 @@ quetzio_server <- R6::R6Class(
     #'                   selected = "NI"),
     #'    tags$hr(),
     #'    # quetzio to update labels
-    #'    quetzio_UI("updating_labels")
+    #'    Quetzio_UI("updating_labels")
     #'  )
     #'
     #'  server <- function(input, output, session) {
     #'
-    #'    quetzio <- quetzio_server$new(
+    #'    quetzio <- Quetzio$new(
     #'      source_method = "raw",
     #'      source_object = quetzio_examples$questions_lists$gender_update,
     #'      module_id = "updating_labels"
@@ -578,25 +582,25 @@ quetzio_server <- R6::R6Class(
     #'    # first questionnaire to get values from
     #'    column(6,
     #'           h1("Finish first questionnaire"),
-    #'           quetzio_UI("first_questionnaire")
+    #'           Quetzio_UI("first_questionnaire")
     #'    ),
     #'    # second questionnaire to update values
     #'    column(6,
     #'           h1("Update values of second questionnaire!"),
     #'           actionButton("update_vals", "Update values"),
     #'           tags$hr(),
-    #'           quetzio_UI("second_questionnaire")
+    #'           Quetzio_UI("second_questionnaire")
     #'    )
     #'  )
     #'
     #'  server <- function(input, output, session) {
     #'
-    #'    quetzio_1st <- quetzio_server$new(
+    #'    quetzio_1st <- Quetzio$new(
     #'      source_method = "raw",
     #'      source_object = quetzio_examples$questions_lists$simple_quetzio,
     #'      module_id = "first_questionnaire"
     #'    )
-    #'    quetzio_2nd <- quetzio_server$new(
+    #'    quetzio_2nd <- Quetzio$new(
     #'      source_method = "raw",
     #'      source_object = quetzio_examples$questions_lists$simple_quetzio,
     #'      module_id = "second_questionnaire"
@@ -621,4 +625,112 @@ quetzio_server <- R6::R6Class(
     }
   )
 )
+
+#' Create new Quetzio object
+#' 
+#' @param source_method character string specifying in what form the source
+#' config file will be provided. Can be either 'gsheet', 'yaml' or 'raw'.
+#' Necessity of other arguments is dependent on this choice. For more info
+#' see 'details'
+#' @param source_yaml path to the source yaml file
+#' @param source_yaml_default path to the optional default options for items
+#' generated with source list. Only when `source_method == 'yaml'` or
+#' `source_method == 'raw'` and source object of class `list` is povided..
+#' @param source_gsheet_id id of the source googlesheet file
+#' @param source_gsheet_sheetname name of the source spreadsheet
+#' @param source_object object of class `list` (similiar in structure to
+#' 'yaml' source) or `data.frame` (similiar in structure to 'googlesheet'
+#' source) to be the source of questions. You can create a sample data.frame
+#' with \code{create_survey_source()}. Needed when `source_method == 'raw'`
+#' @param source_object_default list containing optional default options for
+#' items generated with source list. Only when `source_method == 'yaml'` or
+#' `source_method == 'raw'` and source object of class `list` is povided.
+#' @param desc_yaml path to the optional instruction and item
+#' descriptions.
+#' @param desc_gsheet_id id of the googlesheet to provide optional instruction
+#' and item descriptions. Defaults to 'source_gsheet_id', if not provided.
+#' @param desc_gsheet_sheetname name of source for optional instruction and
+#' item descriptions.
+#' @param desc_object object of class `list` or `data.frame` to be the source
+#' of optional instruction and item descriptions.
+#' @param randomize_order logical: do you wish to randomize order in which the
+#' items will appear? Defaults to FALSE
+#' @param output_gsheet logical: do you wish to save the answers automatically
+#' to the googlesheet. If TRUE, the 'output_gsheet_id' and 'output_gsheet_sheetname'
+#' arguments need to be specified. Defaults to FALSE
+#' @param output_gsheet_id id of the output googlesheet file. If not specified,
+#' the same googlesheet as for 'source' will be used
+#' @param output_gsheet_sheetname name of the output spreadsheet
+#' @param module_id character string with unique id for the module. If not
+#' specified, it will be automatically generated
+#' @param div_id character string with unique id for the created div. If not
+#' specified, it will be set to 'form'
+#' @param custom_css custom css for classes 'mandatory star' and 'invalid_input'.
+#' If not specified, default look will be used:
+#' \itemize{
+#' \item{invalid_input = "outline: red; outline-style: dashed; outline-offset: 10px;"}
+#' \item{mandatory_star = "color: red;"}
+#' \item{quetzio_submit = "color: #fff; background-color: #337ab7; border-color: #2e6da4; width: 200px;"}
+#' \item{quetzio_description = "font-size: 0.9em;"}
+#' }
+#' You can also add styles for different classes contained within the div
+#' of the questionnaire - styles will be affecting only elements within
+#' this specific questionnaire.
+#' @param lang language to use. For now only 'en' and 'pl' are supported.
+#' @param custom_txts named list with custom labels for specified language.
+#' For more information look upon documentation for 'quetzio_txt'
+#' @param use_modal logical indicating if modalDialog for invalid inputs
+#' should be triggered. Defaults to TRUE
+#' @param render_ui logical indicating if the UI for questionnaire should be
+#' rendered
+#' @param link_id character specifying the 'link_id' of the 'quetzio_link_server'
+#' object, modifying its namespace. Only used internally, if the questionnaire
+#' is part of linked server. Don't set it manually!
+#'
+#' @details
+#'
+#' Currently, there are multiple methods both for source, which will generate
+#' the inputs, and for output. Mandatory arguments change depending of your
+#' choices:
+#'
+#' - for source:
+#'   - \code{source_method == 'yaml'}: 'source_yaml'
+#'   - \code{source_method == 'gsheet'}: 'source_gsheet_id,' 'source_gsheet_sheetname'
+#'   - \code{source_method == 'raw'}: 'source_object'
+#' - for output:
+#'   - \code{output_gsheet == TRUE}: 'output_gsheet_id' (if other than 'source_gsheet_id')
+#'   and 'output_gsheet_sheetname'
+#'
+#' There are also some optional functionalities, that can be used with sources.
+#'
+#' - optional instructions and item descriptions - they are generated only
+#' if one of the following is provided:
+#'    - `desc_yaml`: rendering from YAML file
+#'    - `desc_gsheet_sheetname`: rendering from googlesheet. If the `source_method`
+#'    isn't `gsheet` or the 'googlesheet_id' containing description is different
+#'    from source, the `desc_gsheet_id` need to be provided too
+#'    - `desc_object`: rendering from R object of classes 'data.frame' or 'list'
+#' - optional default configuration - it is used per shinyInput type.
+#' Need to provide either `source_yaml_default` or `source_object_default`.
+#' 
+#' @return R6 object of class `Quetzio`
+#' @example inst/examples/Quetzio_create.R
+#' @export
+
+Quetzio_create <- function(
+  source_method, module_id, source_yaml = NULL, source_yaml_default = NULL, 
+  source_gsheet_id = NULL, source_gsheet_sheetname = NULL, source_object = NULL, 
+  source_object_default = NULL, output_gsheet = FALSE, output_gsheet_id = NULL, 
+  output_gsheet_sheetname = NULL, desc_yaml = NULL, desc_gsheet_id = NULL, 
+  desc_gsheet_sheetname = NULL, desc_object = NULL, randomize_order = FALSE, 
+  div_id = NULL, custom_css = NULL, lang = "en", custom_txts = NULL,
+  use_modal = TRUE, render_ui = TRUE, link_id = NULL) {
+  
+  args <- as.list(match.call())
+  
+  return(
+    do.call(Quetzio$new, c(args))
+  )
+}
+
 
