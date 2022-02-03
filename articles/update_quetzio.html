@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">shiny.quetzio</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.1.2</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.1.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -76,10 +76,10 @@
     
 <p>There may be some conditions under which you would like to update rendered questionnaire. Currently <em>shiny.quetzio</em> supports two of these updates:</p>
 <ul>
-<li>update of selected values</li>
-<li>update of item labels</li>
+<li>update of selected values (<strong>Quetzio_value_update</strong>)</li>
+<li>update of item labels (<strong>Quetzio_label_update</strong>)</li>
 </ul>
-<p>In this vignette the usage of these features in <code>quetzio_server</code> will be described in further detail.</p>
+<p>In this vignette the usage of these features for <em>Quetzio</em> objects will be described in further detail.</p>
 <blockquote>
 <p>This vignette assumes that the reader already knows how to create a questionnaire with <strong>shiny.quetzio</strong>. Otherwise, please get this information from ‘Create a questionnaire’ vignette.</p>
 </blockquote>
@@ -120,7 +120,7 @@
 <li>
 <p>and code for questionnaire generation:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">demo_quetzio</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/quetzio_server.html">quetzio_server</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
+<code class="sourceCode R"><span class="va">demo_quetzio</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Quetzio_create.html">Quetzio_create</a></span><span class="op">(</span>
   source_method <span class="op">=</span> <span class="st">"yaml"</span>,
   source_yaml <span class="op">=</span> <span class="st">"path/to/yaml/file.yaml"</span>,
   module_id <span class="op">=</span> <span class="st">"demographic_quetzio"</span>
@@ -132,9 +132,10 @@
 <code class="sourceCode R"><span class="co"># input$update is some kind of 'actionButton' to trigger the update</span>
 
 <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html" class="external-link">observeEvent</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">update</span>, <span class="op">{</span>
-  <span class="co"># call the method in your more complicated questionnaire,</span>
+  <span class="co"># call the function specifying  more complicated questionnaire,</span>
   <span class="co"># in this example it is assigned to 'complex_quetzio'</span>
-  <span class="va">complex_quetzio</span><span class="op">$</span><span class="fu">update_values</span><span class="op">(</span>
+  <span class="fu"><a href="../reference/Quetzio_value_update.html">Quetzio_value_update</a></span><span class="op">(</span>
+    Quetzio <span class="op">=</span> <span class="va">complex_quetzio</span>,
     <span class="co"># 'values' need to be static list, therefore parenthesis are needed</span>
     <span class="co"># as the 'demo_quetzio$answers' is reactiveVal object</span>
     values <span class="op">=</span> <span class="va">demo_quetzio</span><span class="op">$</span><span class="fu">answers</span><span class="op">(</span><span class="op">)</span>
@@ -148,7 +149,8 @@
                          age <span class="op">=</span> <span class="fl">28</span><span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html" class="external-link">observeEvent</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">update</span>, <span class="op">{</span>
-  <span class="va">complex_quetzio</span><span class="op">$</span><span class="fu">update_values</span><span class="op">(</span>
+  <span class="fu"><a href="../reference/Quetzio_value_update.html">Quetzio_value_update</a></span><span class="op">(</span>
+    Quetzio <span class="op">=</span> <span class="va">complex_quetzio</span>,
     values <span class="op">=</span> <span class="va">values_to_update</span>
   <span class="op">)</span>
 <span class="op">}</span><span class="op">)</span></code></pre></div>
@@ -209,7 +211,7 @@
 <span class="op">)</span></code></pre></div>
 </li>
 <li>
-<p>We need to create additional source file telling the <em>quetzio_server</em> which label should be presented for every value of the variable it should be reacting to. Source file can be created as a R object (<em>data.frame</em> or <em>list</em>), <em>YAML</em> file or a <em>googlesheet</em> sheet. For clarity in this vignette YAML will be presented:</p>
+<p>We need to create additional source file telling the <em>Quetzio</em> which label should be presented for every value of the variable it should be reacting to. Source file can be created as a R object (<em>data.frame</em> or <em>list</em>), <em>YAML</em> file or a <em>googlesheet</em> sheet. For clarity in this vignette YAML will be presented:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">test1</span><span class="kw">:</span></span>
 <span id="cb7-2"><a href="#cb7-2"></a><span class="at">   </span><span class="fu">M</span><span class="kw">:</span><span class="at"> What adjective would be most accurate to describe him?</span></span>
 <span id="cb7-3"><a href="#cb7-3"></a><span class="at">   </span><span class="fu">F</span><span class="kw">:</span><span class="at"> What adjective would be most accurate to describe her?</span></span>
@@ -222,14 +224,14 @@
 </li>
 </ul>
 <blockquote>
-<p>If the value is not represented in this label update source, then when reactive passed to the ‘trigger’ contains that value, the default labels will be shown.</p>
+<p>If the reactive passed as a trigger contains value not represented in the label update source, then the default labels will be shown.</p>
 </blockquote>
 <ul>
 <li>
-<p>When everything is set, we can then create our questionnaire and its reactivity within the server. It can be done by utilizing the <em>update_labels</em> method of <em>quetzio_server</em></p>
+<p>When everything is set, we can then create our questionnaire and its reactivity within the server. It can be done by utilizing the function <em>Quetzio_label_update()</em></p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># define the questionnaire which will have reactive labels</span>
-<span class="va">quetzio</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/quetzio_server.html">quetzio_server</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
+<span class="va">questionnaire</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Quetzio_create.html">Quetzio_create</a></span><span class="op">(</span>
   source_method <span class="op">=</span> <span class="st">"yaml"</span>,
   source_yaml <span class="op">=</span> <span class="st">"path/to/main/source.yaml"</span>,
   module_id <span class="op">=</span> <span class="st">"quetzio_to_react"</span>
@@ -239,21 +241,23 @@
 <span class="co"># pass the input value accordingly</span>
 <span class="va">gender_react</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">gender</span><span class="op">)</span>
 
-<span class="co"># call the method passing the reactive as a trigger</span>
-<span class="va">quetzio</span><span class="op">$</span><span class="fu">update_labels</span><span class="op">(</span>
-  trigger <span class="op">=</span> <span class="va">gender_react</span>, <span class="co"># reactive need to be passed without parentheses!</span>
+<span class="co"># call the function passing your Quetzio object and reactive as a trigger</span>
+<span class="fu"><a href="../reference/Quetzio_label_update.html">Quetzio_label_update</a></span><span class="op">(</span>
+  Quetzio <span class="op">=</span> <span class="va">questionnaire</span>,
+  trigger <span class="op">=</span> <span class="va">gender_react</span>, <span class="co"># reactive needs to be passed without parentheses!</span>
   source_method <span class="op">=</span> <span class="st">"yaml"</span>,
   source_yaml <span class="op">=</span> <span class="st">"path/to/label/source.yaml"</span>
 <span class="op">)</span></code></pre></div>
 </li>
 <li>
-<p>You can also use answer from another questionnaire - we can utilize the demographic questionnaire created above. Be aware, that the answers are present within the <em>quetzio_server$answers()</em> only after the questionnaire submission!</p>
+<p>You can also use answer from another questionnaire - we can utilize the demographic questionnaire created above. Be aware, that the answers are present within the <em>Quetzio$answers()</em> only after the questionnaire submission!</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">gender_react</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span>
   <span class="va">demo_quetzio</span><span class="op">$</span><span class="fu">answers</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">gender</span>
 <span class="op">)</span>
 
-<span class="va">quetzio</span><span class="op">$</span><span class="fu">update_labels</span><span class="op">(</span>
+<span class="fu"><a href="../reference/Quetzio_label_update.html">Quetzio_label_update</a></span><span class="op">(</span>
+  Quetzio <span class="op">=</span> <span class="va">questionnaire</span>,
   trigger <span class="op">=</span> <span class="va">gender_react</span>, <span class="co"># reactive need to be passed without parentheses!</span>
   source_method <span class="op">=</span> <span class="st">"yaml"</span>,
   source_yaml <span class="op">=</span> <span class="st">"path/to/label/source.yaml"</span>

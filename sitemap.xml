@@ -31,10 +31,37 @@
     <loc>https://statismike.github.io/shiny.quetzio/news/index.html</loc>
   </url>
   <url>
-    <loc>https://statismike.github.io/shiny.quetzio/reference/create_desc_source.html</loc>
+    <loc>https://statismike.github.io/shiny.quetzio/reference/Quetzio.html</loc>
   </url>
   <url>
-    <loc>https://statismike.github.io/shiny.quetzio/reference/create_quetzio_source.html</loc>
+    <loc>https://statismike.github.io/shiny.quetzio/reference/QuetzioLink.html</loc>
+  </url>
+  <url>
+    <loc>https://statismike.github.io/shiny.quetzio/reference/QuetzioLink_UI.html</loc>
+  </url>
+  <url>
+    <loc>https://statismike.github.io/shiny.quetzio/reference/QuetzioLink_create.html</loc>
+  </url>
+  <url>
+    <loc>https://statismike.github.io/shiny.quetzio/reference/Quetzio_UI.html</loc>
+  </url>
+  <url>
+    <loc>https://statismike.github.io/shiny.quetzio/reference/Quetzio_create.html</loc>
+  </url>
+  <url>
+    <loc>https://statismike.github.io/shiny.quetzio/reference/Quetzio_get_df.html</loc>
+  </url>
+  <url>
+    <loc>https://statismike.github.io/shiny.quetzio/reference/Quetzio_label_update.html</loc>
+  </url>
+  <url>
+    <loc>https://statismike.github.io/shiny.quetzio/reference/Quetzio_value_update.html</loc>
+  </url>
+  <url>
+    <loc>https://statismike.github.io/shiny.quetzio/reference/create_Quetzio_source.html</loc>
+  </url>
+  <url>
+    <loc>https://statismike.github.io/shiny.quetzio/reference/create_desc_source.html</loc>
   </url>
   <url>
     <loc>https://statismike.github.io/shiny.quetzio/reference/index.html</loc>
@@ -46,19 +73,7 @@
     <loc>https://statismike.github.io/shiny.quetzio/reference/numInput.html</loc>
   </url>
   <url>
-    <loc>https://statismike.github.io/shiny.quetzio/reference/quetzio_UI.html</loc>
-  </url>
-  <url>
     <loc>https://statismike.github.io/shiny.quetzio/reference/quetzio_examples.html</loc>
-  </url>
-  <url>
-    <loc>https://statismike.github.io/shiny.quetzio/reference/quetzio_link_UI.html</loc>
-  </url>
-  <url>
-    <loc>https://statismike.github.io/shiny.quetzio/reference/quetzio_link_server.html</loc>
-  </url>
-  <url>
-    <loc>https://statismike.github.io/shiny.quetzio/reference/quetzio_server.html</loc>
   </url>
   <url>
     <loc>https://statismike.github.io/shiny.quetzio/reference/quetzio_txt.html</loc>

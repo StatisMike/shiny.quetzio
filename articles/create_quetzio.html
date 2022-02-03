@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">shiny.quetzio</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.1.2</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.1.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -75,16 +75,16 @@
     
     
 <p>Package <strong>shiny.quetzio</strong> provides a relatively simple but also highly customizable framework for creation and deploying questionnaire as a part of your <em>shinyApp</em>.</p>
-<p>Every questionnaire created in this framework takes a form of object of class <strong>quetzio_server</strong>, and needs to be called inside the <em>server</em> of your application.</p>
-<p>This vignette is going to take you on all basic things you should know about using this package to include a questionnaire within your application - how to build your configuration file, what are the core possibilities of <strong>quetzio_server</strong> both as an semi-independent object and as a part of more complex logic in your application.</p>
+<p>Every questionnaire created in this framework takes a form of object of class <strong>Quetzio</strong>, and needs to be created inside the <em>server</em> of your application.</p>
+<p>This vignette is going to take you on all basic things you should know about using this package to include a questionnaire within your application - how to build your configuration file, what are the core possibilities of <strong>Quetzio</strong> both as an semi-independent object and as a part of more complex logic in your application.</p>
 <div class="section level2">
-<h2 id="what-is-the-quetzio_server">What is the <strong>quetzio_server</strong>?<a class="anchor" aria-label="anchor" href="#what-is-the-quetzio_server"></a>
+<h2 id="what-is-the-quetzio">What is the <strong>Quetzio</strong>?<a class="anchor" aria-label="anchor" href="#what-is-the-quetzio"></a>
 </h2>
 <p>It is main element of the whole functionality of <strong>shiny.quetzio</strong>. Its the <em>R6</em> class definition used to create objects creating Shiny modules upon initialization. It takes a source of the questions (and optionally: additional instruction and descriptions for individual inputs) and generates the whole questionnaire UI. Within the created module the entire backend for the reactivity is contained (consisting of answers validation and their output).</p>
 <p>Generally, the basic dataflow within this process is shown in figure below.</p>
 <div class="figure">
-<img src="quetzio_server_logic.png" alt="Logic of quetzio_server object" width="600px"><p class="caption">
-Logic of quetzio_server object
+<img src="Quetzio_logic.png" alt="Logic of Quetzio object" width="600px"><p class="caption">
+Logic of Quetzio object
 </p>
 </div>
 </div>
@@ -97,7 +97,7 @@ Logic of quetzio_server object
 <li>yaml (needs <strong>yaml</strong> package installed)</li>
 <li>R object (<em>list</em> or <em>data.frame</em>)</li>
 </ul>
-<p>Only one source method can be used. It needs to be defined during initialization by specifying <code>source_method</code> argument in the call of <code>quetzio_server$new()</code></p>
+<p>Only one source method can be used. It needs to be defined during initialization by specifying <code>source_method</code> argument in the call of <code><a href="../reference/Quetzio_create.html">Quetzio_create()</a></code></p>
 <p>In the source, for every <em>shinyInput</em> you can specify following parameters:</p>
 <ul>
 <li><strong>inputId</strong></li>
@@ -276,7 +276,7 @@ Logic of quetzio_server object
 <p>You can create example googlesheet using helper function provided with the package. It makes sure that all needed columns are present and they are containing correct classes.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># assignement to hold the ID of created googlesheet</span>
-<span class="va">id</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_quetzio_source.html">create_quetzio_source</a></span><span class="op">(</span>
+<span class="va">id</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_Quetzio_source.html">create_Quetzio_source</a></span><span class="op">(</span>
   method <span class="op">=</span> <span class="st">"gsheet"</span><span class="op">)</span>
 
 <span class="co"># see the data structure:</span>
@@ -313,7 +313,7 @@ Logic of quetzio_server object
 <div class="section level3">
 <h3 id="providing-r-object-as-a-source-source_method-raw">providing R object as a source (<code>source_method == 'raw'</code>)<a class="anchor" aria-label="anchor" href="#providing-r-object-as-a-source-source_method-raw"></a>
 </h3>
-<p>If, for any reason you can’t or won’t install <em>yaml</em> or <em>googlesheets4</em> packages or just prefer assigning the created R object as a source, you can provide either a list or data.frame during initialization of new <em>quetzio_server</em> object.</p>
+<p>If, for any reason you can’t or won’t install <em>yaml</em> or <em>googlesheets4</em> packages or just prefer assigning the created R object as a source, you can provide either a list or data.frame during initialization of new <em>Quetzio</em> object.</p>
 <p>They are analogous to the structure of <em>yaml</em> (list) or <em>googlesheet</em> (data.frame) source file. You can check the correct structure for the same two-item example questionnaire configured in both list and data.frame below.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># every nested list need to be named with the inputId</span>
@@ -346,7 +346,7 @@ Logic of quetzio_server object
 <span class="co"># example data.frame with placeholder row, though you need to modify it</span>
 <span class="co"># afterwards</span>
 
-<span class="va">df_source2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_quetzio_source.html">create_quetzio_source</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"df"</span><span class="op">)</span>
+<span class="va">df_source2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_Quetzio_source.html">create_Quetzio_source</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"df"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">df_source2</span><span class="op">)</span>
 <span class="co">#&gt; 'data.frame':    1 obs. of  18 variables:</span>
 <span class="co">#&gt;  $ inputId          : chr "placeholder"</span>
@@ -377,9 +377,9 @@ Logic of quetzio_server object
 </h2>
 <p>If you have your source created correctly, it is the time to embed the questionnaire in your Shiny application. You need to make some calls both in the <em>server</em> and in the <em>ui</em> parts of your application.</p>
 <div class="section level3">
-<h3 id="generation-of-the-quetzio_server-object">Generation of the quetzio_server object<a class="anchor" aria-label="anchor" href="#generation-of-the-quetzio_server-object"></a>
+<h3 id="generation-of-the-quetzio-object">Generation of the Quetzio object<a class="anchor" aria-label="anchor" href="#generation-of-the-quetzio-object"></a>
 </h3>
-<p>You need to create the <strong>quetzio_server</strong> object inside of your <em>server</em> code. There are following mandatory arguments for the <code>quetzio_server$new()</code></p>
+<p>You need to create the <strong>Quetzio</strong> object inside of your <em>server</em> code. It is done using <strong>Quetzio_create</strong> function and it is recommended, though you can also create new object explicitly: <strong>Quetzio_create()</strong> There are following mandatory arguments for the <strong>Quetzio_create</strong></p>
 <ul>
 <li>source_method: to choose the source method (‘yaml’, ‘gsheet’, ‘raw’)
 <ul>
@@ -395,7 +395,7 @@ Logic of quetzio_server object
 </ul>
 <p>So to create the questionnaire based on the source created above:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">quetzio_from_list</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/quetzio_server.html">quetzio_server</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
+<code class="sourceCode R"><span class="va">quetzio_from_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Quetzio_create.html">Quetzio_create</a></span><span class="op">(</span>
   source_method <span class="op">=</span> <span class="st">"raw"</span>,
   source_object <span class="op">=</span> <span class="va">list_source</span>,
   module_id <span class="op">=</span> <span class="st">"my_questionnaire"</span>
@@ -406,7 +406,7 @@ Logic of quetzio_server object
 </h3>
 <p>The questionnaire isn’t seen anywhere in the UI yet! You can show it by adding in your UI the following call:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/quetzio_UI.html">quetzio_UI</a></span><span class="op">(</span>module_id <span class="op">=</span> <span class="st">"my_questionnaire"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/Quetzio_UI.html">Quetzio_UI</a></span><span class="op">(</span>module_id <span class="op">=</span> <span class="st">"my_questionnaire"</span><span class="op">)</span></code></pre></div>
 <p>Yes - this is all!</p>
 <blockquote>
 <p>Remember that all shiny modules IDs needs to be unique withing your application environement!</p>
@@ -415,10 +415,10 @@ Logic of quetzio_server object
 <div class="section level3">
 <h3 id="using-the-built-in-googlesheets-output-method">Using the built-in googlesheets output method<a class="anchor" aria-label="anchor" href="#using-the-built-in-googlesheets-output-method"></a>
 </h3>
-<p>If you wish to send the results of the survey automatically to some <em>googlesheet</em> file, you can specify additional arguments in the <strong>quetzio_server$new()</strong>.</p>
+<p>If you wish to send the results of the survey automatically to some <em>googlesheet</em> file, you can specify additional arguments in the <strong>Quetzio_create()</strong>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># the same questionnaire as above</span>
-<span class="va"><a href="../reference/quetzio_server.html">quetzio_server</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
+<span class="fu"><a href="../reference/Quetzio_create.html">Quetzio_create</a></span><span class="op">(</span>
   source_method <span class="op">=</span> <span class="st">"raw"</span>,
   source_object <span class="op">=</span> <span class="va">list_source</span>,
   module_id <span class="op">=</span> <span class="st">"my_questionnaire"</span>,
@@ -428,33 +428,40 @@ Logic of quetzio_server object
   output_gsheet_sheetname <span class="op">=</span> <span class="st">"sheet_name"</span>
 <span class="op">)</span></code></pre></div>
 <blockquote>
-<p>As you can see above, the assignement of the object isn’t necessary. It don’t allow for reading the state of the questionnaire or getting the asnwers in the application. In the example above, the answers will be saved in the external <em>googlesheet</em>, so the answer reading won’t be necessary.</p>
+<p>As you can see above, the assignement of the object isn’t necessary. Lack of assignement don’t allow for reading the state of the questionnaire or using any other methods on it. In the example above, the answers will be saved in the external <em>googlesheet</em>, so the answer reading won’t be necessary.</p>
 </blockquote>
 </div>
 <div class="section level3">
-<h3 id="reading-the-state-of-the-created-quetzio_server-object-within-the-application-">Reading the state of the created quetzio_server object within the application.<a class="anchor" aria-label="anchor" href="#reading-the-state-of-the-created-quetzio_server-object-within-the-application-"></a>
+<h3 id="reading-the-state-of-the-created-quetzio-object-within-the-application-">Reading the state of the created Quetzio object within the application.<a class="anchor" aria-label="anchor" href="#reading-the-state-of-the-created-quetzio-object-within-the-application-"></a>
 </h3>
 <p>You can get some information from your questionnaire by calling the following calls on your object:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># All of the above are 'reactiveVal' object, so they need to be </span>
+<code class="sourceCode R"><span class="co"># if you assigned your Quetzio object as `quetzio_from_list`</span>
+<span class="va">quetzio_from_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Quetzio_create.html">Quetzio_create</a></span><span class="op">(</span>
+  source_method <span class="op">=</span> <span class="st">"raw"</span>,
+  source_object <span class="op">=</span> <span class="va">list_source</span>,
+  module_id <span class="op">=</span> <span class="st">"my_questionnaire"</span>
+<span class="op">)</span>
+
+<span class="co"># All of the above are 'reactiveVal' object, so they need to be </span>
 <span class="co"># accessed in the observe() or reactive() context</span>
 <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/observe.html" class="external-link">observe</a></span><span class="op">(</span><span class="op">{</span>
   
   <span class="co"># is the questionnaire done: TRUE or FALSE</span>
-  <span class="va">my_questionnaire</span><span class="op">$</span><span class="fu">is_done</span><span class="op">(</span><span class="op">)</span>
+  <span class="va">quetzio_from_list</span><span class="op">$</span><span class="fu">is_done</span><span class="op">(</span><span class="op">)</span>
 
   <span class="co"># check if there are any warning messages: if none, then NULL</span>
-  <span class="va">my_questionnaire</span><span class="op">$</span><span class="fu">message</span><span class="op">(</span><span class="op">)</span>
+  <span class="va">quetzio_from_list</span><span class="op">$</span><span class="fu">message</span><span class="op">(</span><span class="op">)</span>
 
   <span class="co"># get the list of answers. If questionnaire isn't done, then NULL</span>
-  <span class="va">my_questionnaire</span><span class="op">$</span><span class="fu">answers</span><span class="op">(</span><span class="op">)</span>
+  <span class="va">quetzio_from_list</span><span class="op">$</span><span class="fu">answers</span><span class="op">(</span><span class="op">)</span>
 <span class="op">}</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
 <h2 id="adding-instructions-andor-item-descriptions-optional">Adding instructions and/or item descriptions (optional)<a class="anchor" aria-label="anchor" href="#adding-instructions-andor-item-descriptions-optional"></a>
 </h2>
-<p>One of the optional features of the <strong>quetzio_server</strong> is the ability to generate multi-paragraph instructions and item descriptions for you questionnaire.</p>
+<p>One of the optional features of the <strong>Quetzio</strong> is the ability to generate multi-paragraph instructions and item descriptions for you questionnaire.</p>
 <p>For elements of instruction and/or item description you need to provide correct config, describing following element <em>types</em>:</p>
 <ul>
 <li>for instruction
@@ -523,7 +530,7 @@ Logic of quetzio_server object
 <div class="section level3">
 <h3 id="yaml-source">YAML source<a class="anchor" aria-label="anchor" href="#yaml-source"></a>
 </h3>
-<p>Needs the <em>yaml</em> R package to be installed, and should be passed to <em>desc_yaml</em> argument during initialization of <em>quetzio_server</em> object.</p>
+<p>Needs the <em>yaml</em> R package to be installed, and should be passed to <em>desc_yaml</em> argument during initialization of <em>Quetzio</em> object.</p>
 <p>Its form is similiar to the one of the YAML question source, but the sequences don’t need to be named:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">-</span></span>
 <span id="cb8-2"><a href="#cb8-2"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> some_element_type</span></span>
@@ -538,7 +545,7 @@ Logic of quetzio_server object
 <div class="section level3">
 <h3 id="googlesheet-source">googlesheet source<a class="anchor" aria-label="anchor" href="#googlesheet-source"></a>
 </h3>
-<p>Needs the <em>googlesheet4</em> R package to be installed. The googlesheet id need to be passed to <em>desc_gsheet_id</em>, and sheetname to <em>desc_gsheet_sheetname</em> arguments during initialization of <em>quetzio_server</em> object.</p>
+<p>Needs the <em>googlesheet4</em> R package to be installed. The googlesheet id need to be passed to <em>desc_gsheet_id</em>, and sheetname to <em>desc_gsheet_sheetname</em> arguments during initialization of <em>Quetzio</em> object.</p>
 <p>Its form is very similar to the one of the googlesheet question source. It can also be created with helper function.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># assignement to hold the ID of created googlesheet</span>
@@ -563,7 +570,7 @@ Logic of quetzio_server object
 <div class="section level3">
 <h3 id="r-object-as-a-source">R object as a source<a class="anchor" aria-label="anchor" href="#r-object-as-a-source"></a>
 </h3>
-<p>Analogous to R object as the source of questions, you can provide them in the form of list or dataframe. You should then pass that object to <em>desc_object</em> argument during <em>quetzio_server</em> initialization:</p>
+<p>Analogous to R object as the source of questions, you can provide them in the form of list or dataframe. You should then pass that object to <em>desc_object</em> argument during <em>Quetzio</em> initialization:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># nested list don't need to be named!</span>
 <span class="va">list_source</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
@@ -611,15 +618,16 @@ Logic of quetzio_server object
 <ul>
 <li>Functional features
 <ul>
-<li>get answers in form of data.frame with <strong>get_answers_df</strong> method</li>
-<li>update item labels based on some <em>reactiveVal</em> with <strong>update_labels</strong> method</li>
-<li>link multiple <strong>quetzio_server</strong> objects with <strong>quetzio_link_server</strong> object</li>
+<li>use <strong>Quetzio_get_df()</strong> function to get answers in form of the data.frame</li>
+<li>update item labels based on some <em>reactive</em> with <strong>Quetzio_label_update()</strong> function</li>
+<li>update item selected values based on named list with <strong>Quetzio_value_update()</strong> function</li>
+<li>link multiple <strong>Quetzio</strong> objects using <strong>QuetzioLink</strong> object</li>
 </ul>
 </li>
 <li>Customizable features
 <ul>
-<li>add your own submit button labels</li>
-<li>add custom css to alternate the look of invalid input label highlight and mandatory stars</li>
+<li>add your own labels and texts by utilizing <em>custom_txts</em> argument (check <code><a href="../reference/quetzio_txt.html">?quetzio_txt</a></code> for more info)</li>
+<li>add custom css to alternate the look of your <strong>Quetzio</strong> by adding the styles for specific classes using <em>custom_css</em> argument</li>
 <li>use specific div id to customize css styles more easily</li>
 </ul>
 </li>

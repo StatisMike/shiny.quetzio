@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">shiny.quetzio</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.1.2</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.1.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -75,26 +75,26 @@
     
     
 <p>When you have created multiple questionnaires with help of the <em>shiny.quetzio</em> already, you may wish to present them to the user sequentially - after the completion of one it may be handy to handle another.</p>
-<p>It can be done through the usage of <em>conditionalPanel</em> or by using the <em>toggle_UI</em> method of <em>quetzio_server</em>. It can unfortunately cause a lot of unpredicted effects in the end, with a need for more complex logic for you to implement.</p>
-<p>That’s why the <em>shiny.quetzio</em> provides an easy way to link multiple questionnaires together with the use of <em>quetzio_link_server</em> R6 class!</p>
+<p>It can be done through the usage of <em>conditionalPanel</em> or by using the <em>toggle_UI</em> method of <em>Quetzio</em>. It can unfortunately cause a lot of unpredicted effects in the end, with a need for more complex logic for you to implement.</p>
+<p>That’s why the <em>shiny.quetzio</em> provides an easy way to link multiple questionnaires together with the use of <em>QuetzioLink</em> R6 class!</p>
 <blockquote>
-<p>In this vignette there is an assumption that you already know how to construct questionnaires with <em>quetzio_survey</em>. If this assumption is wrong, you should first look into <em>Create a questionnaire</em> vignette.</p>
+<p>In this vignette there is an assumption that you already know how to construct questionnaires with <em>Quetzio_create</em>. If this assumption is wrong, you should first look into <em>Create a questionnaire</em> vignette.</p>
 </blockquote>
 <div class="section level2">
 <h2 id="how-to-set-up-linked-questionnaires">How to set up linked questionnaires<a class="anchor" aria-label="anchor" href="#how-to-set-up-linked-questionnaires"></a>
 </h2>
-<p>If you already know how to create a questionnaire, this will be a breeze. The whole procedure is analogous to one used in <em>quetzio_survey</em>.</p>
+<p>If you already know how to create a questionnaire, this will be a breeze. The whole procedure is analogous to one used in <em>Quetzio_create</em>.</p>
 <div class="section level3">
 <h3 id="server-call">
 <strong>server</strong> call<a class="anchor" aria-label="anchor" href="#server-call"></a>
 </h3>
-<p>You call <em>quetzio_link_survey</em> inside your <em>server</em> function.</p>
+<p>You call <em>QuetzioLink_create</em> inside your <em>server</em> function.</p>
 <p>It takes following arguments:</p>
 <ul>
 <li>
-<strong>link_id</strong> - module id of you <em>quetzio_link_server</em> shiny module.</li>
+<strong>link_id</strong> - module id of you <em>QuetzioLink</em> shiny module.</li>
 <li>
-<strong>…</strong> - some <em>quetzio_server</em> initializing calls, containing configuration for the modules that you want to link together.</li>
+<strong>…</strong> - some <em>Quetzio_create</em> calls, containing configuration for the modules that you want to link together.</li>
 <li>
 <strong>output_gsheet</strong> - logical value indicating, if you want to save the results automatically to some googlesheet. If set to <em>TRUE</em>, you will need to also provide:
 <ul>
@@ -108,21 +108,21 @@
 <p>To generate linked questionnaires, we can use question sources provided with the package (see documentation for <em>quetzio_examples</em> to get more information)</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># assign to an object to access the state of link from you application</span>
-<span class="va">quetzio_link</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/quetzio_link_server.html">quetzio_link_server</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
+<span class="va">quetzio_link</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QuetzioLink_create.html">QuetzioLink_create</a></span><span class="op">(</span>
   link_id <span class="op">=</span> <span class="st">"linked_quetzios"</span>,
   <span class="co"># every questionnaire provided need to be named!</span>
-  first_quetzio <span class="op">=</span> <span class="va"><a href="../reference/quetzio_server.html">quetzio_server</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
+  first_quetzio <span class="op">=</span> <span class="fu"><a href="../reference/Quetzio_create.html">Quetzio_create</a></span><span class="op">(</span>
     source_method <span class="op">=</span> <span class="st">"raw"</span>,
     source_object <span class="op">=</span> <span class="va">quetzio_examples</span><span class="op">$</span><span class="va">questions_lists</span><span class="op">$</span><span class="va">link_quetzio_1</span>,
     <span class="co"># and you need to provide unique module ids</span>
     module_id <span class="op">=</span> <span class="st">"quetzio1"</span>
   <span class="op">)</span>,
-  second_quetzio <span class="op">=</span> <span class="va"><a href="../reference/quetzio_server.html">quetzio_server</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
+  second_quetzio <span class="op">=</span> <span class="fu"><a href="../reference/Quetzio_create.html">Quetzio_create</a></span><span class="op">(</span>
     source_method <span class="op">=</span> <span class="st">"raw"</span>,
     source_object <span class="op">=</span> <span class="va">quetzio_examples</span><span class="op">$</span><span class="va">questions_lists</span><span class="op">$</span><span class="va">link_quetzio_2</span>,
     module_id <span class="op">=</span> <span class="st">"quetzio2"</span>
   <span class="op">)</span>,
-  third_quetzio <span class="op">=</span> <span class="va"><a href="../reference/quetzio_server.html">quetzio_server</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
+  third_quetzio <span class="op">=</span> <span class="fu"><a href="../reference/Quetzio_create.html">Quetzio_create</a></span><span class="op">(</span>
     source_method <span class="op">=</span> <span class="st">"raw"</span>,
     source_object <span class="op">=</span> <span class="va">quetzio_examples</span><span class="op">$</span><span class="va">questions_lists</span><span class="op">$</span><span class="va">link_quetzio_3</span>,
     module_id <span class="op">=</span> <span class="st">"quetzio3"</span>
@@ -131,7 +131,7 @@
 <blockquote>
 <ul>
 <li>All module_ids and link_ids needs to be unique - just like during creation of regular shiny modules.</li>
-<li>Remember to provide <em>quetzio_server$new()</em> call directly to the <em>quetzio_link_server$new()</em>. You cannot assign them somewhere else and provide them afterwards.</li>
+<li>Remember to provide <em>Quetzio_create()</em> call directly in <em>…</em> of the <em>QuetzioLink_create()</em>. You cannot assign them somewhere else and provide them afterwards.</li>
 </ul>
 </blockquote>
 </div>
@@ -142,7 +142,7 @@
 <p>To bind the interface into UI of your shinyApp, simply state following function. It takes only one argument: <em>link_id</em>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># provide the same link_id as in server function</span>
-<span class="fu"><a href="../reference/quetzio_link_UI.html">quetzio_link_UI</a></span><span class="op">(</span>
+<span class="fu"><a href="../reference/QuetzioLink_UI.html">QuetzioLink_UI</a></span><span class="op">(</span>
   link_id <span class="op">=</span> <span class="st">"linked_quetzios"</span>
 <span class="op">)</span></code></pre></div>
 </div>
@@ -150,14 +150,14 @@
 <div class="section level2">
 <h2 id="provide-instructions-and-item-descriptions">Provide instructions and item descriptions!<a class="anchor" aria-label="anchor" href="#provide-instructions-and-item-descriptions"></a>
 </h2>
-<p>As with using only single <em>quetzio_server</em>, you can generate title, instructions and descriptions for individual questions. With single questionnaire you could also build the rest of the interface by providing it directly in the code of UI of your application.</p>
+<p>As with using only single <em>Quetzio</em>, you can generate title, instructions and descriptions for individual questions. With single questionnaire you could also build the rest of the interface by providing it directly in the code of UI of your application.</p>
 <p>It is much less straightforward to do with linked questionnaires - the linked UI will be changing, and you would also need to implement logic using <em>shinyjs</em>, <em>conditionalPanel</em> or in any other way.</p>
 <p>Providing source for descriptions remedies it!</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># we can use the link from previous example</span>
-<span class="va">quetzio_link</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/quetzio_link_server.html">quetzio_link_server</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
+<span class="va">quetzio_link</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QuetzioLink_create.html">QuetzioLink_create</a></span><span class="op">(</span>
   link_id <span class="op">=</span> <span class="st">"linked_quetzios"</span>,
-  first_quetzio <span class="op">=</span> <span class="va"><a href="../reference/quetzio_server.html">quetzio_server</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
+  first_quetzio <span class="op">=</span> <span class="fu"><a href="../reference/Quetzio_create.html">Quetzio_create</a></span><span class="op">(</span>
     source_method <span class="op">=</span> <span class="st">"raw"</span>,
     source_object <span class="op">=</span> <span class="va">quetzio_examples</span><span class="op">$</span><span class="va">questions_lists</span><span class="op">$</span><span class="va">link_quetzio_1</span>,
     <span class="co"># just provide the description source by stating either</span>
@@ -165,13 +165,13 @@
     desc_object <span class="op">=</span> <span class="va">quetzio_examples</span><span class="op">$</span><span class="va">description_lists</span><span class="op">$</span><span class="va">link_quetzio_1</span>,
     module_id <span class="op">=</span> <span class="st">"quetzio1"</span>
   <span class="op">)</span>,
-  second_quetzio <span class="op">=</span> <span class="va"><a href="../reference/quetzio_server.html">quetzio_server</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
+  second_quetzio <span class="op">=</span> <span class="fu"><a href="../reference/Quetzio_create.html">Quetzio_create</a></span><span class="op">(</span>
     source_method <span class="op">=</span> <span class="st">"raw"</span>,
     source_object <span class="op">=</span> <span class="va">quetzio_examples</span><span class="op">$</span><span class="va">questions_lists</span><span class="op">$</span><span class="va">link_quetzio_2</span>,
     desc_object <span class="op">=</span> <span class="va">quetzio_examples</span><span class="op">$</span><span class="va">description_lists</span><span class="op">$</span><span class="va">link_quetzio_2</span>,
     module_id <span class="op">=</span> <span class="st">"quetzio2"</span>
   <span class="op">)</span>,
-  third_quetzio <span class="op">=</span> <span class="va"><a href="../reference/quetzio_server.html">quetzio_server</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
+  third_quetzio <span class="op">=</span> <span class="fu"><a href="../reference/Quetzio_create.html">Quetzio_create</a></span><span class="op">(</span>
     source_method <span class="op">=</span> <span class="st">"raw"</span>,
     source_object <span class="op">=</span> <span class="va">quetzio_examples</span><span class="op">$</span><span class="va">questions_lists</span><span class="op">$</span><span class="va">link_quetzio_3</span>,
     desc_object <span class="op">=</span> <span class="va">quetzio_examples</span><span class="op">$</span><span class="va">questions_lists</span><span class="op">$</span><span class="va">link_quetzio_3</span>,
@@ -180,41 +180,41 @@
 <span class="op">)</span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="get-objects-from-inside-of-quetzio_link_server-object">Get objects from inside of <em>quetzio_link_server</em> object<a class="anchor" aria-label="anchor" href="#get-objects-from-inside-of-quetzio_link_server-object"></a>
+<h2 id="get-objects-from-inside-of-object-createby-by-quetziolink_create">Get objects from inside of object createby by <em>QuetzioLink_create</em><a class="anchor" aria-label="anchor" href="#get-objects-from-inside-of-object-createby-by-quetziolink_create"></a>
 </h2>
 <p>There are some objects you can get from object to which the linked questionnaires server was assigned. Taking above assignement as example:</p>
 <ul>
 <li>
-<strong>quetzio_link$completion()</strong> - the completion rate in form of numeric value between 0 and 1. It is generated as division:
+<strong>QuetzioLink$completion()</strong> - the completion rate in form of numeric value between 0 and 1. It is generated as division:
 <ul>
 <li>number of completed questionnaires / number of linked questionnaires</li>
 </ul>
 </li>
 <li>
-<strong>quetzio_link$message()</strong> list of <em>message()</em> of individual questionnaires</li>
+<strong>QuetzioLink$message()</strong> list of <em>message()</em> of individual questionnaires</li>
 <li>
-<strong>quetzio_link$answers()</strong> list of <em>answers()</em> of individual questionnaires</li>
+<strong>QuetzioLink$answers()</strong> list of <em>answers()</em> of individual questionnaires</li>
 <li>
-<strong>quetzio_link$quetzio_list</strong> gives you a way to access any element of object from any individual <em>quetzio_survey</em> object.</li>
+<strong>QuetzioLink$quetzio_list</strong> gives you a way to access any element of object from any individual <em>Quetzio</em> object.</li>
 </ul>
 </div>
 <div class="section level2">
-<h2 id="additional-methods">Additional methods<a class="anchor" aria-label="anchor" href="#additional-methods"></a>
+<h2 id="updating-quetziolink-object">Updating QuetzioLink object<a class="anchor" aria-label="anchor" href="#updating-quetziolink-object"></a>
 </h2>
-<p>There are also additional methods to object of class <em>quetzio_link_server</em> - they are mostly analogous to methods of <em>quetzio_server</em>, but with some additional tweaks. To learn about these methods read <strong>Update quetzio_server object</strong> (WIP)</p>
+<p>To update labels or selected values of items contained within <em>QuetzioLink</em> class you can use the same functions as with singular <em>Quetzio</em>: <strong>Quetzio_label_update</strong> and <strong>Quetzio_value_update</strong>. You need to provide additional argument. To learn about these functions read vignette <strong>Update created questionnaire</strong></p>
 <div class="section level3">
 <h3 id="reactive-label-update">Reactive label update<a class="anchor" aria-label="anchor" href="#reactive-label-update"></a>
 </h3>
-<p>You can update labels of any of linked questionnaires reactively with <em>update_labels</em> method. It works basically the same like in method for <em>quetzio_server</em>, but you need to also specify which questionnaire labels you want to update.</p>
+<p>You can update labels of any of linked questionnaires reactively with <em>Quetzio_label_update</em> function. It works basically the same like in with <em>Quetzio</em> object, but you need to also specify which questionnaire labels you want to update.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># create linked questionnaires</span>
-<span class="va">quetzio_link</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/quetzio_link_server.html">quetzio_link_server</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
-  gender <span class="op">=</span> <span class="va"><a href="../reference/quetzio_server.html">quetzio_server</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
+<span class="va">quetzio_link</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QuetzioLink_create.html">QuetzioLink_create</a></span><span class="op">(</span>
+  gender <span class="op">=</span> <span class="fu"><a href="../reference/Quetzio_create.html">Quetzio_create</a></span><span class="op">(</span>
     source_method <span class="op">=</span> <span class="st">"raw"</span>,
     source_object <span class="op">=</span> <span class="va">quetzio_examples</span><span class="op">$</span><span class="va">questions_lists</span><span class="op">$</span><span class="va">gender_update</span>,
     module_id <span class="op">=</span> <span class="st">"updating_labels"</span>
   <span class="op">)</span>,
-    quetzio_2nd <span class="op">=</span> <span class="va"><a href="../reference/quetzio_server.html">quetzio_server</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
+    quetzio_2nd <span class="op">=</span> <span class="fu"><a href="../reference/Quetzio_create.html">Quetzio_create</a></span><span class="op">(</span>
     source_method <span class="op">=</span> <span class="st">"raw"</span>,
     source_object <span class="op">=</span> <span class="va">quetzio_examples</span><span class="op">$</span><span class="va">questions_lists</span><span class="op">$</span><span class="va">simple_quetzio</span>,
     module_id <span class="op">=</span> <span class="st">"second_in_link"</span>
@@ -226,22 +226,23 @@
 <span class="co"># Its value need to be passed in a reactive object, though:</span>
 <span class="va">gender_react</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">gender</span><span class="op">)</span>
 
-<span class="co"># after that - just make a call in your server to the method</span>
-<span class="va">quetzio_link</span><span class="op">$</span><span class="fu">update_labels</span><span class="op">(</span>
-  quetzio_name <span class="op">=</span> <span class="st">"gender"</span>, <span class="co"># specify the name of questionnare</span>
-  tigger <span class="op">=</span> <span class="va">gender_react</span>,   <span class="co"># pass reactive (without parentheses!)</span>
+<span class="co"># after that - just make a call in your server</span>
+<span class="fu"><a href="../reference/Quetzio_label_update.html">Quetzio_label_update</a></span><span class="op">(</span>
+  Quetzio <span class="op">=</span> <span class="va">quetzio_link</span>,
+  name <span class="op">=</span> <span class="st">"gender"</span>, <span class="co"># specify the name of questionnare</span>
+  trigger <span class="op">=</span> <span class="va">gender_react</span>,   <span class="co"># pass reactive (without parentheses!)</span>
   source_method <span class="op">=</span> <span class="st">"raw"</span>,   <span class="co"># specify source method and other args</span>
   source_object <span class="op">=</span> <span class="va">quetzio_examples</span><span class="op">$</span><span class="va">label_update</span><span class="op">$</span><span class="va">gender_update</span>
 <span class="op">)</span></code></pre></div>
 <p>You can also make something more complicated - for example get value to update labels of second (or any following questionnaires) on basis of answer of previous questionnaire.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">quetzio_link</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/quetzio_link_server.html">quetzio_link_server</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
-  gender_question <span class="op">=</span> <span class="va"><a href="../reference/quetzio_server.html">quetzio_server</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
+<code class="sourceCode R"><span class="va">quetzio_link</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QuetzioLink_create.html">QuetzioLink_create</a></span><span class="op">(</span>
+  gender_question <span class="op">=</span> <span class="fu"><a href="../reference/Quetzio_create.html">Quetzio_create</a></span><span class="op">(</span>
    source_method <span class="op">=</span> <span class="st">"raw"</span>,
    source_object <span class="op">=</span> <span class="va">gender_1_item_source</span>,
    module_id <span class="op">=</span> <span class="st">"single_question"</span>
   <span class="op">)</span>,
-  gender_update <span class="op">=</span> <span class="va"><a href="../reference/quetzio_server.html">quetzio_server</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
+  gender_update <span class="op">=</span> <span class="fu"><a href="../reference/Quetzio_create.html">Quetzio_create</a></span><span class="op">(</span>
    source_method <span class="op">=</span> <span class="st">"raw"</span>,
    source_object <span class="op">=</span> <span class="va">quetzio_examples</span><span class="op">$</span><span class="va">questions_lists</span><span class="op">$</span><span class="va">gender_update</span>,
    module_id <span class="op">=</span> <span class="st">"update_gender"</span>
@@ -253,13 +254,12 @@
   <span class="va">quetzio_link</span><span class="op">$</span><span class="fu">answers</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">gender_question</span><span class="op">$</span><span class="va">gender_item</span>
 <span class="op">}</span><span class="op">)</span>
 
-<span class="va">output</span><span class="op">$</span><span class="va">reactive_val</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPrint.html" class="external-link">renderPrint</a></span><span class="op">(</span><span class="fu">gender_react</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-
 <span class="co"># update labels method call</span>
-<span class="va">quetzio_link</span><span class="op">$</span><span class="fu">update_labels</span><span class="op">(</span>
+<span class="fu"><a href="../reference/Quetzio_label_update.html">Quetzio_label_update</a></span><span class="op">(</span>
+  Quetzio <span class="op">=</span> <span class="va">quetzio_link</span>,
   <span class="co"># you need to provide the name of the quetzio_server in link</span>
   <span class="co"># where you need to update labels</span>
-  quetzio_name <span class="op">=</span> <span class="st">"gender_update"</span>,
+  name <span class="op">=</span> <span class="st">"gender_update"</span>,
   <span class="co"># the trigger needs to be reactive, but without the parentheses</span>
   trigger <span class="op">=</span> <span class="va">gender_react</span>,
   source_method <span class="op">=</span> <span class="st">"raw"</span>,
@@ -269,11 +269,12 @@
 <div class="section level3">
 <h3 id="update-values-of-one-questionnaire-of-the-link">Update values of one questionnaire of the link<a class="anchor" aria-label="anchor" href="#update-values-of-one-questionnaire-of-the-link"></a>
 </h3>
-<p>Method is mostly identical to <code>quetzio_server$update_values()</code>, though you need to also provide <code>quetzio_name</code> argument to choose which questionnaire values you want to update.</p>
+<p>Method is mostly identical to <em>Quetzio_value_update</em>, though you need to also provide <em>name</em> argument to choose which questionnaire values you want to update.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># update values on button press</span>
 <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html" class="external-link">observeEvent</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">update_vals</span>, <span class="op">{</span>
-  <span class="va">quetzio_link</span><span class="op">$</span><span class="fu">update_values</span><span class="op">(</span>
+  <span class="fu"><a href="../reference/Quetzio_value_update.html">Quetzio_value_update</a></span><span class="op">(</span>
+    Quetzio <span class="op">=</span> <span class="va">quetzio_link</span>,
     <span class="co"># you need to provide quetzio name in the link to update</span>
     quetzio_name <span class="op">=</span> <span class="st">"value_update"</span>,
     <span class="co"># you can use answers from one questionnaire to update another, though</span>

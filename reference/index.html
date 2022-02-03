@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">shiny.quetzio</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.1.2</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.1.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,9 +46,9 @@
     </div>
 
     <div class="section level2">
-      <h2 id="generate-single-questionnaire">Generate single questionnaire<a class="anchor" aria-label="anchor" href="#generate-single-questionnaire"></a></h2>
+      <h2 id="generate-quetzio-and-quetziolink">Generate Quetzio and QuetzioLink<a class="anchor" aria-label="anchor" href="#generate-quetzio-and-quetziolink"></a></h2>
       
-      
+      <p class="section-desc"></p><p>Functions to generate and nest into UI of your ShinyApp Quetzio and QuetzioLink objects</p>
 
       
     </div><div id="" class="section level2">
@@ -58,33 +58,22 @@
 
       <dl><dt>
           
-          <code><a href="quetzio_server.html">quetzio_server</a></code> 
+          <code><a href="Quetzio_create.html">Quetzio_create()</a></code> 
         </dt>
-        <dd>Quetzio Server class</dd>
+        <dd>Create new Quetzio object</dd>
       </dl><dl><dt>
           
-          <code><a href="quetzio_UI.html">quetzio_UI()</a></code> 
+          <code><a href="Quetzio_UI.html">Quetzio_UI()</a></code> 
         </dt>
         <dd>Create UI of your questionnaire</dd>
-      </dl></div><div class="section level2">
-      <h2 id="link-multiple-questionnaires-together">Link multiple questionnaires together<a class="anchor" aria-label="anchor" href="#link-multiple-questionnaires-together"></a></h2>
-      
-      
-
-      
-    </div><div id="" class="section level2">
-      
-      
-      
-
-      <dl><dt>
-          
-          <code><a href="quetzio_link_server.html">quetzio_link_server</a></code> 
-        </dt>
-        <dd>Quetzio Link Server class</dd>
       </dl><dl><dt>
           
-          <code><a href="quetzio_link_UI.html">quetzio_link_UI()</a></code> 
+          <code><a href="QuetzioLink_create.html">QuetzioLink_create()</a></code> 
+        </dt>
+        <dd>Create linked Quetzio</dd>
+      </dl><dl><dt>
+          
+          <code><a href="QuetzioLink_UI.html">QuetzioLink_UI()</a></code> 
         </dt>
         <dd>Create UI for linked questionnaires</dd>
       </dl></div><div class="section level2">
@@ -100,19 +89,66 @@
 
       <dl><dt>
           
+          <code><a href="create_Quetzio_source.html">create_Quetzio_source()</a></code> 
+        </dt>
+        <dd>Create data.frame source compatible with shiny.survey</dd>
+      </dl><dl><dt>
+          
           <code><a href="create_desc_source.html">create_desc_source()</a></code> 
         </dt>
         <dd>Create data.frame for optional instruction and descriptions compatible with shiny.survey.</dd>
       </dl><dl><dt>
           
-          <code><a href="create_quetzio_source.html">create_quetzio_source()</a></code> 
-        </dt>
-        <dd>Create data.frame source compatible with shiny.survey</dd>
-      </dl><dl><dt>
-          
           <code><a href="quetzio_examples.html">quetzio_examples</a></code> 
         </dt>
         <dd>Example source configurations for questionnaires</dd>
+      </dl></div><div class="section level2">
+      <h2 id="generics-to-help-manage-quetzio-and-quetziolink-objects">Generics to help manage Quetzio and QuetzioLink objects<a class="anchor" aria-label="anchor" href="#generics-to-help-manage-quetzio-and-quetziolink-objects"></a></h2>
+      
+      <p class="section-desc"></p><p>Functions providing simple way to interact with created questionnaires</p>
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="Quetzio_label_update.html">Quetzio_label_update()</a></code> 
+        </dt>
+        <dd>Update Quetzio labels triggered by reactive value change</dd>
+      </dl><dl><dt>
+          
+          <code><a href="Quetzio_value_update.html">Quetzio_value_update()</a></code> 
+        </dt>
+        <dd>Update Quetzio selections based on external object</dd>
+      </dl><dl><dt>
+          
+          <code><a href="Quetzio_get_df.html">Quetzio_get_df()</a></code> 
+        </dt>
+        <dd>Get answers from Quetzio in the form of data.frame</dd>
+      </dl></div><div class="section level2">
+      <h2 id="r-classes">R6 classes<a class="anchor" aria-label="anchor" href="#r-classes"></a></h2>
+      
+      <p class="section-desc"></p><p>Classes working under the hood. Learning how to access the public fields of these for more advanced reactivity.</p>
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="Quetzio.html">Quetzio</a></code> 
+        </dt>
+        <dd>Quetzio server class</dd>
+      </dl><dl><dt>
+          
+          <code><a href="QuetzioLink.html">QuetzioLink</a></code> 
+        </dt>
+        <dd>Quetzio Link Server class</dd>
       </dl></div><div class="section level2">
       <h2 id="custom-shinyinputs">Custom shinyInputs<a class="anchor" aria-label="anchor" href="#custom-shinyinputs"></a></h2>
       
