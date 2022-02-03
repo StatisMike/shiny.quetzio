@@ -1,17 +1,17 @@
 #' Create UI for linked questionnaires
 #'
 #' @param link_id Character string holding ID for the link module. Needs to be the
-#' same as one provided in 'quetzio_link_server'
+#' same as one provided in 'QuetzioLink'
 #'
 #' @import shiny
 #' @export
-#' @seealso quetzio_link_server
+#' @seealso QuetzioLink
 #'
 
-quetzio_link_UI <- function(link_id) {
+QuetzioLink_UI <- function(link_id) {
 
   ns <- NS(link_id)
-    uiOutput(ns("quetzio_link_UI"))
+    uiOutput(ns("QuetzioLink_UI"))
 }
 
 
@@ -19,18 +19,18 @@ quetzio_link_UI <- function(link_id) {
 #' @docType class
 #'
 #' @description Create R6-based server module to generate and hold the state of
-#' multiple linked 'quetzio_server' objects
+#' multiple linked 'Quetzio' objects
 #'
 #' @import R6
 #' @import shiny
-#' @seealso quetzio_server
-#' @seealso quetzio_link_UI
+#' @seealso Quetzio
+#' @seealso QuetzioLink_UI
 #' @export
 #'
 
 
-quetzio_link_server <- R6::R6Class(
-  "quetzio_link_server",
+QuetzioLink <- R6::R6Class(
+  "QuetzioLink",
   private = list(
 
     # names of the linked survey questionnaires
@@ -58,18 +58,18 @@ quetzio_link_server <- R6::R6Class(
     #' linked questionnaires
     answers = NULL,
 
-    #' @field quetzio_list reactiveValues holding the linked 'quetzio_server's
+    #' @field quetzio_list reactiveValues holding the linked 'Quetzio's
     quetzio_list = NULL,
 
 
-    #' @description Initialization of the 'quetzio_link_server' object
+    #' @description Initialization of the 'QuetzioLink' object
     #'
-    #' @param ... 'quetzio_server' objects that are going to be connected by the
+    #' @param ... 'Quetzio' objects that are going to be connected by the
     #' link. They are all needed to be named - with the names providing the path
     #' to the answers of their questions.
-    #' Moreover, they need to be in initialized state: \code{quetzio_server$new(...)}
+    #' Moreover, they need to be in initialized state: \code{Quetzio$new(...)}
     #' @param link_id character specifying the module ID of created object. Needs
-    #' to be identical to the one specified inside every 'quetzio_server' objects
+    #' to be identical to the one specified inside every 'Quetzio' objects
     #' provided to the object.
     #' @param output_gsheet logical: do you wish to save the answers automatically
     #' to the googlesheet. If TRUE, the 'output_gsheet_id' and 'output_gsheet_sheetname'
@@ -93,10 +93,10 @@ quetzio_link_server <- R6::R6Class(
     #'  ui <- fluidPage(
     #'    column(6, align = "center",
     #'           # bind the UI with correct link_id
-    #'           quetzio_link_UI("my_quetzio_link")
+    #'           QuetzioLink_UI("my_quetzio_link")
     #'    ),
     #'    column(6,
-    #'           h2("State of", tags$i("quetzio_link_server")),
+    #'           h2("State of", tags$i("QuetzioLink")),
     #'           h3("Completion rate"),
     #'           verbatimTextOutput("quetzio_completion"),
     #'           h3("Error messages?"),
@@ -109,9 +109,9 @@ quetzio_link_server <- R6::R6Class(
     #'  server <- function(input, output, session) {
     #'
     #'    # initialize new quetzio link
-    #'    linked_questionnaires <- quetzio_link_server$new(
-    #'      # initialize quetzio_servers within it (give them names!)
-    #'      quetzio_first = quetzio_server$new(
+    #'    linked_questionnaires <- QuetzioLink$new(
+    #'      # initialize Quetzios within it (give them names!)
+    #'      quetzio_first = Quetzio$new(
     #'        source_method = "raw",
     #'        source_object = quetzio_examples$questions_lists$link_quetzio_1,
     #'        desc_object = quetzio_examples$description_lists$link_quetzio_1,
@@ -120,7 +120,7 @@ quetzio_link_server <- R6::R6Class(
     #'          "quetzio_list" = "text-align: left; margin-left: 35%;"
     #'      )
     #'      ),
-    #'      quetzio_second = quetzio_server$new(
+    #'      quetzio_second = Quetzio$new(
     #'        source_method = "raw",
     #'        source_object = quetzio_examples$questions_lists$link_quetzio_2,
     #'        desc_object = quetzio_examples$description_lists$link_quetzio_2,
@@ -129,7 +129,7 @@ quetzio_link_server <- R6::R6Class(
     #'          "shiny-options-group" = "text-align: left; margin-left: 45%;"
     #'        )
     #'      ),
-    #'      quetzio_third = quetzio_server$new(
+    #'      quetzio_third = Quetzio$new(
     #'        source_method = "raw",
     #'        source_object = quetzio_examples$questions_lists$link_quetzio_3,
     #'        desc_object = quetzio_examples$description_lists$link_quetzio_3,
@@ -152,8 +152,8 @@ quetzio_link_server <- R6::R6Class(
     #'}
     #'
     initialize = function(
-      link_id,
       ...,
+      link_id,
       output_gsheet = FALSE,
       output_gsheet_id = NULL,
       output_gsheet_sheetname = NULL
@@ -161,7 +161,7 @@ quetzio_link_server <- R6::R6Class(
 
       self$link_id <- link_id
 
-      # catching the names of the provided quetzio_server objects
+      # catching the names of the provided Quetzio objects
       args <- match.call(expand.dots = FALSE)
       private$quetzio_names <- names(args$...)
 
@@ -241,18 +241,18 @@ quetzio_link_server <- R6::R6Class(
     #'                   selected = "NI"),
     #'    tags$hr(),
     #'    # quetzio to update labels
-    #'    quetzio_link_UI("labels_link")
+    #'    QuetzioLink_UI("labels_link")
     #'  )
     #'
     #'  server <- function(input, output, session) {
     #'
-    #'    quetzio_link <- quetzio_link_server$new(
-    #'      gender = quetzio_server$new(
+    #'    quetzio_link <- QuetzioLink$new(
+    #'      gender = Quetzio$new(
     #'        source_method = "raw",
     #'        source_object = quetzio_examples$questions_lists$gender_update,
     #'        module_id = "updating_labels"
     #'      ),
-    #'      quetzio_2nd = quetzio_server$new(
+    #'      quetzio_2nd = Quetzio$new(
     #'        source_method = "raw",
     #'        source_object = quetzio_examples$questions_lists$simple_quetzio,
     #'        module_id = "second_in_link"
@@ -264,7 +264,7 @@ quetzio_link_server <- R6::R6Class(
     #'
     #'    # update labels method call
     #'    quetzio_link$update_labels(
-    #'      # you need to provide the name of the quetzio_server in link
+    #'      # you need to provide the name of the Quetzio in link
     #'      # where you need to update labels
     #'      quetzio_name = "gender",
     #'      # the trigger needs to be reactive, but without the parentheses
@@ -320,32 +320,32 @@ quetzio_link_server <- R6::R6Class(
     #'    # first questionnaire to get values from
     #'    column(6,
     #'           h1("Finish first questionnaire"),
-    #'           quetzio_UI("first_questionnaire")
+    #'           Quetzio_UI("first_questionnaire")
     #'    ),
     #'    # quetzio link to update values
     #'    column(6,
     #'           h1("Update values of quetzio link!"),
     #'           actionButton("update_vals", "Update values"),
     #'           tags$hr(),
-    #'           quetzio_link_UI("updating_link")
+    #'           QuetzioLink_UI("updating_link")
     #'    )
     #'  )
     #'
     #'  server <- function(input, output, session) {
     #'
-    #'    quetzio_1st <- quetzio_server$new(
+    #'    quetzio_1st <- Quetzio$new(
     #'      source_method = "raw",
     #'      source_object = quetzio_examples$questions_lists$simple_quetzio,
     #'      module_id = "first_questionnaire"
     #'    )
     #'
-    #'    quetzio_link <- quetzio_link_server$new(
-    #'      value_update = quetzio_server$new(
+    #'    quetzio_link <- QuetzioLink$new(
+    #'      value_update = Quetzio$new(
     #'        source_method = "raw",
     #'        source_object = quetzio_examples$questions_lists$simple_quetzio,
     #'        module_id = "first_in_link"
     #'      ),
-    #'      another_one = quetzio_server$new(
+    #'      another_one = Quetzio$new(
     #'        source_method = "raw",
     #'        source_object = quetzio_examples$questions_lists$link_quetzio_2,
     #'        module_id = "second_in_link"
@@ -379,3 +379,42 @@ quetzio_link_server <- R6::R6Class(
   )
 )
 
+
+#' Create linked Quetzio
+#' 
+#' @param ... 'Quetzio' objects that are going to be connected by the
+#' link. They are all needed to be named - with the names providing the path
+#' to the answers of their questions.
+#' Moreover, they need to be in initialized state: \code{Quetzio$new(...)}
+#' @param link_id character specifying the module ID of created object. Needs
+#' to be identical to the one specified inside every 'Quetzio' objects
+#' provided to the object.
+#' @param output_gsheet logical: do you wish to save the answers automatically
+#' to the googlesheet. If TRUE, the 'output_gsheet_id' and 'output_gsheet_sheetname'
+#' arguments need to be specified. Defaults to FALSE
+#' @param output_gsheet_id id of the output googlesheet file
+#' @param output_gsheet_sheetname name of the output spreadsheet
+#'
+#' @return QuetzioLink object
+#' @example inst/examples/QuetzioLink_create.R
+#' @export
+#' 
+
+QuetzioLink_create <- function(
+  ...,
+  link_id,
+  output_gsheet = FALSE,
+  output_gsheet_id = NULL,
+  output_gsheet_sheetname = NULL
+) {
+  
+  return(
+    QuetzioLink$new(
+      ...,
+      link_id = link_id,
+      output_gsheet = output_gsheet,
+      output_gsheet_id = output_gsheet_id,
+      output_gsheet_sheetname = output_gsheet_sheetname
+    )
+  )
+}

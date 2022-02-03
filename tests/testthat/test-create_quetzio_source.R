@@ -1,6 +1,6 @@
 test_that("Create question source to df works", {
   
-  questions_source <- create_quetzio_source(
+  questions_source <- create_Quetzio_source(
     method = "df"
   )
   
@@ -30,7 +30,7 @@ test_that("Create question source to gsheets works", {
   })
   
   
-  questions_id <- create_quetzio_source(
+  questions_id <- create_Quetzio_source(
     method = "gsheet"
   )
   

@@ -113,7 +113,7 @@
 #'
 #' @export
 
-create_quetzio_source <- function(
+create_Quetzio_source <- function(
   method = "df",
   gsheet_id = NULL,
   gsheet_name = NULL,

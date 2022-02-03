@@ -11,7 +11,7 @@ test_that("Creating items and their descriptions from googlesheet works", {
   
   gsheet_server <- function(input, output, session) {
     
-    gsheet_quetzio <- quetzio_server$new(
+    gsheet_quetzio <- Quetzio_create(
       source_method = "gsheet",
       source_gsheet_id = Sys.getenv("QUETZIO_SS"),
       source_gsheet_sheetname = "Questions",

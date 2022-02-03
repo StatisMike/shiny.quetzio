@@ -38,20 +38,32 @@ devtools::install_github("StatisMike/shiny.quetzio")
 ## Main features
 
 At the current stage of development the `shiny.quetzio` survey
-generation is handled mainly by tow `R6` classes used in server and
-corresponding functions to bind the UI in your shinyApp:
+generation is handled mainly by two `R6` classes used in server,
+corresponding functions to bind the UI in your shinyApp and some helper
+functions.
 
--   `quetzio_server` to create single questionnaire and `quetzio_UI` to
-    input the UI of the questionnaire. Questionnaires at the moment
-    handles these type of inputs:
+-   `Quetzio` to create single questionnaire (you can create it with
+    `Quetzio_create()` function) and `Quetzio_UI` to input the UI of the
+    questionnaire. Questionnaires at the moment handles these type of
+    inputs:
+
     -   `textInput`
     -   `numericInput`
     -   `selectizeInput`
     -   `radioButtons`
     -   `likertRadioButtons` (custom input type - for more information
         read the corresponding subsection of “Other features” section)
--   `quetzio_link_server` to link multiple semi-independent
-    questionnaires and `quetzio_link_UI` to bind the connected UI.
+
+-   `QuetzioLink` to link multiple `Quetzio` objects (you can create it
+    with `QuetzioLink_create()` function) and `QuetzioLink_UI` to bind
+    the connected UI.
+
+-   Helper generic functions that work with both `Quetzio` and
+    `QuetzioLink` objects:
+
+    -   `Quetzio_label_update()`
+    -   `Quetzio_value_update()`
+    -   `Quetzio_get_df()`
 
 > Choosing `numericInput` for item type, the object that will be
 > generated is actually custom input widget: `numInput`. It allows no
@@ -61,20 +73,20 @@ corresponding functions to bind the UI in your shinyApp:
 
 It’s usage is very straigtforward:
 
-1.  Simply add a `quetzio_server` object in your shinyApp `server()`
-    call, and `quetzio_UI` in your `ui`:
+1.  Simply add a `Quetzio` object in your shinyApp `server()` call, and
+    `Quetzio_UI` in your `ui`:
 
 ``` r
 ui <- fluidPage(
-  quetzio_UI("yaml_module"),
-  quetzio_UI("gsheet_module")
+  Quetzio_UI("yaml_module"),
+  Quetzio_UI("gsheet_module")
 )
 
 server <- function(input, output, session) {
 
 # YAML generated survey with output automatically saved to googlesheets
 
-yaml_quetzio <- quetzio_server$new(
+yaml_quetzio <- Quetzio_create(
   source_method = "yaml",
   source_yaml = "some_yaml",
   output_gsheet_id = "googlesheet_id",
@@ -85,7 +97,7 @@ yaml_quetzio <- quetzio_server$new(
 # survey generated from googlesheet source, with output automatically saved to
 # googlesheets
 
-gsheet_quetzio <- quetzio_server$new(
+gsheet_quetzio <- Quetzio_create(
   source_method = "gsheet",
   source_gsheet_id = "googlesheet_id",
   source_gsheet_sheetname = "sheet_name_with_questions",
@@ -119,12 +131,11 @@ gsheet_quetzio <- quetzio_server$new(
 ```
 
 3.  There is also a possibility to link your questionnaires in a way
-    that they will appear one after another with `quetzio_link_server`
-    R6 class:
+    that they will appear one after another with `QuetzioLink` R6 class:
 
 ``` r
 ui <- fluidPage(
-  quetzio_link_UI("modules_link")
+  QuetzioLink_UI("modules_link")
 )
 
 server <- function(input, output, session) {
@@ -134,13 +145,13 @@ server <- function(input, output, session) {
 # (though it is possible to set - their internal reactivity is independent
 # to the quetzio_link in that regard)
 
-  quetzio_link <- quetzio_link_server$new(
-    yaml_quetzio = quetzio_server$new(
+  quetzio_link <- QuetzioLink_create(
+    yaml_quetzio = Quetzio_create(
       source_method = "yaml",
       source_yaml = "some_yaml",
       module_id = "yaml_module"
     ),
-    gsheet_quetzio = quetzio_server$new(
+    gsheet_quetzio = Quetzio_create(
       source_method = "gsheet",
       source_gsheet_id = "googlesheet_id",
       source_gsheet_sheetname = "sheet_name_with_questions",
@@ -262,8 +273,8 @@ functional input for questions with Likert-like scoring scale
 > no way to update the value after rendering with
 > `updateLikertRadioButtons` function. It is planned to implement this
 > sometime in the future. For the time being, if you plan to use it
-> outside of `quetzio_server` and update its value reactively, it is
-> advised to do it using `renderUI`.
+> outside of `Quetzio` and update its value reactively, it is advised to
+> do it using `renderUI`.
 
 ## discoRd kudos
 
