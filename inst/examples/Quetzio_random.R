@@ -10,7 +10,7 @@ if (interactive()) {
   ui <- fluidPage(
     column(6, align = "center",
            # bind the UI with correct module_id
-           quetzio_UI("my_quetzio")
+           Quetzio_UI("my_quetzio")
     ),
     column(6,
            h2("State of", tags$i("quetzio_server")),
@@ -19,20 +19,21 @@ if (interactive()) {
            h3("Error messages?"),
            verbatimTextOutput("quetzio_message"),
            h3("Answers"),
-           verbatimTextOutput("quetzio_answers")
+           verbatimTextOutput("quetzio_answers"),
+           h3("Order of items"),
+           verbatimTextOutput("quetzio_order")
     )
   )
   
   server <- function(input, output, session) {
     
     # initialize new quetzio
-    questionnaire <- quetzio_server$new(
+    questionnaire <- Quetzio_create(
       # load questions from R object
       source_method = "raw",
-      # provide incomplete source to merge with defaults
-      source_object = quetzio_examples$questions_lists$simple_default,
-      # add default values
-      source_object_default = quetzio_examples$default_config$simple_default,
+      source_object = quetzio_examples$questions_lists$simple_quetzio,
+      # optionally add descriptions
+      desc_object = quetzio_examples$description_lists$simple_quetzio,
       # use the same module_id as in UI binding
       module_id = "my_quetzio",
       # custom_css to give margin but not center options explicitly
@@ -41,7 +42,9 @@ if (interactive()) {
         "shiny-options-group" = "text-align: left; margin-left: 45%"
       ),
       # you can also optionally give div unique id - useful for external css styling
-      div_id = "my_questio_div_id"
+      div_id = "my_questio_div_id",
+      # randomize order of items
+      randomize_order = TRUE
     )
     
     # render objects to show your questionnaire status
@@ -51,6 +54,9 @@ if (interactive()) {
       renderPrint(questionnaire$message())
     output$quetzio_answers <-
       renderPrint(questionnaire$answers())
+    output$quetzio_order <-
+      renderPrint(questionnaire$order)
+    
   }
   
   shinyApp(ui, server)

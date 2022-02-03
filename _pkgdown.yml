@@ -15,19 +15,31 @@ navbar:
      - text: Link multiple questionnaires together
        href: articles/link_quetzio.html
 reference:
-- title: Generate single questionnaire
+- title: Generate Quetzio and QuetzioLink
+  desc: Functions to generate and nest into UI of your ShinyApp Quetzio and QuetzioLink objects
 - contents:
-  - quetzio_server
-  - quetzio_UI
-- title: Link multiple questionnaires together
-- contents:
-  - quetzio_link_server
-  - quetzio_link_UI
+  - Quetzio_create
+  - Quetzio_UI
+  - QuetzioLink_create
+  - QuetzioLink_UI
 - title: Source creation and examples
   desc:  Create exemplary sources and see examples of sources
 - contents:
   - starts_with("create_")
   - quetzio_examples
+- title: Generics to help manage Quetzio and QuetzioLink objects
+  desc: Functions providing simple way to interact with created questionnaires
+- contents:
+  - Quetzio_label_update
+  - Quetzio_value_update
+  - Quetzio_get_df
+- title: R6 classes
+  desc: >- 
+   Classes working under the hood. Learning how to access the public fields
+   of these for more advanced reactivity.
+- contents:
+  - Quetzio
+  - QuetzioLink
 - title: Custom shinyInputs
   desc: Customized inputs to be used in created questionnaires, though you can also use them externally
 - contents:
@@ -39,5 +51,5 @@ reference:
    texts ion the fly. If you want to add support for language, it would be best
    to check our GitHub repo and contribute by changing 'lang.R' file.
 - contents:
-   - quetzio_txt
+  - quetzio_txt
 
