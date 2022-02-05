@@ -12,7 +12,7 @@ multiple linked 'Quetzio' objects"><!-- mathjax --><script src="https://cdnjs.cl
     
     <a class="navbar-brand me-2" href="../index.html">shiny.quetzio</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.1.3</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.1.4</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -107,7 +107,8 @@ linked questionnaires</p></dd>
   <span class="va">link_id</span>,
   output_gsheet <span class="op">=</span> <span class="cn">FALSE</span>,
   output_gsheet_id <span class="op">=</span> <span class="cn">NULL</span>,
-  output_gsheet_sheetname <span class="op">=</span> <span class="cn">NULL</span>
+  output_gsheet_sheetname <span class="op">=</span> <span class="cn">NULL</span>,
+  questionee_id <span class="op">=</span> <span class="cn">NULL</span>
 <span class="op">)</span></code></pre></div><p></p></div>
 </div>
 
@@ -138,6 +139,12 @@ arguments need to be specified. Defaults to FALSE</p></dd>
 
 <dt><code>output_gsheet_sheetname</code></dt>
 <dd><p>name of the output spreadsheet</p></dd>
+
+
+<dt><code>questionee_id</code></dt>
+<dd><p>reactive object containing ID of the questionee to
+append to the answers list during its retrieval with <code>Quetzio_get_df</code> or sending
+to googlesheets. Optional.</p></dd>
 
 
 </dl><p></p></div>
