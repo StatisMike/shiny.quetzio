@@ -191,10 +191,16 @@
 
             if(isTRUE(as.logical(private$output_gsheet))){
 
-            .save_new_answers(form_data(),
-                              private$output_ss,
-                              private$output_sheet)
-
+              if(is.null(private$questionee_id)) {
+                .save_new_answers(form_data(),
+                                  private$output_ss,
+                                  private$output_sheet)
+              } else {
+                .save_new_answers(c(list(`.id` = private$questionee_id()),
+                                    form_data()),
+                                  private$output_ss,
+                                  private$output_sheet)
+              }
             }
 
             self$is_done(TRUE)
@@ -302,13 +308,26 @@
         # save the answers into googlesheet if specified
         if(isTRUE(as.logical(private$output_gsheet)) && self$completion() == 1){
 
-          .save_new_answers(
-            .merge_linked_answers_to_df(
-              answers_object = self$answers(),
-              quetzio_names = private$quetzio_names
-            ),
-            private$output_gsheet_id, private$output_gsheet_sheetname)
-
+          # if questionee_id is provided, marge it with 
+          if (is.null(private$questionee_id) || is.null(private$questionee_id())) {
+            .save_new_answers(
+              .merge_linked_answers_to_df(
+                answers_object = self$answers(),
+                quetzio_names = private$quetzio_names
+              ),
+              private$output_gsheet_id, 
+              private$output_gsheet_sheetname)
+            
+          } else {
+            .save_new_answers(
+              cbind(data.frame(`.id` = private$questionee_id()),
+                    .merge_linked_answers_to_df(
+                      answers_object = self$answers(),
+                      quetzio_names = private$quetzio_names
+                    )),
+              private$output_gsheet_id, 
+              private$output_gsheet_sheetname)
+          }
         }
       })
     })

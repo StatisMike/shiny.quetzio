@@ -42,6 +42,7 @@ Quetzio <- R6::R6Class(
     output_gsheet = NULL,
     output_ss = NULL,
     output_sheet = NULL,
+    questionee_id = NULL,
     css = NULL,
     render_ui = NULL,
     language = NULL,
@@ -127,6 +128,9 @@ Quetzio <- R6::R6Class(
     #' @param output_gsheet_id id of the output googlesheet file. If not specified,
     #' the same googlesheet as for 'source' will be used
     #' @param output_gsheet_sheetname name of the output spreadsheet
+    #' @param questionee_id reactive object containing ID of the questionee to 
+    #' append to the answers list during its retrieval with `Quetzio_get_df` or sending
+    #' to googlesheets. Optional.
     #' @param module_id character string with unique id for the module. If not
     #' specified, it will be automatically generated
     #' @param div_id character string with unique id for the created div. If not
@@ -249,14 +253,15 @@ Quetzio <- R6::R6Class(
       source_gsheet_sheetname = NULL,
       source_object = NULL,
       source_object_default = NULL,
-      output_gsheet = FALSE,
-      output_gsheet_id = NULL,
-      output_gsheet_sheetname = NULL,
       desc_yaml = NULL,
       desc_gsheet_id = NULL,
       desc_gsheet_sheetname = NULL,
       desc_object = NULL,
       randomize_order = FALSE,
+      output_gsheet = FALSE,
+      output_gsheet_id = NULL,
+      output_gsheet_sheetname = NULL,
+      questionee_id = NULL,
       module_id = NULL,
       div_id = NULL,
       custom_css = NULL,
@@ -463,6 +468,15 @@ Quetzio <- R6::R6Class(
       self$is_done <- reactiveVal(FALSE)
       self$message <- reactiveVal()
       self$answers <- reactiveVal()
+      
+      # get the questionee ID if provided
+      if (!is.null(questionee_id)) {
+        if ("reactive" %in% class(questionee_id)) {
+          private$questionee_id <- questionee_id 
+        } else{
+          stop("Object provided to `questionee_id` should be a reactive")
+        }
+      }
 
       # value showing if the UI output should be rendered
       private$render_ui <- reactiveVal(render_ui)
@@ -479,7 +493,16 @@ Quetzio <- R6::R6Class(
     get_answers_df = function() {
 
       if (isTRUE(self$is_done())) {
-        .sanitize_answers(self$answers())
+        df_answers <- .sanitize_answers(self$answers())
+        # if questionee id is present, append it to answers
+        if (!is.null(private$questionee_id)) {
+          df_answers <- cbind(
+            data.frame(`.id` = private$questionee_id()),
+            df_answers
+          )
+        }
+        return(df_answers)
+
       } else {
         stop("Questionnaire needs to be done to get the answers in the form of data.frame")
       }
@@ -661,6 +684,9 @@ Quetzio <- R6::R6Class(
 #' @param output_gsheet_id id of the output googlesheet file. If not specified,
 #' the same googlesheet as for 'source' will be used
 #' @param output_gsheet_sheetname name of the output spreadsheet
+#' @param questionee_id reactive object containing ID of the questionee to 
+#' append to the answers list during its retrieval with `Quetzio_get_df` or sending
+#' to googlesheets. Optional.
 #' @param module_id character string with unique id for the module. If not
 #' specified, it will be automatically generated
 #' @param div_id character string with unique id for the created div. If not
@@ -714,20 +740,21 @@ Quetzio <- R6::R6Class(
 #' Need to provide either `source_yaml_default` or `source_object_default`.
 #' 
 #' @return R6 object of class `Quetzio`
-#' @example inst/examples/Quetzio_create.R
 #' @export
 
 Quetzio_create <- function(
   source_method, module_id, source_yaml = NULL, source_yaml_default = NULL, 
   source_gsheet_id = NULL, source_gsheet_sheetname = NULL, source_object = NULL, 
   source_object_default = NULL, output_gsheet = FALSE, output_gsheet_id = NULL, 
-  output_gsheet_sheetname = NULL, desc_yaml = NULL, desc_gsheet_id = NULL, 
+  output_gsheet_sheetname = NULL, questionee_id = NULL,
+  desc_yaml = NULL, desc_gsheet_id = NULL, 
   desc_gsheet_sheetname = NULL, desc_object = NULL, randomize_order = FALSE, 
   div_id = NULL, custom_css = NULL, lang = "en", custom_txts = NULL,
   use_modal = TRUE, render_ui = TRUE, link_id = NULL) {
   
   args <- as.list(match.call())
-  
+  args[["questionee_id"]] <- questionee_id
+
   return(
     do.call(Quetzio$new, c(args))
   )

@@ -38,7 +38,9 @@ QuetzioLink <- R6::R6Class(
     # googlesheets specification
     output_gsheet = FALSE,
     output_gsheet_id = NULL,
-    output_gsheet_sheetname = NULL
+    output_gsheet_sheetname = NULL,
+    # optional id to append
+    questionee_id = NULL
 
   ),
   public = list(
@@ -76,7 +78,10 @@ QuetzioLink <- R6::R6Class(
     #' arguments need to be specified. Defaults to FALSE
     #' @param output_gsheet_id id of the output googlesheet file
     #' @param output_gsheet_sheetname name of the output spreadsheet
-    #'
+    #' @param questionee_id reactive object containing ID of the questionee to 
+    #' append to the answers list during its retrieval with `Quetzio_get_df` or sending
+    #' to googlesheets. Optional.
+    #' 
     #' @examples
     #'
     #' ## Only run example in interactive R sessions
@@ -156,7 +161,8 @@ QuetzioLink <- R6::R6Class(
       link_id,
       output_gsheet = FALSE,
       output_gsheet_id = NULL,
-      output_gsheet_sheetname = NULL
+      output_gsheet_sheetname = NULL,
+      questionee_id = NULL
     ) {
 
       self$link_id <- link_id
@@ -164,6 +170,15 @@ QuetzioLink <- R6::R6Class(
       # catching the names of the provided Quetzio objects
       args <- match.call(expand.dots = FALSE)
       private$quetzio_names <- names(args$...)
+      
+      # get the questionee ID if provided
+      if (!is.null(questionee_id)) {
+        if ("reactive" %in% class(questionee_id)) {
+          private$questionee_id <- questionee_id 
+        } else{
+          stop("Object provided to `questionee_id` should be a reactive")
+        }
+      }
 
       # modify the arguments to the quetzio_survey calls without evaluation
       uneval <- .modify_quetzio_arg(..., link_id = self$link_id)
@@ -199,7 +214,16 @@ QuetzioLink <- R6::R6Class(
     get_answers_df = function() {
 
       if (isTRUE(self$completion() == 1)) {
-        .merge_linked_answers_to_df(self$answers(), private$quetzio_names)
+        df_answers <- .merge_linked_answers_to_df(self$answers(), private$quetzio_names)
+        # if questionee id is present, append it to answers
+        if (!is.null(private$questionee_id)) {
+          df_answers <- cbind(
+            data.frame(`.id` = private$questionee_id()),
+            df_answers
+          )
+        }
+        return(df_answers)
+        
       } else {
         stop("All linked questionnaires needs to be done to get the answers in the form of data.frame")
       }
@@ -394,6 +418,9 @@ QuetzioLink <- R6::R6Class(
 #' arguments need to be specified. Defaults to FALSE
 #' @param output_gsheet_id id of the output googlesheet file
 #' @param output_gsheet_sheetname name of the output spreadsheet
+#' @param questionee_id reactive object containing ID of the questionee to 
+#' append to the answers list during its retrieval with `Quetzio_get_df` or sending
+#' to googlesheets. Optional.
 #'
 #' @return QuetzioLink object
 #' @example inst/examples/QuetzioLink_create.R
@@ -405,7 +432,8 @@ QuetzioLink_create <- function(
   link_id,
   output_gsheet = FALSE,
   output_gsheet_id = NULL,
-  output_gsheet_sheetname = NULL
+  output_gsheet_sheetname = NULL,
+  questionee_id = NULL
 ) {
   
   return(
@@ -414,7 +442,8 @@ QuetzioLink_create <- function(
       link_id = link_id,
       output_gsheet = output_gsheet,
       output_gsheet_id = output_gsheet_id,
-      output_gsheet_sheetname = output_gsheet_sheetname
+      output_gsheet_sheetname = output_gsheet_sheetname,
+      questionee_id = questionee_id
     )
   )
 }

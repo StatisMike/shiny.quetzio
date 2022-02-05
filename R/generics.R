@@ -131,11 +131,14 @@ Quetzio_value_update.QuetzioLink <- function(
 
 #' Get answers from Quetzio in the form of data.frame
 #' @param Quetzio object of class `Quetzio` or `Quetzio_link`
+#' @param name string indicating for which questionnaire the answers to get 
+#' in form of data.frame. Used with `QuetzioLink` objects - if left as NULL then, 
+#' you get single data.frame with answers of all questionnaires
 #' @export
 #' @return data.frame
 #' @rdname Quetzio_get_df
 
-Quetzio_get_df <- function(Quetzio) {
+Quetzio_get_df <- function(Quetzio, name = NULL) {
   UseMethod("Quetzio_get_df", Quetzio)
 }
 
@@ -156,7 +159,26 @@ Quetzio_get_df.Quetzio <- function(
 #' 
 
 Quetzio_get_df.QuetzioLink <- function(
-  Quetzio
+  Quetzio, name = NULL
 ) {
-  Quetzio$get_answers_df()
+  
+  if (is.null(name)) {
+    Quetzio$get_answers_df()
+  } else {
+    if (!name %in% names(Quetzio$quetzio_list)) {
+      stop(paste0("'name' argument should be a name of one of the linked Quetzio objects: '", 
+           paste(names(Quetzio$quetzio_list), collapse = "', '"), "'."))
+    } else {
+      # check the QuetzioLink questionee_id
+      questionee_id <- Quetzio$.__enclos_env__$private$questionee_id
+      if (is.null(questionee_id)) {
+        # if its null, return answers without any appending
+        Quetzio$quetzio_list[[name]]$get_answers_df()
+      } else {
+        # if it is set, return answers with questionee_id appended
+        cbind(data.frame(`.id` = questionee_id()),
+              Quetzio$quetzio_list[[name]]$get_answers_df())
+      }
+    }
+  }
 }
