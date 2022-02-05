@@ -246,14 +246,15 @@ Initializing the 'Quetzio' object
   source_gsheet_sheetname = NULL,
   source_object = NULL,
   source_object_default = NULL,
-  output_gsheet = FALSE,
-  output_gsheet_id = NULL,
-  output_gsheet_sheetname = NULL,
   desc_yaml = NULL,
   desc_gsheet_id = NULL,
   desc_gsheet_sheetname = NULL,
   desc_object = NULL,
   randomize_order = FALSE,
+  output_gsheet = FALSE,
+  output_gsheet_id = NULL,
+  output_gsheet_sheetname = NULL,
+  questionee_id = NULL,
   module_id = NULL,
   div_id = NULL,
   custom_css = NULL,
@@ -292,15 +293,6 @@ with \code{create_survey_source()}. Needed when \code{source_method == 'raw'}}
 items generated with source list. Only when \code{source_method == 'yaml'} or
 \code{source_method == 'raw'} and source object of class \code{list} is povided.}
 
-\item{\code{output_gsheet}}{logical: do you wish to save the answers automatically
-to the googlesheet. If TRUE, the 'output_gsheet_id' and 'output_gsheet_sheetname'
-arguments need to be specified. Defaults to FALSE}
-
-\item{\code{output_gsheet_id}}{id of the output googlesheet file. If not specified,
-the same googlesheet as for 'source' will be used}
-
-\item{\code{output_gsheet_sheetname}}{name of the output spreadsheet}
-
 \item{\code{desc_yaml}}{path to the optional instruction and item
 descriptions.}
 
@@ -315,6 +307,19 @@ of optional instruction and item descriptions.}
 
 \item{\code{randomize_order}}{logical: do you wish to randomize order in which the
 items will appear? Defaults to FALSE}
+
+\item{\code{output_gsheet}}{logical: do you wish to save the answers automatically
+to the googlesheet. If TRUE, the 'output_gsheet_id' and 'output_gsheet_sheetname'
+arguments need to be specified. Defaults to FALSE}
+
+\item{\code{output_gsheet_id}}{id of the output googlesheet file. If not specified,
+the same googlesheet as for 'source' will be used}
+
+\item{\code{output_gsheet_sheetname}}{name of the output spreadsheet}
+
+\item{\code{questionee_id}}{reactive object containing ID of the questionee to
+append to the answers list during its retrieval with \code{Quetzio_get_df} or sending
+to googlesheets. Optional.}
 
 \item{\code{module_id}}{character string with unique id for the module. If not
 specified, it will be automatically generated}

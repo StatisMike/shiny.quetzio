@@ -253,7 +253,8 @@ Initialization of the 'QuetzioLink' object
   link_id,
   output_gsheet = FALSE,
   output_gsheet_id = NULL,
-  output_gsheet_sheetname = NULL
+  output_gsheet_sheetname = NULL,
+  questionee_id = NULL
 )}\if{html}{\out{</div>}}
 }
 
@@ -276,6 +277,10 @@ arguments need to be specified. Defaults to FALSE}
 \item{\code{output_gsheet_id}}{id of the output googlesheet file}
 
 \item{\code{output_gsheet_sheetname}}{name of the output spreadsheet}
+
+\item{\code{questionee_id}}{reactive object containing ID of the questionee to
+append to the answers list during its retrieval with \code{Quetzio_get_df} or sending
+to googlesheets. Optional.}
 }
 \if{html}{\out{</div>}}
 }
