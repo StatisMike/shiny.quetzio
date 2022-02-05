@@ -9,7 +9,8 @@ QuetzioLink_create(
   link_id,
   output_gsheet = FALSE,
   output_gsheet_id = NULL,
-  output_gsheet_sheetname = NULL
+  output_gsheet_sheetname = NULL,
+  questionee_id = NULL
 )
 }
 \arguments{
@@ -29,6 +30,10 @@ arguments need to be specified. Defaults to FALSE}
 \item{output_gsheet_id}{id of the output googlesheet file}
 
 \item{output_gsheet_sheetname}{name of the output spreadsheet}
+
+\item{questionee_id}{reactive object containing ID of the questionee to
+append to the answers list during its retrieval with \code{Quetzio_get_df} or sending
+to googlesheets. Optional.}
 }
 \value{
 QuetzioLink object

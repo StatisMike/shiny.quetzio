@@ -6,14 +6,18 @@
 \alias{Quetzio_get_df.QuetzioLink}
 \title{Get answers from Quetzio in the form of data.frame}
 \usage{
-Quetzio_get_df(Quetzio)
+Quetzio_get_df(Quetzio, name = NULL)
 
 \method{Quetzio_get_df}{Quetzio}(Quetzio)
 
-\method{Quetzio_get_df}{QuetzioLink}(Quetzio)
+\method{Quetzio_get_df}{QuetzioLink}(Quetzio, name = NULL)
 }
 \arguments{
 \item{Quetzio}{object of class \code{Quetzio} or \code{Quetzio_link}}
+
+\item{name}{string indicating for which questionnaire the answers to get
+in form of data.frame. Used with \code{QuetzioLink} objects - if left as NULL then,
+you get single data.frame with answers of all questionnaires}
 }
 \value{
 data.frame

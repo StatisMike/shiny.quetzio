@@ -1,3 +1,14 @@
+# shiny.quetzio 0.1.4
+
+* added `questionee_id` argument to both *Quetzio* and *QuetzioLink* objects,
+as well as their initializers functions
+  - `questionee_id` need to be a reactive holding identificator of the user
+  - it is used when saving results to the googlesheets or getting them from
+  object with `Quetzio_get_df` function
+* added `name` argument to `Quetzio_get_df.QuetzioLink`
+  - you can now get data.frame of results from only one *Quetzio* linked
+  by *QuetzioLink* by specifying it
+
 # shiny.quetzio 0.1.3
 
 * Provided functions to help in creation and handling underlying R6 classes
