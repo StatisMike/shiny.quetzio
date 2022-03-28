@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# shiny.quetzio
+# shiny.quetzio <img src='man/figures/logo.png' align="right" height="200" title = "Created by Sandra Folwarczny"/>
 
 <!-- badges: start -->
 
@@ -11,14 +11,17 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 coverage](https://codecov.io/gh/StatisMike/shiny.quetzio/branch/main/graph/badge.svg)](https://app.codecov.io/gh/StatisMike/shiny.quetzio?branch=main)
 <!-- badges: end -->
 
-This package includes the way to create a questionnaire using various
-Shiny widgets from a source file: either a local YAML file, or
-GoogleSheet over the net. Results of the surveys are send to GoogleSheet
-of your choice.
+## Overview
 
-It is all completely handled by `R6` shiny modules, so it is easy to
-include even multiple independent questionnaires in your ShinyApp and
-keep your code clean!
+**shiny.quetzio** is a system for easy creation of questionnaires using
+various Shiny input widgets. As the source for their render it can use a
+YAML config file, *googlesheet* from the web or list/data.frame.
+
+Rendering and questionnaire reactivity is completely handled by shiny
+modules, so it is easy to include multiple independent questionnaires in
+your *ShinyApp* while keeping the code clean!
+
+To learn more:
 
 -   Preview the `pkgdown` generated website
     <a href="https://statismike.github.io/shiny.quetzio/" target="_blank">here</a>
@@ -27,8 +30,8 @@ keep your code clean!
 
 ## Installation
 
-You can install the development version of shiny.quetzio from *GitHub*
-with:
+You can install the development version of **shiny.quetzio** from
+*GitHub* with:
 
 ``` r
 # install.packages("devtools")
@@ -37,14 +40,14 @@ devtools::install_github("StatisMike/shiny.quetzio")
 
 ## Main features
 
-At the current stage of development the `shiny.quetzio` survey
-generation is handled mainly by two `R6` classes used in server,
-corresponding functions to bind the UI in your shinyApp and some helper
-functions.
+At the current stage of development, survey generation is handled
+exclusively by two `R6` classes to be initialized in *server* portion of
+your App. Additionally it provides corresponding functions to bind the
+UI elements and some helper functions.
 
--   `Quetzio` to create single questionnaire (you can create it with
-    `Quetzio_create()` function) and `Quetzio_UI` to input the UI of the
-    questionnaire. Questionnaires at the moment handles these type of
+-   `Quetzio` class creates single questionnaire (you can initialize it
+    with `Quetzio_create()` function). Use `Quetzio_UI()` to bind the UI
+    of the questionnaire. Questionnaires currently handle these type of
     inputs:
 
     -   `textInput`
@@ -54,9 +57,9 @@ functions.
     -   `likertRadioButtons` (custom input type - for more information
         read the corresponding subsection of “Other features” section)
 
--   `QuetzioLink` to link multiple `Quetzio` objects (you can create it
-    with `QuetzioLink_create()` function) and `QuetzioLink_UI` to bind
-    the connected UI.
+-   `QuetzioLink` class links multiple `Quetzio` objects (you can create
+    it with `QuetzioLink_create()` function). Use `QuetzioLink_UI()` to
+    bind the connected UI.
 
 -   Helper generic functions that work with both `Quetzio` and
     `QuetzioLink` objects:
@@ -71,10 +74,10 @@ functions.
 
 ### In-App usage
 
-It’s usage is very straigtforward:
+It’s usage is very straightforward:
 
-1.  Simply add a `Quetzio` object in your shinyApp `server()` call, and
-    `Quetzio_UI` in your `ui`:
+1.  Simply add a `Quetzio` object in your *shinyApp* **server** code,
+    and `Quetzio_UI` in your **ui**:
 
 ``` r
 ui <- fluidPage(
@@ -130,8 +133,8 @@ gsheet_quetzio <- Quetzio_create(
   )
 ```
 
-3.  There is also a possibility to link your questionnaires in a way
-    that they will appear one after another with `QuetzioLink` R6 class:
+3.  There is also an option to link your questionnaires in a way that
+    they will appear one after another with `QuetzioLink` R6 class:
 
 ``` r
 ui <- fluidPage(
@@ -186,8 +189,8 @@ server <- function(input, output, session) {
 
 ### Survey configuration
 
-You can configure your survey widely, using many of the features native
-to the used shiny inputs.
+You can configure your survey widely using many of the features native
+to the used *Shiny* inputs.
 
 #### Universal parameters:
 
@@ -263,21 +266,38 @@ functional input for questions with Likert-like scoring scale
         (appears in place of placeholder *Select value* - placeholder
         text also customizable!)
 
-    <img src="reference/figures/likertRadioButtons_w_ind.png" width="518px" style="display: block; margin: auto;" />
+    ``` r
+      likertRadioButtons(
+         inputId = "with_ind", label = "With indicator",
+         choiceValues = c(-2:2),
+         choiceNames = c("Very bad", "Slightly bad", "Not bad or good",
+                         "Slighty good", "Very good")
+    ```
 
-    -   **without indicator** - only meaning of *min* and *max*
+    <img src="man/figures/likertRadioButtons_w_ind.png" style="filter: drop-shadow(2px 2px 5px black); margin-bottom: 5px; max-width=518;">
 
-    <img src="reference/figures/likertRadioButtons_wo_ind.png" width="522px" style="display: block; margin: auto;" />
+    -   **without indicator** - only meaning of *min* and *max* is shown
+
+    ``` r
+      likertRadioButtons(
+         inputId = "wo_ind", label = "Without indicator", 
+         choiceValues = 1:7, choiceNames = c("Not much", "Many"))
+    ```
+
+    <img src="man/figures/likertRadioButtons_wo_ind.png" style="filter: drop-shadow(2px 2px 5px black); margin-bottom: 5px; max-width=522;">
 
 > Currently the usability of `likertRadioButtons` is limited - there is
-> no way to update the value after rendering with
-> `updateLikertRadioButtons` function. It is planned to implement this
-> sometime in the future. For the time being, if you plan to use it
-> outside of `Quetzio` and update its value reactively, it is advised to
-> do it using `renderUI`.
+> no way to update the value or other elements after rendering. There is
+> no function like `updateLikertRadioButtons` presently created. It is
+> planned to be implemented sometime in the future. For the time being,
+> if you plan to use it outside of `Quetzio` and update its contents
+> reactively, it is advised to do it using `renderUI`.
 
-## discoRd kudos
+## Thanks and credits
 
-This package is created by the ‘discoRd’ community. Feel free to join
-our
-<a href="https://discord.gg/FuTSvkSCVj" target="_blank">discoRd channel</a>!
+-   This package has been created within the ‘discoRd’ community. Feel
+    free to join our
+    <a href="https://discord.gg/FuTSvkSCVj" target="_blank">discoRd channel</a>!
+-   *shiny.quetzio* hexagon logo has been designed and created by very
+    talented Sandra Folwarczny. Big thanks for giving a life to
+    *Questioning Quetzal*! 😁
