@@ -209,8 +209,7 @@
 
             updateActionButton(session,
                                inputId = "submit",
-                               label = button_labels[3],
-                               icon = icon("thumbs-up"))
+                               label = button_labels[3])
 
             lapply(seq_along(self$source_list), \(i) {
               #disable all inputs after questionnaire is done
@@ -229,8 +228,7 @@
 
             updateActionButton(session,
                                inputId = "submit",
-                               label = button_labels[4],
-                               icon = icon("frown-open"))
+                               label = button_labels[4])
 
           }
           )
